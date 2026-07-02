@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus Core | Esports Escrow & Tournaments</title>
+    <title>Nexus Core | Premium Esports</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,11 +11,11 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
+        /* --- CORE VARIABLES --- */
         :root {
-            /* Premium Dark Cyber Aesthetic */
-            --bg-base: #09090b;
-            --surface: rgba(24, 24, 27, 0.8);
-            --surface-hover: rgba(39, 39, 42, 0.95);
+            --bg-base: #050505;
+            --surface: rgba(18, 18, 23, 0.8);
+            --surface-hover: rgba(28, 28, 35, 0.95);
             --primary: #8b5cf6;
             --primary-glow: rgba(139, 92, 246, 0.4);
             --secondary: #0ea5e9;
@@ -24,14 +24,20 @@
             --warning: #f59e0b;
             --text-main: #f8fafc;
             --text-muted: #a1a1aa;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
             
             --font-display: 'Rajdhani', sans-serif;
             --font-body: 'Inter', sans-serif;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* --- GLOBAL RESETS --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         
         body { 
             font-family: var(--font-body); 
@@ -42,109 +48,456 @@
             min-height: 100vh; 
             display: flex; 
             flex-direction: column; 
-            background-image: radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.08), transparent 25%);
-            background-attachment: fixed;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.4); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeSlideUp { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-        .glass { background: var(--surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        /* --- UI COMPONENTS --- */
+        .glass { 
+            background: var(--surface); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        }
 
-        /* Buttons & Inputs */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 10px; border: none; cursor: pointer; transition: var(--transition); text-decoration: none; position: relative; overflow: hidden; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), #6d28d9); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,92,246,0.6); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-        .btn-outline { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); }
-        .btn-outline:hover:not(:disabled) { background: rgba(255,255,255,0.08); border-color: var(--primary); color: white; }
-        .btn-danger { background: rgba(244, 63, 94, 0.1); border: 1px solid var(--accent); color: var(--accent); }
-        .btn-success { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); }
-
-        input, select, textarea { width: 100%; padding: 14px 16px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 10px; color: white; font-family: var(--font-body); font-size: 1rem; transition: var(--transition); }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.7); box-shadow: 0 0 0 3px rgba(139,92,246,0.2); }
+        .btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            padding: 14px 24px; 
+            font-family: var(--font-display); 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            border-radius: 12px; 
+            border: none; 
+            cursor: pointer; 
+            transition: var(--transition); 
+        }
         
-        /* Badges */
-        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary), #6d28d9); 
+            color: white; 
+            box-shadow: 0 4px 15px var(--primary-glow); 
+        }
+        
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(139,92,246,0.6); 
+        }
+        
+        .btn-primary:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            transform: none; 
+            box-shadow: none; 
+        }
+        
+        .btn-outline { 
+            background: rgba(255,255,255,0.02); 
+            border: 1px solid rgba(255,255,255,0.15); 
+            color: var(--text-main); 
+        }
+        
+        .btn-outline:hover:not(:disabled) { 
+            background: rgba(255,255,255,0.08); 
+            border-color: var(--primary); 
+            color: white; 
+        }
+        
+        .btn-danger { 
+            background: rgba(244, 63, 94, 0.1); 
+            border: 1px solid var(--accent); 
+            color: var(--accent); 
+        }
+        
+        .btn-success { 
+            background: rgba(16, 185, 129, 0.1); 
+            border: 1px solid var(--success); 
+            color: var(--success); 
+        }
+
+        /* --- FORMS & INPUTS --- */
+        input, select, textarea { 
+            width: 100%; 
+            padding: 16px; 
+            background: rgba(0,0,0,0.5); 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            color: white; 
+            font-family: var(--font-body); 
+            font-size: 1rem; 
+            transition: var(--transition); 
+        }
+        
+        input:focus, select:focus, textarea:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            background: rgba(0,0,0,0.7); 
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.2); 
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* --- BADGES & AVATARS --- */
+        .badge { 
+            padding: 6px 12px; 
+            border-radius: 8px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+        }
         .badge-live { background: rgba(244, 63, 94, 0.15); color: var(--accent); border: 1px solid var(--accent); }
         .badge-upcoming { background: rgba(14, 165, 233, 0.15); color: var(--secondary); border: 1px solid var(--secondary); }
         .badge-admin { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+        .badge-game { background: rgba(139, 92, 246, 0.15); color: #ddd6fe; border: 1px solid var(--primary); }
         
-        .pfp { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); background: var(--bg-base); }
-        .pfp-lg { width: 80px; height: 80px; border-width: 3px; border-color: var(--primary); }
+        .pfp { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 12px; 
+            object-fit: cover; 
+            border: 2px solid var(--primary); 
+            background: var(--surface); 
+        }
+        
+        .pfp-lg { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 20px; 
+            border-width: 3px; 
+        }
 
-        /* Navigation */
-        nav.top-nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(9, 9, 11, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
-        .logo { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: white; display: flex; align-items: center; gap: 8px; cursor: pointer; letter-spacing: 1px; }
-        .logo i { color: var(--primary); font-size: 2.2rem; }
+        /* --- NAVIGATION --- */
+        nav.top-nav { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: rgba(5, 5, 5, 0.85); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border); 
+        }
         
-        .nav-actions { display: flex; align-items: center; gap: 12px; }
+        .logo { 
+            font-family: var(--font-display); 
+            font-size: 2rem; 
+            font-weight: 800; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            cursor: pointer; 
+        }
         
-        .bottom-nav { display: none; position: fixed; bottom: 0; width: 100%; background: rgba(24, 24, 27, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
-        .bottom-nav-inner { display: flex; justify-content: space-around; padding: 6px 4px; }
-        .b-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 0.7rem; font-weight: 600; cursor: pointer; padding: 8px; border-radius: 12px; flex: 1; transition: var(--transition); }
+        .logo i { color: var(--primary); font-size: 2.5rem; }
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+        
+        /* Mobile Bottom Nav */
+        .bottom-nav { 
+            display: none; 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+            background: rgba(15, 15, 15, 0.95); 
+            backdrop-filter: blur(20px); 
+            border-top: 1px solid var(--border); 
+            z-index: 1000; 
+            padding-bottom: env(safe-area-inset-bottom); 
+        }
+        
+        .bottom-nav-inner { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 8px 5px; 
+        }
+        
+        .b-nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 6px; 
+            color: var(--text-muted); 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            padding: 10px; 
+            border-radius: 12px; 
+            flex: 1; 
+            transition: var(--transition); 
+        }
+        
         .b-nav-item i { font-size: 1.5rem; }
         .b-nav-item.active { color: var(--primary); background: rgba(139, 92, 246, 0.1); }
 
-        /* Layout */
-        #app-content { margin-top: 80px; padding: 20px 5%; flex-grow: 1; max-width: 1400px; margin-left: auto; margin-right: auto; width: 100%; animation: fadeSlideUp 0.4s ease-out; }
+        /* --- LAYOUTS --- */
+        #app-content { 
+            margin-top: 90px; 
+            padding: 30px 5%; 
+            flex-grow: 1; 
+            max-width: 1400px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            width: 100%; 
+            animation: fadeSlideUp 0.4s ease-out; 
+        }
+        
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeSlideUp 0.4s ease-out; }
 
-        .dashboard-layout { display: grid; grid-template-columns: 260px 1fr; gap: 30px; }
-        .sidebar { padding: 20px; display: flex; flex-direction: column; gap: 8px; height: calc(100vh - 100px); position: sticky; top: 90px; }
-        .sidebar-item { padding: 14px 16px; border-radius: 10px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-weight: 600;}
+        .dashboard-layout { 
+            display: grid; 
+            grid-template-columns: 280px 1fr; 
+            gap: 40px; 
+        }
+        
+        .sidebar { 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            height: calc(100vh - 120px); 
+            position: sticky; 
+            top: 100px; 
+        }
+        
+        .sidebar-item { 
+            padding: 16px 20px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            color: var(--text-muted); 
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
         .sidebar-item:hover { background: rgba(255,255,255,0.03); color: white; }
-        .sidebar-item.active { background: rgba(139, 92, 246, 0.15); color: white; border-left: 3px solid var(--primary); }
+        .sidebar-item.active { background: rgba(139, 92, 246, 0.15); color: white; border-left: 4px solid var(--primary); }
+        .sidebar-item i { font-size: 1.5rem; color: var(--primary); }
 
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { padding: 24px; transition: var(--transition); display: flex; flex-direction: column; gap: 12px; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: rgba(139, 92, 246, 0.3); background: var(--surface-hover); }
+        .grid-cards { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 25px; 
+        }
         
-        .stat-box { padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .stat-value { font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: white; line-height: 1; margin: 10px 0; }
+        .card { 
+            padding: 28px; 
+            transition: var(--transition); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
         
-        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; }
-        h2 { font-size: 2rem; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
+            border-color: rgba(139, 92, 246, 0.4); 
+            background: var(--surface-hover); 
+        }
+        
+        .stat-box { 
+            padding: 30px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%); 
+            text-align: center; 
+        }
+        
+        .stat-value { 
+            font-family: var(--font-display); 
+            font-size: 3.5rem; 
+            font-weight: 800; 
+            color: white; 
+            margin: 10px 0; 
+        }
 
-        /* Modals & Toasts */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px; }
+        /* --- MODALS & TOASTS --- */
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(10px); 
+            z-index: 2000; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        
         .modal-overlay.active { display: flex; animation: fadeSlideUp 0.3s; }
-        .modal-content { width: 100%; max-width: 550px; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
-        .close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; color: var(--text-muted); font-size: 1.8rem; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 4px; transition: var(--transition); }
+        
+        .modal-content { 
+            width: 100%; 
+            max-width: 600px; 
+            padding: 40px; 
+            position: relative; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8); 
+        }
+        
+        .close-modal { 
+            position: absolute; 
+            top: 20px; right: 20px; 
+            cursor: pointer; 
+            color: var(--text-muted); 
+            font-size: 2rem; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 50%; 
+            padding: 5px; 
+            transition: var(--transition); 
+        }
+        
         .close-modal:hover { color: white; background: var(--accent); }
 
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { padding: 16px 20px; border-radius: 12px; color: white; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-weight: 600; pointer-events: auto; background: var(--surface-hover); border-left: 5px solid; animation: fadeSlideUp 0.3s; }
-
-        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-        th, td { padding: 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        th { color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
+        #toast-container { 
+            position: fixed; 
+            top: 25px; right: 25px; 
+            z-index: 9999; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            pointer-events: none; 
+        }
         
-        .chat-container { height: 400px; display: flex; flex-direction: column; background: rgba(0,0,0,0.4); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
-        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .chat-msg { padding: 12px 16px; border-radius: 16px 16px 16px 4px; background: rgba(255,255,255,0.05); max-width: 85%; align-self: flex-start; font-size: 0.95rem; }
-        .chat-msg.mine { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); align-self: flex-end; border-radius: 16px 16px 4px 16px; }
-        .chat-input { display: flex; padding: 15px; background: rgba(0,0,0,0.8); border-top: 1px solid var(--border); gap: 10px; }
+        .toast { 
+            padding: 18px 24px; 
+            border-radius: 12px; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); 
+            font-weight: 600; 
+            pointer-events: auto; 
+            background: var(--surface-hover); 
+            border-left: 6px solid; 
+            animation: fadeSlideUp 0.3s; 
+        }
 
+        /* --- TABLES & CHAT --- */
+        .table-container { 
+            overflow-x: auto; 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            background: rgba(0,0,0,0.2); 
+        }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th, td { padding: 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        th { color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        
+        .chat-container { 
+            height: 450px; 
+            display: flex; 
+            flex-direction: column; 
+            background: rgba(0,0,0,0.4); 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            overflow: hidden; 
+        }
+        
+        .chat-messages { 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        
+        .chat-msg { 
+            padding: 15px 20px; 
+            border-radius: 16px 16px 16px 4px; 
+            background: rgba(255,255,255,0.05); 
+            max-width: 85%; 
+            align-self: flex-start; 
+            display: flex;
+            gap: 12px;
+        }
+        
+        .chat-msg.mine { 
+            background: rgba(139, 92, 246, 0.15); 
+            border: 1px solid rgba(139, 92, 246, 0.3); 
+            align-self: flex-end; 
+            border-radius: 16px 16px 4px 16px; 
+            flex-direction: row-reverse;
+        }
+        
+        .chat-msg .author { 
+            font-size: 0.8rem; 
+            color: var(--secondary); 
+            margin-bottom: 5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+        
+        .chat-msg.mine .author { text-align: right; color: var(--primary); }
+        
+        .chat-input { 
+            display: flex; 
+            padding: 15px; 
+            background: rgba(0,0,0,0.8); 
+            border-top: 1px solid var(--border); 
+            gap: 10px; 
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 900px) {
             .dashboard-layout { grid-template-columns: 1fr; gap: 20px; }
             .sidebar { display: none; }
             .bottom-nav { display: block; }
-            #app-content { margin-bottom: 80px; padding: 15px; margin-top: 70px; }
-            .modal-content { padding: 20px; }
-            nav.top-nav { padding: 10px 15px; }
-            .table-container { overflow-x: auto; }
+            #app-content { margin-bottom: 90px; padding: 20px 15px; margin-top: 70px; }
+            .modal-content { padding: 25px; }
+            nav.top-nav { padding: 12px 15px; }
+            h1 { font-size: 3rem !important; }
         }
 
+        /* --- UTILITIES --- */
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.5rem; } .mt-4 { margin-top: 2rem; }
         .mb-2 { margin-bottom: 1rem; } .mb-3 { margin-bottom: 1.5rem; } .mb-4 { margin-bottom: 2rem; } 
-        .text-center { text-align: center; } .w-100 { width: 100%; } .text-muted { color: var(--text-muted); }
+        .text-center { text-align: center; } 
+        .w-100 { width: 100%; } 
+        .text-muted { color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -156,37 +509,79 @@
         <div class="nav-actions" id="nav-desktop-actions"></div>
     </nav>
 
+    <!-- Mobile Bottom Navigation -->
     <div id="mobile-bottom-nav" class="bottom-nav"></div>
+    
+    <!-- Modals and Toasts -->
     <div id="toast-container"></div>
-    <div id="modal-container" class="modal-overlay"><div class="glass modal-content" id="modal-body"></div></div>
+    <div id="modal-container" class="modal-overlay">
+        <div class="glass modal-content" id="modal-body"></div>
+    </div>
 
     <main id="app-content">
         <!-- Landing View -->
         <section id="view-landing" class="view-section active">
-            <div style="text-align:center; padding: 60px 0; max-width: 800px; margin: 0 auto;">
-                <div class="badge badge-game mb-3"><i class="ph-fill ph-shield-check"></i> Escrow Secured Scrims</div>
-                <h1 style="font-size:clamp(3rem, 8vw, 5.5rem); line-height:1; margin-bottom:20px; text-transform:uppercase;">Dominate The <br><span style="color:var(--primary);">Arena</span></h1>
-                <p style="font-size:1.1rem; color:var(--text-muted); margin-bottom:30px;">Automated tournaments, zero-delay payouts, and instant verification.</p>
-                <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="navigate('register')"><i class="ph-bold ph-sword"></i> Start Competing</button>
-                    <button class="btn btn-outline" onclick="navigate('login')">Host / Login</button>
+            <div style="text-align:center; padding: 60px 0; max-width: 900px; margin: 0 auto;">
+                <div class="badge badge-game mb-4" style="font-size:0.9rem; padding:8px 16px;">
+                    <i class="ph-fill ph-shield-check"></i> Escrow Secured Scrims
+                </div>
+                <h1 style="font-family:var(--font-display); font-size:5rem; line-height:1; margin-bottom:20px; text-transform:uppercase;">
+                    Dominate The <br><span style="color:var(--primary);">Arena</span>
+                </h1>
+                <p style="font-size:1.2rem; color:var(--text-muted); margin-bottom:40px;">
+                    Compete in automated, escrow-secured tournaments. Verified hosts, zero-delay payouts, and instant verification.
+                </p>
+                <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="navigate('register')">
+                        <i class="ph-bold ph-sword"></i> Start Competing
+                    </button>
+                    <button class="btn btn-outline" onclick="navigate('login')">
+                        Host / Login
+                    </button>
                 </div>
             </div>
+            
             <div class="mt-4">
-                <h2><i class="ph-fill ph-fire" style="color:var(--accent)"></i> Live & Upcoming Operations</h2>
+                <h2 style="font-size: 2.2rem; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 25px;">
+                    <i class="ph-fill ph-fire" style="color:var(--accent)"></i> Live & Upcoming Operations
+                </h2>
                 <div class="grid-cards" id="landing-tournaments-list">
-                    <div class="glass p-4 text-center text-muted" style="grid-column:1/-1; padding:60px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:3rem; color:var(--primary); margin-bottom:10px;"></i><br>Syncing Database...</div>
+                    <div class="glass p-4 text-center text-muted" style="grid-column:1/-1; padding:80px;">
+                        <i class="ph-duotone ph-spinner ph-spin" style="font-size:4rem; color:var(--primary); margin-bottom:15px;"></i><br>
+                        Syncing Database...
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- Auth View -->
         <section id="view-auth" class="view-section">
-            <div class="glass" id="auth-box" style="max-width: 450px; margin: 40px auto; padding: 40px;"></div>
+            <div class="glass" id="auth-box" style="max-width: 500px; margin: 60px auto; padding: 50px;"></div>
         </section>
 
-        <section id="view-player-dash" class="view-section"><div class="dashboard-layout"><div class="glass sidebar" id="player-sidebar"></div><div id="player-dash-content"></div></div></section>
-        <section id="view-host-dash" class="view-section"><div class="dashboard-layout"><div class="glass sidebar" id="host-sidebar"></div><div id="host-dash-content"></div></div></section>
-        <section id="view-admin-dash" class="view-section"><div class="dashboard-layout"><div class="glass sidebar" id="admin-sidebar"></div><div id="admin-dash-content"></div></div></section>
+        <!-- Player Dashboard -->
+        <section id="view-player-dash" class="view-section">
+            <div class="dashboard-layout">
+                <div class="glass sidebar" id="player-sidebar"></div>
+                <div id="player-dash-content"></div>
+            </div>
+        </section>
+
+        <!-- Host Dashboard -->
+        <section id="view-host-dash" class="view-section">
+            <div class="dashboard-layout">
+                <div class="glass sidebar" id="host-sidebar"></div>
+                <div id="host-dash-content"></div>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard -->
+        <section id="view-admin-dash" class="view-section">
+            <div class="dashboard-layout">
+                <div class="glass sidebar" id="admin-sidebar"></div>
+                <div id="admin-dash-content"></div>
+            </div>
+        </section>
     </main>
 
     <script type="module">
@@ -205,273 +600,1318 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let state = { user: null, userData: null, currentView: 'landing', activeTab: 'overview', upiId: "nexuscore@okaxis", platformFee: 0.10, unsubs: [] };
+        // --- GLOBAL STATE ---
+        let state = { 
+            user: null, 
+            userData: null, 
+            currentView: 'landing', 
+            activeTab: 'overview', 
+            upiId: "nexuscore@okaxis", 
+            platformFee: 0.10, 
+            unsubs: [] 
+        };
 
-        // Global UI utilities
+        // Default Avatar silhouette
         const DEFAULT_PFP = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a1a1aa"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
         
+        // Dynamic Game Forms
+        const GAME_CONFIG = {
+            "BGMI": { modes: ["Solo", "Duo", "Squad"], maps: ["Erangel", "Miramar", "Sanhok", "Livik"] },
+            "Free Fire": { modes: ["Solo", "Duo", "Squad", "Clash Squad"], maps: ["Bermuda", "Purgatory", "Kalahari", "Alpine"] },
+            "Among Us": { modes: ["Standard", "Hide & Seek"], maps: ["The Skeld", "Polus", "Airship"], extra: "Impostor Count" },
+            "Valorant": { modes: ["Standard 5v5", "Swiftplay", "Deathmatch"], maps: ["Bind", "Haven", "Ascent", "Split"] }
+        };
+
+        // --- UTILITY FUNCTIONS ---
         const UI = {
             toast: (msg, type = 'success') => {
-                const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = `toast ${type}`;
-                t.style.borderLeftColor = type === 'success' ? 'var(--success)' : 'var(--accent)';
-                t.innerHTML = `<i class="ph-fill ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}" style="font-size:1.5rem; color:${type === 'success' ? 'var(--success)' : 'var(--accent)'}"></i> <span>${msg}</span>`;
-                c.appendChild(t); setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000);
+                const container = document.getElementById('toast-container'); 
+                const toast = document.createElement('div'); 
+                toast.className = `toast ${type}`;
+                toast.style.borderLeftColor = type === 'success' ? 'var(--success)' : 'var(--accent)';
+                toast.innerHTML = `<i class="ph-fill ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}" style="font-size:1.8rem; color:${type === 'success' ? 'var(--success)' : 'var(--accent)'}"></i> <span>${msg}</span>`;
+                container.appendChild(toast); 
+                
+                setTimeout(() => { 
+                    toast.style.opacity = '0'; 
+                    setTimeout(() => toast.remove(), 300); 
+                }, 4000);
             },
-            modal: (html) => { document.getElementById('modal-body').innerHTML = `<i class="ph-bold ph-x close-modal" onclick="closeModal()"></i>` + html; document.getElementById('modal-container').classList.add('active'); },
-            closeModal: () => document.getElementById('modal-container').classList.remove('active'),
-            loadBtn: (id, load, txt = 'Loading...') => { const b = document.getElementById(id); if(!b) return; if(load) { b.dataset.o = b.innerHTML; b.innerHTML = `<i class="ph-bold ph-spinner ph-spin"></i> ${txt}`; b.disabled = true; } else { b.innerHTML = b.dataset.o; b.disabled = false; } },
+            modal: (html) => { 
+                document.getElementById('modal-body').innerHTML = `<i class="ph-bold ph-x close-modal" onclick="closeModal()"></i>` + html; 
+                document.getElementById('modal-container').classList.add('active'); 
+            },
+            closeModal: () => {
+                document.getElementById('modal-container').classList.remove('active');
+            },
+            loadBtn: (id, load, txt = 'Loading...') => { 
+                const btn = document.getElementById(id); 
+                if(!btn) return; 
+                if(load) { 
+                    btn.dataset.o = btn.innerHTML; 
+                    btn.innerHTML = `<i class="ph-bold ph-spinner ph-spin"></i> ${txt}`; 
+                    btn.disabled = true; 
+                } else { 
+                    btn.innerHTML = btn.dataset.o; 
+                    btn.disabled = false; 
+                } 
+            },
             esc: (str) => String(str||'').replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag])),
             getPfp: (url) => (url && url.trim() !== '') ? url : DEFAULT_PFP,
-            clearListeners: () => { state.unsubs.forEach(u => u()); state.unsubs = []; }
+            clearListeners: () => { 
+                state.unsubs.forEach(unsub => unsub()); 
+                state.unsubs = []; 
+            }
         };
-        window.closeModal = UI.closeModal;
-        window.logoutUser = () => { signOut(auth).then(()=>location.reload()); };
-        window.goDash = () => { if(state.userData) navigate(state.userData.role + '-dash'); else navigate('login'); };
 
-        // Navigation
+        // Expose functions to window for inline HTML handlers
+        window.closeModal = UI.closeModal;
+        window.logoutUser = () => { 
+            signOut(auth).then(() => location.reload()); 
+        };
+        window.goDash = () => { 
+            if(state.userData) navigate(state.userData.role + '-dash'); 
+            else navigate('login'); 
+        };
+
+        // --- NAVIGATION & ROUTING ---
         window.navigate = (view) => {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             UI.clearListeners();
-            if(view === 'login' || view === 'register') { document.getElementById('view-auth').classList.add('active'); renderAuthForm(view); } 
-            else { 
-                const t = document.getElementById(`view-${view}`); if(t) t.classList.add('active');
+            
+            if(view === 'login' || view === 'register') { 
+                document.getElementById('view-auth').classList.add('active'); 
+                renderAuthForm(view); 
+            } else { 
+                const target = document.getElementById(`view-${view}`); 
+                if(target) target.classList.add('active');
+                
                 if(view === 'landing') bindLandingTournaments();
                 else if(view === 'player-dash') renderDashboard('player');
                 else if(view === 'host-dash') renderDashboard('host');
                 else if(view === 'admin-dash') renderDashboard('admin');
             }
-            state.currentView = view; window.scrollTo(0,0);
+            state.currentView = view; 
+            window.scrollTo(0,0);
         };
 
         const updateNavUI = () => {
-            const top = document.getElementById('nav-desktop-actions'); const bot = document.getElementById('mobile-bottom-nav');
+            const topNav = document.getElementById('nav-desktop-actions'); 
+            const botNav = document.getElementById('mobile-bottom-nav');
+            
             if (state.user && state.userData) {
-                if(state.userData.isBanned) { document.body.innerHTML = `<div style="text-align:center; padding:100px; color:var(--accent)"><h1 style="font-size:4rem">BANNED</h1><p>Violated TOS.</p></div>`; return; }
-                const r = state.userData.role; const dView = r === 'admin' ? 'admin-dash' : (r === 'host' ? 'host-dash' : 'player-dash');
+                // Check Ban Status First
+                if(state.userData.isBanned) { 
+                    document.body.innerHTML = `
+                        <div style="text-align:center; padding:100px 20px; color:var(--text-main);">
+                            <i class="ph-duotone ph-warning-octagon" style="font-size:6rem; color:var(--accent); margin-bottom:20px;"></i>
+                            <h1 style="font-size:3rem;">ACCESS REVOKED</h1>
+                            <p style="color:var(--text-muted); margin-top:10px;">Your account has been permanently suspended for Terms of Service violations.</p>
+                        </div>`; 
+                    return; 
+                }
                 
-                top.innerHTML = `
-                    <button class="btn btn-primary" style="display:none; @media(min-width:768px){display:flex;}" onclick="goDash()"><i class="ph-bold ph-squares-four"></i> Dashboard</button>
-                    <button class="btn btn-outline" style="display:flex; @media(min-width:768px){display:none;}" onclick="goDash()"><i class="ph-bold ph-squares-four"></i> Dash</button>
+                const role = state.userData.role; 
+                const dashView = role === 'admin' ? 'admin-dash' : (role === 'host' ? 'host-dash' : 'player-dash');
+                
+                // Desktop Top Nav Elements
+                topNav.innerHTML = `
+                    <button class="btn btn-primary" style="display:none; @media(min-width:768px){display:flex;}" onclick="goDash()">
+                        <i class="ph-bold ph-squares-four"></i> Dashboard
+                    </button>
+                    <button class="btn btn-outline" style="display:flex; @media(min-width:768px){display:none;}" onclick="goDash()">
+                        <i class="ph-bold ph-squares-four"></i> Dash
+                    </button>
                     <img src="${UI.getPfp(state.userData.pfpUrl)}" class="pfp" style="margin: 0 10px;">
-                    <button class="btn btn-outline" style="padding:10px 14px;" onclick="logoutUser()"><i class="ph-bold ph-sign-out"></i></button>
+                    <button class="btn btn-outline" style="padding:12px;" onclick="logoutUser()">
+                        <i class="ph-bold ph-sign-out"></i>
+                    </button>
                 `;
 
+                // Mobile Bottom Nav Elements
                 let bItems = '';
-                if(r === 'player') bItems = `<div class="b-nav-item" onclick="switchTab('player','overview')"><i class="ph-fill ph-house"></i> Home</div><div class="b-nav-item" onclick="switchTab('player','browse')"><i class="ph-fill ph-game-controller"></i> Scrims</div><div class="b-nav-item" onclick="switchTab('player','my-matches')"><i class="ph-fill ph-sword"></i> Hub</div><div class="b-nav-item" onclick="switchTab('player','wallet')"><i class="ph-fill ph-wallet"></i> Pay</div><div class="b-nav-item" onclick="switchTab('player','profile')"><i class="ph-fill ph-user-circle"></i> Me</div>`;
-                else if(r === 'host') bItems = `<div class="b-nav-item" onclick="switchTab('host','overview')"><i class="ph-fill ph-house"></i> Dash</div><div class="b-nav-item" onclick="switchTab('host','create')"><i class="ph-fill ph-plus-circle"></i> Host</div><div class="b-nav-item" onclick="switchTab('host','manage')"><i class="ph-fill ph-kanban"></i> Rooms</div><div class="b-nav-item" onclick="switchTab('host','wallet')"><i class="ph-fill ph-wallet"></i> Rev</div>`;
-                else bItems = `<div class="b-nav-item" onclick="switchTab('admin','overview')"><i class="ph-fill ph-cpu"></i> Core</div><div class="b-nav-item" onclick="switchTab('admin','settlements')"><i class="ph-fill ph-scales"></i> Escrow</div><div class="b-nav-item" onclick="switchTab('admin','users')"><i class="ph-fill ph-users"></i> Users</div><div class="b-nav-item" onclick="switchTab('admin','tournaments')"><i class="ph-fill ph-globe"></i> Events</div>`;
+                if(role === 'player') {
+                    bItems = `
+                        <div class="b-nav-item" onclick="switchTab('player','overview')"><i class="ph-fill ph-house"></i> Home</div>
+                        <div class="b-nav-item" onclick="switchTab('player','browse')"><i class="ph-fill ph-game-controller"></i> Scrims</div>
+                        <div class="b-nav-item" onclick="switchTab('player','my-matches')"><i class="ph-fill ph-sword"></i> Hub</div>
+                        <div class="b-nav-item" onclick="switchTab('player','wallet')"><i class="ph-fill ph-wallet"></i> Pay</div>
+                        <div class="b-nav-item" onclick="switchTab('player','profile')"><i class="ph-fill ph-user-circle"></i> Me</div>
+                    `;
+                } else if(role === 'host') {
+                    bItems = `
+                        <div class="b-nav-item" onclick="switchTab('host','overview')"><i class="ph-fill ph-house"></i> Dash</div>
+                        <div class="b-nav-item" onclick="switchTab('host','create')"><i class="ph-fill ph-plus-circle"></i> Host</div>
+                        <div class="b-nav-item" onclick="switchTab('host','manage')"><i class="ph-fill ph-kanban"></i> Rooms</div>
+                        <div class="b-nav-item" onclick="switchTab('host','wallet')"><i class="ph-fill ph-wallet"></i> Rev</div>
+                    `;
+                } else {
+                    bItems = `
+                        <div class="b-nav-item" onclick="switchTab('admin','overview')"><i class="ph-fill ph-cpu"></i> Core</div>
+                        <div class="b-nav-item" onclick="switchTab('admin','settlements')"><i class="ph-fill ph-scales"></i> Escrow</div>
+                        <div class="b-nav-item" onclick="switchTab('admin','users')"><i class="ph-fill ph-users"></i> Users</div>
+                        <div class="b-nav-item" onclick="switchTab('admin','tournaments')"><i class="ph-fill ph-globe"></i> Events</div>
+                    `;
+                }
                 
-                bot.innerHTML = `<div class="bottom-nav-inner">${bItems}</div>`; bot.style.display = ['player-dash', 'host-dash', 'admin-dash'].includes(state.currentView) ? 'block' : 'none';
+                botNav.innerHTML = `<div class="bottom-nav-inner">${bItems}</div>`; 
+                botNav.style.display = ['player-dash', 'host-dash', 'admin-dash'].includes(state.currentView) ? 'block' : 'none';
+            
             } else {
-                top.innerHTML = `<button class="btn btn-outline" onclick="navigate('login')">Login</button><button class="btn btn-primary" onclick="navigate('register')">Sign Up</button>`; bot.style.display = 'none';
+                topNav.innerHTML = `
+                    <button class="btn btn-outline" onclick="navigate('login')">Login</button>
+                    <button class="btn btn-primary" onclick="navigate('register')">Sign Up</button>
+                `; 
+                botNav.style.display = 'none';
             }
         };
 
+        // --- AUTHENTICATION LISTENER ---
         onAuthStateChanged(auth, async (u) => {
             if (u) {
                 state.user = u;
                 const unsub = onSnapshot(doc(db, "users", u.uid), (dSnap) => {
                     if (dSnap.exists()) {
-                        state.userData = dSnap.data(); updateNavUI();
+                        state.userData = dSnap.data(); 
+                        updateNavUI();
                         if(['login', 'register', 'landing'].includes(state.currentView)) goDash();
-                    } else logoutUser();
-                }); state.unsubs.push(unsub); 
-            } else { state.user = null; state.userData = null; updateNavUI(); if(!['landing', 'register', 'login'].includes(state.currentView)) navigate('landing'); }
+                    } else {
+                        logoutUser();
+                    }
+                }); 
+                state.unsubs.push(unsub); 
+            } else { 
+                state.user = null; 
+                state.userData = null; 
+                updateNavUI(); 
+                if(!['landing', 'register', 'login'].includes(state.currentView)) navigate('landing'); 
+            }
         });
 
-        // Auth
+        // --- AUTH FORMS ---
         const renderAuthForm = (type) => {
-            const c = document.getElementById('auth-box');
+            const container = document.getElementById('auth-box');
             if(type === 'login') {
-                c.innerHTML = `<h2 style="font-size:2.5rem; margin-bottom:10px;">Login</h2><p class="text-muted mb-4">Welcome back to Nexus Core.</p>
-                    <form id="auth-form"><div class="form-group mb-3"><input type="email" id="a-email" placeholder="Email Address" required></div><div class="form-group mb-4"><input type="password" id="a-pass" placeholder="Password" required></div><button type="submit" class="btn btn-primary w-100" id="btn-auth">Access Terminal</button></form>
-                    <div class="text-center mt-4"><a href="#" onclick="navigate('register')" style="color:var(--text-muted); text-decoration:none;">New? <span style="color:var(--primary); font-weight:700;">Create Account</span></a></div>`;
+                container.innerHTML = `
+                    <h2 style="font-size:2.8rem; margin-bottom:10px;"><i class="ph-fill ph-sign-in" style="color:var(--primary)"></i> Login</h2>
+                    <p class="text-muted mb-4">Welcome back to Nexus Core.</p>
+                    <form id="auth-form">
+                        <div class="form-group mb-3">
+                            <label>Email Address</label>
+                            <input type="email" id="a-email" placeholder="commander@nexus.com" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Password</label>
+                            <input type="password" id="a-pass" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="btn-auth" style="padding:16px;">Access Terminal</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <a href="#" onclick="navigate('register')" style="color:var(--text-muted); text-decoration:none;">New? <span style="color:var(--primary); font-weight:700;">Create Account</span></a>
+                    </div>
+                `;
             } else {
-                c.innerHTML = `<h2 style="font-size:2.5rem; margin-bottom:10px;">Register</h2><p class="text-muted mb-4">Start your legacy.</p>
-                    <form id="auth-form"><div class="form-group mb-3"><select id="a-role" required><option value="" disabled selected>Select Role</option><option value="player">Player (Compete)</option><option value="host">Host (Organize)</option></select></div><div class="form-group mb-3"><input type="text" id="a-user" placeholder="Unique Username" required></div><div class="form-group mb-3"><input type="email" id="a-email" placeholder="Email Address" required></div><div class="form-group mb-4"><input type="password" id="a-pass" placeholder="Password (Min 6 chars)" required minlength="6"></div><button type="submit" class="btn btn-primary w-100" id="btn-auth">Create Account</button></form>
-                    <div class="text-center mt-4"><a href="#" onclick="navigate('login')" style="color:var(--text-muted); text-decoration:none;">Existing? <span style="color:var(--primary); font-weight:700;">Login</span></a></div>`;
+                container.innerHTML = `
+                    <h2 style="font-size:2.8rem; margin-bottom:10px;"><i class="ph-fill ph-user-plus" style="color:var(--primary)"></i> Register</h2>
+                    <p class="text-muted mb-4">Start your legacy.</p>
+                    <form id="auth-form">
+                        <div class="form-group mb-3">
+                            <label>Role Assignment</label>
+                            <select id="a-role" required>
+                                <option value="" disabled selected>Select Role</option>
+                                <option value="player">Player (Compete & Earn)</option>
+                                <option value="host">Host (Organize & Earn)</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Global Username</label>
+                            <input type="text" id="a-user" placeholder="Unique Tag" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Email Address</label>
+                            <input type="email" id="a-email" placeholder="commander@nexus.com" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Password</label>
+                            <input type="password" id="a-pass" placeholder="Min 6 chars" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="btn-auth" style="padding:16px;">Create Account</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <a href="#" onclick="navigate('login')" style="color:var(--text-muted); text-decoration:none;">Existing? <span style="color:var(--primary); font-weight:700;">Login</span></a>
+                    </div>
+                `;
             }
+            
             document.getElementById('auth-form').onsubmit = async (e) => {
-                e.preventDefault(); UI.loadBtn('btn-auth', true); const em = document.getElementById('a-email').value, pw = document.getElementById('a-pass').value;
+                e.preventDefault(); 
+                UI.loadBtn('btn-auth', true); 
+                
+                const em = document.getElementById('a-email').value; 
+                const pw = document.getElementById('a-pass').value;
+                
                 try {
-                    if(type === 'login') { await signInWithEmailAndPassword(auth, em, pw); UI.toast("Logged in"); } 
-                    else {
-                        const c = await createUserWithEmailAndPassword(auth, em, pw);
-                        await setDoc(doc(db, "users", c.user.uid), { uid: c.user.uid, email: em, username: document.getElementById('a-user').value, role: document.getElementById('a-role').value, isBanned: false, pfpUrl: "", wallet: { coins: 0 }, stats: { matches: 0, wins: 0 }, createdAt: Date.now() }); UI.toast("Registered!");
+                    if(type === 'login') { 
+                        await signInWithEmailAndPassword(auth, em, pw); 
+                        UI.toast("Authentication Successful"); 
+                    } else {
+                        const role = document.getElementById('a-role').value;
+                        const uname = document.getElementById('a-user').value;
+                        
+                        const cred = await createUserWithEmailAndPassword(auth, em, pw);
+                        await setDoc(doc(db, "users", cred.user.uid), { 
+                            uid: cred.user.uid, 
+                            email: em, 
+                            username: uname, 
+                            role: role, 
+                            isBanned: false, 
+                            pfpUrl: "", 
+                            wallet: { coins: 0 }, 
+                            stats: { matches: 0, wins: 0 }, 
+                            createdAt: Date.now() 
+                        }); 
+                        UI.toast("Account Registered!");
                     }
-                } catch(err) { if(em==='admin@nexus.com' && type==='login') { const c = await createUserWithEmailAndPassword(auth, em, pw); await setDoc(doc(db, "users", c.user.uid), { uid: c.user.uid, email: em, username: "GodMode", role: "admin", isBanned: false, wallet:{coins:0} }); UI.toast("Admin Set"); } else UI.toast(err.message, "error"); } 
-                finally { UI.loadBtn('btn-auth', false); }
+                } catch(err) { 
+                    // God Mode Creation
+                    if(em === 'admin@nexus.com' && type === 'login') { 
+                        const c = await createUserWithEmailAndPassword(auth, em, pw); 
+                        await setDoc(doc(db, "users", c.user.uid), { 
+                            uid: c.user.uid, email: em, username: "GodMode", role: "admin", isBanned: false, wallet:{coins:0} 
+                        }); 
+                        UI.toast("Admin Initialized"); 
+                    } else {
+                        UI.toast(err.message, "error"); 
+                    }
+                } finally { 
+                    UI.loadBtn('btn-auth', false); 
+                }
             };
         };
 
-        // DASHBOARD ROUTER
+        // --- DASHBOARD ROUTER ---
         const SIDEBAR_DEF = {
-            player: [ {id:'overview', i:'squares-four', l:'Overview'}, {id:'browse', i:'game-controller', l:'Browse Scrims'}, {id:'my-matches', i:'sword', l:'My Hub'}, {id:'wallet', i:'wallet', l:'Wallet'}, {id:'profile', i:'user-circle', l:'Profile'} ],
-            host: [ {id:'overview', i:'squares-four', l:'Dashboard'}, {id:'create', i:'plus-circle', l:'Host Event'}, {id:'manage', i:'kanban', l:'Manage Rooms'}, {id:'wallet', i:'wallet', l:'Revenue'} ],
-            admin: [ {id:'overview', i:'cpu', l:'System Core'}, {id:'settlements', i:'scales', l:'Escrow Queue'}, {id:'withdrawals', i:'bank', l:'Payouts'}, {id:'recharges', i:'lightning', l:'Top-ups'}, {id:'users', i:'users', l:'User Control'}, {id:'tournaments', i:'globe', l:'Events'} ]
+            player: [ 
+                {id:'overview', i:'squares-four', l:'Overview'}, 
+                {id:'browse', i:'game-controller', l:'Browse Scrims'}, 
+                {id:'my-matches', i:'sword', l:'My Hub'}, 
+                {id:'wallet', i:'wallet', l:'Wallet'},
+                {id:'leaderboard', i:'trophy', l:'Rankings'},
+                {id:'tickets', i:'lifebuoy', l:'Support'},
+                {id:'profile', i:'user-circle', l:'Profile'} 
+            ],
+            host: [ 
+                {id:'overview', i:'squares-four', l:'Dashboard'}, 
+                {id:'create', i:'plus-circle', l:'Host Event'}, 
+                {id:'manage', i:'kanban', l:'Manage Rooms'}, 
+                {id:'wallet', i:'wallet', l:'Revenue'} 
+            ],
+            admin: [ 
+                {id:'overview', i:'cpu', l:'System Core'}, 
+                {id:'settlements', i:'scales', l:'Escrow Queue'}, 
+                {id:'withdrawals', i:'bank', l:'Payouts'}, 
+                {id:'recharges', i:'lightning', l:'Top-ups'}, 
+                {id:'users', i:'users', l:'User Control'}, 
+                {id:'tournaments', i:'globe', l:'Events'} 
+            ]
         };
 
         const renderDashboard = (role) => {
-            const sb = document.getElementById(`${role}-sidebar`); let h = '';
-            SIDEBAR_DEF[role].forEach(i => h += `<div class="sidebar-item" id="sb-${role}-${i.id}" onclick="switchTab('${role}', '${i.id}')"><i class="ph-fill ph-${i.i}"></i> <span>${i.l}</span></div>`);
-            sb.innerHTML = h; switchTab(role, 'overview');
+            const sb = document.getElementById(`${role}-sidebar`); 
+            let html = '';
+            SIDEBAR_DEF[role].forEach(i => {
+                html += `<div class="sidebar-item" id="sb-${role}-${i.id}" onclick="switchTab('${role}', '${i.id}')">
+                            <i class="ph-fill ph-${i.i}"></i> <span>${i.l}</span>
+                         </div>`;
+            });
+            sb.innerHTML = html; 
+            switchTab(role, 'overview');
         };
 
-        window.switchTab = (r, tab) => {
+        window.switchTab = (role, tab) => {
+            // Update UI Sidebar state
             document.querySelectorAll('.sidebar-item, .b-nav-item').forEach(e => e.classList.remove('active'));
-            const s = document.getElementById(`sb-${r}-${tab}`); if(s) s.classList.add('active');
-            const mIdx = { player:{overview:0, browse:1, 'my-matches':2, wallet:3, profile:4}, host:{overview:0, create:1, manage:2, wallet:3}, admin:{overview:0, settlements:1, users:2, tournaments:3} };
-            const bItems = document.querySelectorAll('.b-nav-item'); if(mIdx[r] && mIdx[r][tab] !== undefined && bItems[mIdx[r][tab]]) bItems[mIdx[r][tab]].classList.add('active');
+            const sItem = document.getElementById(`sb-${role}-${tab}`); 
+            if(sItem) sItem.classList.add('active');
             
-            const c = document.getElementById(`${r}-dash-content`); c.innerHTML = `<div class="text-center" style="padding:100px 0;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:3rem; color:var(--primary)"></i></div>`;
-            if(r === 'player') routePlayer(tab, c); else if(r === 'host') routeHost(tab, c); else routeAdmin(tab, c);
+            // Update Mobile Bottom Nav state map
+            const mIdx = { 
+                player: {overview:0, browse:1, 'my-matches':2, wallet:3, profile:4}, 
+                host: {overview:0, create:1, manage:2, wallet:3}, 
+                admin: {overview:0, settlements:1, users:2, tournaments:3} 
+            };
+            const bItems = document.querySelectorAll('.b-nav-item'); 
+            if(mIdx[role] && mIdx[role][tab] !== undefined && bItems[mIdx[role][tab]]) {
+                bItems[mIdx[role][tab]].classList.add('active');
+            }
+            
+            // Render Loading state
+            const content = document.getElementById(`${role}-dash-content`); 
+            content.innerHTML = `<div class="text-center" style="padding:100px 0;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:4rem; color:var(--primary)"></i></div>`;
+            
+            // Execute Tab Logic
+            if(role === 'player') routePlayer(tab, content); 
+            else if(role === 'host') routeHost(tab, content); 
+            else routeAdmin(tab, content);
         };
 
-        // PLAYER LOGIC
+        // --- PLAYER LOGIC ---
         const routePlayer = (tab, c) => {
             if(tab === 'overview') {
-                c.innerHTML = `<div class="flex-between mb-4"><div><h2>Welcome, ${state.userData.username}</h2><p class="text-muted">Player Dashboard</p></div><img src="${UI.getPfp(state.userData.pfpUrl)}" class="pfp pfp-lg"></div>
-                    <div class="grid-cards"><div class="glass stat-box"><div class="stat-value">₹${state.userData.wallet.coins}</div><div class="text-muted" style="font-weight:700">WALLET BALANCE</div></div><div class="glass stat-box"><div class="stat-value">${state.userData.stats?.matches||0}</div><div class="text-muted" style="font-weight:700">MATCHES PLAYED</div></div><div class="glass stat-box"><div class="stat-value" style="color:var(--success)">${state.userData.stats?.wins||0}</div><div class="text-muted" style="font-weight:700; color:var(--success)">WINS</div></div></div>`;
-            } else if(tab === 'browse') { c.innerHTML = `<h2><i class="ph-fill ph-game-controller"></i> Find Tournaments</h2><div id="p-browse" class="grid-cards mt-4"></div>`; bindLandingTournaments('p-browse'); } 
-            else if(tab === 'my-matches') { c.innerHTML = `<h2><i class="ph-fill ph-sword"></i> Operations Hub</h2><div id="p-matches" class="grid-cards mt-4"></div>`; bindMyMatches(); } 
-            else if(tab === 'wallet') { c.innerHTML = `<div class="flex-between mb-4"><h2><i class="ph-fill ph-wallet"></i> Wallet</h2><div><button class="btn btn-outline" onclick="showTopup()">Add</button> <button class="btn btn-primary" onclick="showWithdraw()">Withdraw</button></div></div><div class="glass p-4 text-center mb-4" style="padding:40px;"><h1 class="stat-value" style="color:var(--primary); font-size:4rem;">₹${state.userData.wallet.coins}</h1></div><div class="table-container"><div id="p-ledger"></div></div>`; bindLedger('p-ledger'); } 
-            else if(tab === 'profile') { 
-                c.innerHTML = `<h2><i class="ph-fill ph-user-circle"></i> Profile Settings</h2><div class="glass p-4 mt-4" style="max-width:600px;"><form id="f-profile"><div class="form-group mb-4"><label class="text-muted" style="font-weight:700; font-size:0.85rem; display:block; margin-bottom:8px;">PROFILE PICTURE URL</label><input type="url" id="p-pfp" value="${state.userData.pfpUrl||''}" placeholder="https://imgur.com/..."></div><button class="btn btn-primary w-100" type="submit">Save Identity</button></form></div>`; 
-                document.getElementById('f-profile').onsubmit = async(e)=>{e.preventDefault(); try{await updateDoc(doc(db,"users",state.user.uid),{pfpUrl:document.getElementById('p-pfp').value}); UI.toast("Saved!");}catch(err){}}; 
+                c.innerHTML = `
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h2>Welcome, ${state.userData.username}</h2>
+                            <p class="text-muted">Player Dashboard</p>
+                        </div>
+                        <img src="${UI.getPfp(state.userData.pfpUrl)}" class="pfp pfp-lg">
+                    </div>
+                    <div class="grid-cards">
+                        <div class="glass stat-box">
+                            <div class="stat-value">₹${state.userData.wallet.coins}</div>
+                            <div class="text-muted" style="font-weight:700">WALLET BALANCE</div>
+                        </div>
+                        <div class="glass stat-box">
+                            <div class="stat-value">${state.userData.stats?.matches||0}</div>
+                            <div class="text-muted" style="font-weight:700">MATCHES PLAYED</div>
+                        </div>
+                        <div class="glass stat-box">
+                            <div class="stat-value" style="color:var(--success)">${state.userData.stats?.wins||0}</div>
+                            <div class="text-muted" style="font-weight:700; color:var(--success)">WINS</div>
+                        </div>
+                    </div>
+                `;
+            } else if(tab === 'browse') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-game-controller"></i> Find Scrims</h2><div id="p-browse" class="grid-cards mt-4"></div>`; 
+                bindLandingTournaments('p-browse'); 
+            } else if(tab === 'my-matches') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-sword"></i> Operations Hub</h2><div id="p-matches" class="grid-cards mt-4"></div>`; 
+                bindMyMatches(); 
+            } else if(tab === 'wallet') { 
+                c.innerHTML = `
+                    <div class="flex-between mb-4">
+                        <h2><i class="ph-fill ph-wallet"></i> Wallet</h2>
+                        <div>
+                            <button class="btn btn-outline" onclick="showTopup()">Add</button> 
+                            <button class="btn btn-primary" onclick="showWithdraw()">Withdraw</button>
+                        </div>
+                    </div>
+                    <div class="glass p-4 text-center mb-4" style="padding:50px;">
+                        <h1 class="stat-value" style="color:var(--primary); font-size:5rem;">₹${state.userData.wallet.coins}</h1>
+                        <p class="text-muted text-uppercase">Escrow Balance</p>
+                    </div>
+                    <div class="table-container"><div id="p-ledger"></div></div>
+                `; 
+                bindLedger('p-ledger'); 
+            } else if (tab === 'leaderboard') {
+                c.innerHTML = `<h2><i class="ph-fill ph-trophy"></i> Global Rank</h2><div class="table-container mt-4"><div id="p-lead"></div></div>`;
+                bindLeaderboard('p-lead');
+            } else if(tab === 'profile') { 
+                c.innerHTML = `
+                    <h2><i class="ph-fill ph-user-circle"></i> Profile Settings</h2>
+                    <div class="glass p-4 mt-4" style="max-width:600px;">
+                        <form id="f-profile">
+                            <div class="form-group mb-4">
+                                <label>Profile Picture URL</label>
+                                <input type="url" id="p-pfp" value="${state.userData.pfpUrl||''}" placeholder="https://imgur.com/...">
+                                <p class="text-muted mt-2" style="font-size:0.8rem;">Provide a direct link to an image to update your avatar.</p>
+                            </div>
+                            <button class="btn btn-primary w-100" type="submit" style="padding:16px;">Save Identity</button>
+                        </form>
+                    </div>
+                `; 
+                document.getElementById('f-profile').onsubmit = async(e) => {
+                    e.preventDefault(); 
+                    try {
+                        await updateDoc(doc(db,"users",state.user.uid), { pfpUrl: document.getElementById('p-pfp').value }); 
+                        UI.toast("Profile Saved!");
+                    } catch(err) { UI.toast("Error saving", "error"); }
+                }; 
+            } else if (tab === 'tickets') {
+                bindTicketsView(c);
             }
         };
 
+        // THE FIX: Client-side filtering to avoid Firebase Index Crash
         const bindLandingTournaments = (cId = 'landing-tournaments-list') => {
-            // FIX: Client side filter to prevent index crash
+            // Remove the complex query and fetch all, then filter and sort on the client.
             const unsub = onSnapshot(collection(db, "tournaments"), (snap) => {
-                const c = document.getElementById(cId); if(!c) return;
-                let arr = []; snap.forEach(d => arr.push({id:d.id, ...d.data()}));
-                arr = arr.filter(t => ['Registration Open', 'Upcoming'].includes(t.status)).sort((a,b)=>a.startTime - b.startTime);
+                const container = document.getElementById(cId); 
+                if(!container) return;
                 
-                let h = ''; arr.forEach(t => {
-                    h += `<div class="glass card"><div class="flex-between mb-2"><span class="badge badge-game">${t.game}</span><span class="badge badge-upcoming">${t.status}</span></div><h3 style="font-size:1.5rem;">${UI.esc(t.title)}</h3><div class="text-muted" style="font-size:0.9rem; margin-bottom:15px;"><i class="ph-fill ph-calendar-blank"></i> ${new Date(t.startTime).toLocaleString()}</div><div class="flex-between p-3 mb-3" style="background:rgba(0,0,0,0.4); border-radius:10px;"><div class="text-center" style="flex:1"><div style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">ENTRY</div><div style="font-weight:800; font-size:1.1rem;">₹${t.entryFee}</div></div><div class="text-center" style="flex:1; border-left:1px solid rgba(255,255,255,0.1);"><div style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">PRIZE</div><div style="font-weight:800; font-size:1.1rem; color:var(--primary)">₹${t.prizePool}</div></div><div class="text-center" style="flex:1; border-left:1px solid rgba(255,255,255,0.1);"><div style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">SLOTS</div><div style="font-weight:800; font-size:1.1rem;">${t.filledSlots}/${t.maxSlots}</div></div></div><button class="btn btn-primary w-100" onclick="viewTDetails('${t.id}')">View & Join</button></div>`;
-                }); c.innerHTML = h || `<div class="p-4 text-center text-muted" style="grid-column:1/-1; padding:60px;">No upcoming operations.</div>`;
-            }); state.unsubs.push(unsub);
+                let tournaments = []; 
+                snap.forEach(d => tournaments.push({ id: d.id, ...d.data() }));
+                
+                // Filter and Sort Client-Side
+                tournaments = tournaments
+                    .filter(t => t.status === 'Registration Open' || t.status === 'Upcoming')
+                    .sort((a, b) => a.startTime - b.startTime);
+                
+                let html = ''; 
+                tournaments.forEach(t => {
+                    html += `
+                        <div class="glass card">
+                            <div class="flex-between mb-2">
+                                <span class="badge badge-game">${t.game}</span>
+                                <span class="badge badge-upcoming">${t.status}</span>
+                            </div>
+                            <h3 style="font-size:1.6rem;">${UI.esc(t.title)}</h3>
+                            <div class="text-muted mb-3"><i class="ph-fill ph-calendar-blank"></i> ${new Date(t.startTime).toLocaleString()}</div>
+                            
+                            <div class="flex-between p-3 mb-4" style="background:rgba(0,0,0,0.5); border-radius:12px;">
+                                <div class="text-center" style="flex:1">
+                                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">ENTRY</div>
+                                    <div style="font-weight:800; font-size:1.2rem;">₹${t.entryFee}</div>
+                                </div>
+                                <div class="text-center" style="flex:1; border-left:1px solid rgba(255,255,255,0.1);">
+                                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">PRIZE</div>
+                                    <div style="font-weight:800; font-size:1.2rem; color:var(--primary)">₹${t.prizePool}</div>
+                                </div>
+                                <div class="text-center" style="flex:1; border-left:1px solid rgba(255,255,255,0.1);">
+                                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">SLOTS</div>
+                                    <div style="font-weight:800; font-size:1.2rem;">${t.filledSlots}/${t.maxSlots}</div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary w-100" onclick="viewTDetails('${t.id}')">View & Join</button>
+                        </div>
+                    `;
+                }); 
+                
+                container.innerHTML = html || `
+                    <div class="text-center text-muted" style="grid-column:1/-1; padding:60px;">
+                        <i class="ph-duotone ph-calendar-x" style="font-size:4rem; margin-bottom:15px; opacity:0.3;"></i><br>
+                        No upcoming operations.
+                    </div>
+                `;
+            }); 
+            state.unsubs.push(unsub);
         };
 
         window.viewTDetails = async (id) => {
-            const d = await getDoc(doc(db, "tournaments", id)); if(!d.exists()) return; const t = d.data();
-            let b = `<button class="btn btn-outline w-100" onclick="navigate('login')">Login to Join</button>`;
-            if(state.user) { if(state.userData.role !== 'player') b = `<div class="badge badge-admin w-100" style="justify-content:center; padding:15px; font-size:1rem;">Players Only</div>`; else if(t.filledSlots >= t.maxSlots) b = `<button class="btn btn-outline w-100" disabled>Lobby Full</button>`; else b = `<button class="btn btn-primary w-100" style="padding:15px; font-size:1.1rem;" onclick="joinT('${id}', ${t.entryFee})">Pay ₹${t.entryFee} to Join</button>`; }
-            UI.modal(`<div class="flex-between mb-3"><span class="badge badge-game">${t.game}</span><span class="badge badge-live">${t.mode}</span></div><h2 style="font-size:2.2rem; margin-bottom:10px; border:none; padding:0;">${UI.esc(t.title)}</h2><p class="text-muted mb-4">Host: <strong style="color:white">${t.hostName}</strong></p><div class="p-4 mb-4" style="background:rgba(0,0,0,0.5); border-radius:12px; border:1px solid rgba(255,255,255,0.05);"><div style="font-weight:700; color:var(--primary); margin-bottom:10px;">Target: ${UI.esc(t.mapDetails)}</div><div class="text-muted" style="white-space:pre-wrap;">${UI.esc(t.description)}</div></div>${b}`);
+            const d = await getDoc(doc(db, "tournaments", id)); 
+            if(!d.exists()) return; 
+            const t = d.data();
+            
+            let btn = `<button class="btn btn-outline w-100" onclick="navigate('login')">Login to Join</button>`;
+            
+            if(state.user) { 
+                if(state.userData.role !== 'player') {
+                    btn = `<div class="badge badge-admin w-100" style="justify-content:center; padding:15px; font-size:1.1rem;">Players Only</div>`; 
+                } else if(t.filledSlots >= t.maxSlots) {
+                    btn = `<button class="btn btn-outline w-100" disabled>Lobby Full</button>`; 
+                } else {
+                    btn = `<button class="btn btn-primary w-100" style="padding:15px; font-size:1.1rem;" onclick="joinT('${id}', ${t.entryFee})">Pay ₹${t.entryFee} to Join</button>`; 
+                }
+            }
+            
+            UI.modal(`
+                <div class="flex-between mb-3">
+                    <span class="badge badge-game">${t.game}</span>
+                    <span class="badge badge-live">${t.mode}</span>
+                </div>
+                <h2 style="font-size:2.5rem; margin-bottom:10px; border:none; padding:0;">${UI.esc(t.title)}</h2>
+                <p class="text-muted mb-4">Host: <strong style="color:white">${t.hostName}</strong></p>
+                
+                <div class="p-4 mb-4" style="background:rgba(0,0,0,0.5); border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                    <div style="font-weight:700; color:var(--primary); margin-bottom:10px;">Target: ${UI.esc(t.mapDetails)}</div>
+                    <div class="text-muted" style="white-space:pre-wrap; font-size:0.95rem; line-height:1.7;">${UI.esc(t.description)}</div>
+                </div>
+                ${btn}
+            `);
         };
 
         window.joinT = async (tId, fee) => {
             if(state.userData.wallet.coins < fee) return UI.toast("Insufficient Wallet Balance.", "error");
             try {
-                const s = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId), where("userId", "==", state.user.uid))); if(!s.empty) return UI.toast("Already registered!", "error");
+                const q = query(collection(db, "registrations"), where("tournamentId", "==", tId), where("userId", "==", state.user.uid));
+                const s = await getDocs(q); 
+                
+                if(!s.empty) return UI.toast("Already registered!", "error");
+                
                 UI.loadBtn(document.querySelector('#modal-body .btn-primary').id || '', true);
+                
                 await updateDoc(doc(db, "users", state.user.uid), { "wallet.coins": increment(-fee), "stats.matches": increment(1) });
                 await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: state.user.uid, username: state.userData.username, joinedAt: Date.now() });
-                await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) }); UI.toast("Joined!"); UI.closeModal(); if(state.currentView !== 'player-dash') navigate('player-dash'); setTimeout(()=>switchTab('player', 'my-matches'), 300);
-            } catch(e) { UI.toast("Failed", "error"); }
+                await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) }); 
+                
+                UI.toast("Joined!"); 
+                UI.closeModal(); 
+                
+                if(state.currentView !== 'player-dash') navigate('player-dash'); 
+                setTimeout(()=>switchTab('player', 'my-matches'), 300);
+            } catch(e) { UI.toast("Failed to join", "error"); }
         };
 
         const bindMyMatches = async () => {
             const unsub = onSnapshot(query(collection(db, "registrations"), where("userId", "==", state.user.uid)), async (snap) => {
-                const c = document.getElementById('p-matches'); if(!c) return;
-                if(snap.empty) { c.innerHTML = `<div class="text-center text-muted" style="grid-column:1/-1; padding:60px;">No active matches.</div>`; return; }
-                let h = ''; for(let ds of snap.docs) {
+                const c = document.getElementById('p-matches'); 
+                if(!c) return;
+                
+                if(snap.empty) { 
+                    c.innerHTML = `<div class="text-center text-muted" style="grid-column:1/-1; padding:60px;">No active matches.</div>`; 
+                    return; 
+                }
+                
+                let html = ''; 
+                for(let ds of snap.docs) {
                     const td = await getDoc(doc(db, "tournaments", ds.data().tournamentId));
                     if(td.exists()) {
                         const t = td.data();
-                        let rHtml = t.status === 'Live' && t.roomDetails ? `<div class="mt-3 p-3" style="background:rgba(16,185,129,0.1); border:1px solid var(--success); border-radius:10px;"><div style="color:var(--success); font-weight:800; font-size:0.8rem; margin-bottom:5px;">ROOM DEPLOYED</div><div style="font-family:monospace; font-size:1.2rem;">ID: ${t.roomDetails.id} <br>Pass: ${t.roomDetails.pass}</div></div>` : `<div class="mt-3 p-3 text-center text-muted" style="background:rgba(0,0,0,0.3); border-radius:10px; font-size:0.9rem;"><i class="ph-bold ph-lock-key"></i> Room coordinates hidden</div>`;
-                        let actHtml = t.status === 'Pending Settlement' ? `<button class="btn btn-primary w-100 mt-3" onclick="UI.modal('<h3>Submit Proof</h3><input type=\\'url\\' id=\\'res-url\\' class=\\'mt-3 mb-3\\' placeholder=\\'Imgur Link\\'><button class=\\'btn btn-primary w-100\\' onclick=\\'submitEv(\\&#39;${td.id}\\&#39;)\\'>Upload</button>')">Submit Evidence</button>` : '';
-                        h += `<div class="glass card"><div class="flex-between mb-1"><span class="badge badge-game">${t.game}</span><span class="badge ${t.status==='Completed'?'badge-admin':(t.status==='Live'?'badge-live':'badge-upcoming')}">${t.status}</span></div><h4 class="mt-2" style="font-size:1.4rem;">${UI.esc(t.title)}</h4><div class="text-muted" style="font-size:0.9rem;">${new Date(t.startTime).toLocaleString()}</div>${rHtml}${actHtml}</div>`;
+                        
+                        let rHtml = t.status === 'Live' && t.roomDetails ? `
+                            <div class="mt-4 p-3" style="background:rgba(16,185,129,0.1); border:1px solid var(--success); border-radius:10px;">
+                                <div style="color:var(--success); font-weight:800; font-size:0.8rem; margin-bottom:5px;">ROOM DEPLOYED</div>
+                                <div style="font-family:monospace; font-size:1.2rem; color:white;">ID: ${t.roomDetails.id} <br>Pass: ${t.roomDetails.pass}</div>
+                            </div>
+                        ` : `
+                            <div class="mt-4 p-3 text-center text-muted" style="background:rgba(0,0,0,0.4); border-radius:10px; font-size:0.9rem;">
+                                <i class="ph-bold ph-lock-key"></i> Room coordinates hidden
+                            </div>
+                        `;
+                        
+                        let actHtml = t.status === 'Pending Settlement' ? `
+                            <button class="btn btn-primary w-100 mt-3" onclick="UI.modal('<h3>Submit Proof</h3><div class=\\'form-group mt-4\\'><label>Image URL</label><input type=\\'url\\' id=\\'res-url\\' placeholder=\\'Imgur Link\\'></div><button class=\\'btn btn-primary w-100 mt-2\\' onclick=\\'submitEv(\\&#39;${td.id}\\&#39;)\\'>Upload</button>')">
+                                Submit Evidence
+                            </button>
+                        ` : '';
+                        
+                        html += `
+                            <div class="glass card">
+                                <div class="flex-between mb-2">
+                                    <span class="badge badge-game">${t.game}</span>
+                                    <span class="badge ${t.status==='Completed'?'badge-admin':(t.status==='Live'?'badge-live':'badge-upcoming')}">${t.status}</span>
+                                </div>
+                                <h4 class="mt-2" style="font-size:1.6rem;">${UI.esc(t.title)}</h4>
+                                <div class="text-muted" style="font-size:0.95rem;">${new Date(t.startTime).toLocaleString()}</div>
+                                ${rHtml}
+                                ${actHtml}
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px;">
+                                    <button class="btn btn-outline" style="padding:10px; font-size:0.9rem;" onclick="openChat('${td.id}', 'global', '${UI.esc(t.title)}')">Lobby Chat</button>
+                                    <button class="btn btn-outline" style="padding:10px; font-size:0.9rem; border-color:var(--primary); color:white;" onclick="openChat('${td.id}', 'dm', '${t.hostId}', '${UI.esc(t.hostName)}')">Msg Host</button>
+                                </div>
+                            </div>
+                        `;
                     }
-                } c.innerHTML = h;
-            }); state.unsubs.push(unsub);
+                } 
+                c.innerHTML = html;
+            }); 
+            state.unsubs.push(unsub);
         };
-        window.submitEv = async(id) => { const u=document.getElementById('res-url').value; if(u){ try{await addDoc(collection(db,"match_evidence"),{tId:id, user:state.userData.username, url:u}); UI.toast("Sent to host"); UI.closeModal();}catch(e){} } };
 
-        // HOST LOGIC
+        window.submitEv = async(id) => { 
+            const url = document.getElementById('res-url').value; 
+            if(url) { 
+                try {
+                    await addDoc(collection(db,"match_evidence"), {tId:id, user:state.userData.username, url:url}); 
+                    UI.toast("Sent to host"); 
+                    UI.closeModal();
+                } catch(e) {} 
+            } 
+        };
+
+        const bindLeaderboard = async (id) => {
+            const c = document.getElementById(id);
+            try {
+                // To avoid complex indexing errors for new setups, simple query
+                const q = query(collection(db, "users"), where("role", "==", "player"));
+                const snap = await getDocs(q);
+                
+                let users = [];
+                snap.forEach(d => users.push(d.data()));
+                users.sort((a,b) => (b.stats?.wins || 0) - (a.stats?.wins || 0));
+                users = users.slice(0, 10); // Top 10
+
+                let html = '<table><tr><th>Rank</th><th>Player</th><th>Matches</th><th>Wins</th></tr>';
+                let rank = 1;
+                
+                users.forEach(u => {
+                    let medal = rank===1?'🥇':(rank===2?'🥈':(rank===3?'🥉':`#${rank}`));
+                    html += `
+                        <tr>
+                            <td style="font-size:1.5rem; font-weight:800; color:var(--primary);">${medal}</td>
+                            <td>
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <img src="${UI.getPfp(u.pfpUrl)}" style="width:35px;height:35px;border-radius:10px;"> 
+                                    <strong style="font-size:1.1rem;">${u.username}</strong>
+                                </div>
+                            </td>
+                            <td>${u.stats?.matches||0}</td>
+                            <td><strong style="color:var(--success); font-size:1.2rem;">${u.stats?.wins||0}</strong></td>
+                        </tr>
+                    `;
+                    rank++;
+                });
+                c.innerHTML = html + '</table>';
+            } catch(e) { c.innerHTML = '<div class="p-4 text-center">Data sync error.</div>'; }
+        };
+
+        // --- HOST LOGIC ---
         const routeHost = (tab, c) => {
             if(tab === 'overview') {
-                c.innerHTML = `<div class="flex-between mb-4"><div><h2>Host Dash</h2><p class="text-muted">Manage your empire.</p></div><img src="${UI.getPfp(state.userData.pfpUrl)}" class="pfp pfp-lg"></div><div class="glass p-4" style="border-left:4px solid var(--success);"><h3 style="color:var(--success);"><i class="ph-fill ph-shield-check"></i> Escrow Active</h3><p class="text-muted mt-2">Nexus handles collections. Run the match, pick a winner, and admins will release payouts.</p></div>`;
+                c.innerHTML = `
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h2>Host Dash</h2>
+                            <p class="text-muted">Manage your empire.</p>
+                        </div>
+                        <img src="${UI.getPfp(state.userData.pfpUrl)}" class="pfp pfp-lg">
+                    </div>
+                    <div class="glass p-4" style="border-left:4px solid var(--success);">
+                        <h3 style="color:var(--success);"><i class="ph-fill ph-shield-check"></i> Escrow Active</h3>
+                        <p class="text-muted mt-2">Nexus handles collections. Run the match, pick a winner, and admins will release payouts securely.</p>
+                    </div>
+                `;
             } else if (tab === 'create') {
-                c.innerHTML = `<h2><i class="ph-fill ph-plus-circle"></i> Deploy Event</h2><div class="glass p-4 mt-4" style="max-width:800px;"><form id="f-create"><div class="form-group mb-3"><input type="text" id="c-title" placeholder="Operation Title" required></div><div class="form-group mb-3"><select id="c-game"><option>BGMI</option><option>Free Fire</option><option>Valorant</option></select></div><div class="form-group mb-3"><input type="text" id="c-mode" placeholder="Mode & Map (e.g. Squads Erangel)" required></div><div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;"><div class="form-group"><label class="text-muted" style="font-size:0.8rem; font-weight:700;">START TIME</label><input type="datetime-local" id="c-time" required></div><div class="form-group"><label class="text-muted" style="font-size:0.8rem; font-weight:700;">SLOTS</label><input type="number" id="c-slots" value="48" required></div><div class="form-group"><label class="text-muted" style="font-size:0.8rem; font-weight:700;">ENTRY (₹)</label><input type="number" id="c-fee" value="50" required></div><div class="form-group"><label class="text-muted" style="font-size:0.8rem; font-weight:700;">PRIZE (₹)</label><input type="number" id="c-prize" value="1000" required></div></div><div class="form-group mb-4"><textarea id="c-desc" rows="4" placeholder="Rules & Details" required></textarea></div><button type="submit" class="btn btn-primary w-100" id="btn-create">Publish</button></form></div>`;
-                document.getElementById('f-create').onsubmit = async(e)=>{ e.preventDefault(); UI.loadBtn('btn-create',true); try{ await addDoc(collection(db,"tournaments"),{ hostId:state.user.uid, hostName:state.userData.username, title:document.getElementById('c-title').value, game:document.getElementById('c-game').value, mode:document.getElementById('c-mode').value, mapDetails:document.getElementById('c-mode').value, startTime:new Date(document.getElementById('c-time').value).getTime(), entryFee:parseInt(document.getElementById('c-fee').value), prizePool:parseInt(document.getElementById('c-prize').value), maxSlots:parseInt(document.getElementById('c-slots').value), filledSlots:0, description:document.getElementById('c-desc').value, status:'Registration Open', createdAt:Date.now() }); UI.toast("Deployed!"); switchTab('host','manage'); }catch(err){}finally{UI.loadBtn('btn-create',false);} };
-            } else if (tab === 'manage') { c.innerHTML = `<h2><i class="ph-fill ph-kanban"></i> Operations</h2><div id="h-manage" class="grid-cards mt-4"></div>`; bindHostManage(); } 
-            else if (tab === 'wallet') { c.innerHTML = `<div class="flex-between mb-4"><h2>Revenue</h2><button class="btn btn-primary" onclick="showWithdraw()">Withdraw</button></div><div class="glass p-4 text-center mb-4"><h1 class="stat-value" style="color:var(--success);">₹${state.userData.wallet.coins}</h1></div><div class="table-container"><div id="h-ledger"></div></div>`; bindLedger('h-ledger'); }
+                let gameOpts = Object.keys(GAME_CONFIG).map(g => `<option value="${g}">${g}</option>`).join('');
+                c.innerHTML = `
+                    <h2><i class="ph-fill ph-plus-circle"></i> Deploy Event</h2>
+                    <div class="glass p-4 mt-4" style="max-width:800px;">
+                        <form id="f-create">
+                            <div class="form-group mb-3"><label>Operation Title</label><input type="text" id="c-title" placeholder="e.g. Weekly Scrims" required></div>
+                            <div class="form-group mb-4"><label>Target Game</label><select id="c-game">${gameOpts}</select></div>
+                            
+                            <div id="c-dynamic-fields" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px; background:rgba(0,0,0,0.3); padding:20px; border-radius:12px;"></div>
+                            
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px;">
+                                <div class="form-group"><label>Start Time</label><input type="datetime-local" id="c-time" required></div>
+                                <div class="form-group"><label>Slots</label><input type="number" id="c-slots" value="48" required></div>
+                                <div class="form-group"><label>Entry (₹)</label><input type="number" id="c-fee" value="50" required></div>
+                                <div class="form-group"><label>Prize (₹)</label><input type="number" id="c-prize" value="1000" required></div>
+                            </div>
+                            
+                            <div class="form-group mb-4"><label>Rules & Details</label><textarea id="c-desc" rows="4" required></textarea></div>
+                            <button type="submit" class="btn btn-primary w-100" id="btn-create" style="padding:16px;">Publish Event</button>
+                        </form>
+                    </div>
+                `;
+                
+                const gSelect = document.getElementById('c-game');
+                const dynDiv = document.getElementById('c-dynamic-fields');
+                
+                const updateDyn = () => {
+                    const g = GAME_CONFIG[gSelect.value];
+                    let html = `
+                        <div class="form-group"><label>Format</label><select id="c-mode">${g.modes.map(m=>`<option>${m}</option>`).join('')}</select></div>
+                        <div class="form-group"><label>Environment</label><select id="c-map">${g.maps.map(m=>`<option>${m}</option>`).join('')}</select></div>
+                    `;
+                    if(g.extra) html += `<div class="form-group" style="grid-column:1/-1"><label>${g.extra}</label><input type="text" id="c-extra" required></div>`;
+                    dynDiv.innerHTML = html;
+                };
+                
+                gSelect.addEventListener('change', updateDyn); 
+                updateDyn();
+                
+                document.getElementById('f-create').onsubmit = async(e) => { 
+                    e.preventDefault(); 
+                    UI.loadBtn('btn-create',true); 
+                    
+                    let mapDet = document.getElementById('c-map').value;
+                    if(document.getElementById('c-extra')) mapDet += ` | ${document.getElementById('c-extra').value}`;
+                    
+                    try { 
+                        await addDoc(collection(db,"tournaments"), { 
+                            hostId: state.user.uid, 
+                            hostName: state.userData.username, 
+                            title: document.getElementById('c-title').value, 
+                            game: gSelect.value, 
+                            mode: document.getElementById('c-mode').value, 
+                            mapDetails: mapDet, 
+                            startTime: new Date(document.getElementById('c-time').value).getTime(), 
+                            entryFee: parseInt(document.getElementById('c-fee').value), 
+                            prizePool: parseInt(document.getElementById('c-prize').value), 
+                            maxSlots: parseInt(document.getElementById('c-slots').value), 
+                            filledSlots: 0, 
+                            description: document.getElementById('c-desc').value, 
+                            status: 'Registration Open', 
+                            createdAt: Date.now() 
+                        }); 
+                        UI.toast("Deployed!"); 
+                        switchTab('host','manage'); 
+                    } catch(err) {} finally { UI.loadBtn('btn-create',false); } 
+                };
+            } else if (tab === 'manage') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-kanban"></i> Operations</h2><div id="h-manage" class="grid-cards mt-4"></div>`; 
+                bindHostManage(); 
+            } else if (tab === 'wallet') { 
+                c.innerHTML = `
+                    <div class="flex-between mb-4"><h2>Revenue</h2><button class="btn btn-primary" onclick="showWithdraw()">Withdraw</button></div>
+                    <div class="glass p-4 text-center mb-4" style="padding:50px;"><h1 class="stat-value" style="color:var(--success); font-size:5rem;">₹${state.userData.wallet.coins}</h1><p class="text-muted">Cleared Funds</p></div>
+                    <div class="table-container"><div id="h-ledger"></div></div>
+                `; 
+                bindLedger('h-ledger'); 
+            }
         };
 
         const bindHostManage = () => {
-            const unsub = onSnapshot(query(collection(db, "tournaments"), where("hostId", "==", state.user.uid), orderBy("createdAt", "desc")), (snap) => {
-                const c = document.getElementById('h-manage'); if(!c) return; let h = '';
-                snap.forEach(d => {
-                    const t = d.data(); let act = '';
-                    if(t.status === 'Registration Open' || t.status === 'Upcoming') act = `<button class="btn btn-outline w-100 mb-2" onclick="UI.modal('<h3>Deploy Room</h3><input type=\\'text\\' id=\\'r-id\\' placeholder=\\'Room ID\\' class=\\'mt-3 mb-2\\'><input type=\\'text\\' id=\\'r-pass\\' placeholder=\\'Pass\\' class=\\'mb-3\\'><button class=\\'btn btn-primary w-100\\' onclick=\\'submitRoom(\\&#39;${d.id}\\&#39;)\\'>Publish</button>')">Deploy Room</button><button class="btn btn-danger w-100" onclick="updateTStatus('${d.id}','Live')">Force Start</button>`;
-                    else if(t.status === 'Live') act = `<button class="btn btn-success w-100" onclick="concludeUI('${d.id}')">Conclude & Pick Winner</button>`; else act = `<div class="badge badge-admin w-100" style="justify-content:center; padding:12px;">${t.status}</div>`;
-                    h += `<div class="glass card"><div><div class="flex-between mb-2"><span class="badge badge-game">${t.game}</span><span class="badge ${t.status==='Live'?'badge-live':'badge-upcoming'}">${t.status}</span></div><h3 style="font-size:1.4rem;">${UI.esc(t.title)}</h3><div class="flex-between mt-2 p-2" style="background:rgba(255,255,255,0.05); border-radius:8px;"><span><i class="ph-bold ph-users"></i> ${t.filledSlots}/${t.maxSlots}</span><span style="color:var(--primary); font-weight:700;">Pool: ₹${t.prizePool}</span></div></div><div class="mt-auto pt-3" style="border-top:1px solid rgba(255,255,255,0.05)">${act}</div></div>`;
-                }); c.innerHTML = h || `<div class="text-center w-100 text-muted p-4" style="grid-column:1/-1;">No active operations.</div>`;
-            }); state.unsubs.push(unsub);
+            const unsub = onSnapshot(query(collection(db, "tournaments"), where("hostId", "==", state.user.uid)), (snap) => {
+                const c = document.getElementById('h-manage'); 
+                if(!c) return; 
+                
+                let tournaments = [];
+                snap.forEach(d => tournaments.push({id: d.id, ...d.data()}));
+                tournaments.sort((a,b) => b.createdAt - a.createdAt);
+                
+                let html = '';
+                tournaments.forEach(t => {
+                    let act = '';
+                    if(t.status === 'Registration Open' || t.status === 'Upcoming') {
+                        act = `
+                            <button class="btn btn-outline w-100 mb-2" onclick="UI.modal('<h3>Deploy Room</h3><div class=\\'form-group mt-4\\'><label>Room ID</label><input type=\\'text\\' id=\\'r-id\\'></div><div class=\\'form-group mt-3 mb-4\\'><label>Password</label><input type=\\'text\\' id=\\'r-pass\\'></div><button class=\\'btn btn-primary w-100\\' onclick=\\'submitRoom(\\&#39;${t.id}\\&#39;)\\'>Publish to Lobby</button>')">Deploy Room ID</button>
+                            <button class="btn btn-danger w-100" onclick="updateTStatus('${t.id}','Live')">Force Start Match</button>
+                        `;
+                    } else if(t.status === 'Live') {
+                        act = `<button class="btn btn-success w-100" style="padding:16px;" onclick="concludeUI('${t.id}')">Conclude & Pick Winner</button>`; 
+                    } else {
+                        act = `<div class="badge badge-admin w-100" style="justify-content:center; padding:16px; font-size:1.1rem;">${t.status}</div>`;
+                    }
+                    
+                    html += `
+                        <div class="glass card">
+                            <div>
+                                <div class="flex-between mb-3">
+                                    <span class="badge badge-game">${t.game}</span>
+                                    <span class="badge ${t.status==='Live'?'badge-live':'badge-upcoming'}">${t.status}</span>
+                                </div>
+                                <h3 style="font-size:1.6rem;">${UI.esc(t.title)}</h3>
+                                <div class="flex-between mt-3 p-3" style="background:rgba(255,255,255,0.05); border-radius:10px;">
+                                    <span><i class="ph-bold ph-users"></i> ${t.filledSlots}/${t.maxSlots}</span>
+                                    <span style="color:var(--primary); font-weight:700;">Pool: ₹${t.prizePool}</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.05)">${act}</div>
+                        </div>
+                    `;
+                }); 
+                
+                c.innerHTML = html || `<div class="text-center w-100 text-muted p-4" style="grid-column:1/-1;">No active operations.</div>`;
+            }); 
+            state.unsubs.push(unsub);
         };
-        window.submitRoom = async (tId) => { const i=document.getElementById('r-id').value, p=document.getElementById('r-pass').value; if(i){try{await updateDoc(doc(db,"tournaments",tId),{roomDetails:{id:i,pass:p}, status:'Live'}); UI.toast("Deployed!"); UI.closeModal();}catch(e){}} };
-        window.updateTStatus = async(id,s)=>{try{await updateDoc(doc(db,"tournaments",id),{status:s}); UI.toast("Updated");}catch(e){}};
-        window.concludeUI = async (tId) => {
-            const s = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId))); if(s.empty) return UI.modal(`<h3>No Players</h3><button class="btn btn-danger w-100 mt-4" onclick="updateTStatus('${tId}','Completed'); UI.closeModal();">Close Event</button>`);
-            let o = ''; s.forEach(d => o+=`<option value="${d.data().userId}">${d.data().username}</option>`);
-            UI.modal(`<h3>Conclude Match</h3><p class="text-muted mt-2 mb-4">Select the verified winner to send to Escrow.</p><select id="w-sel" class="mb-4" style="font-size:1.2rem;">${o}</select><button class="btn btn-success w-100" onclick="const s=document.getElementById('w-sel'); setWin('${tId}', s.value, s.options[s.selectedIndex].text)">Confirm Winner</button>`);
-        };
-        window.setWin = async (tId, wId, wN) => { try{await updateDoc(doc(db,"tournaments",tId),{status:'Pending Settlement', winnerId:wId, winnerName:wN}); UI.toast("Sent to Escrow"); UI.closeModal();}catch(e){} };
 
-        // ADMIN LOGIC
+        window.submitRoom = async (tId) => { 
+            const i = document.getElementById('r-id').value; 
+            const p = document.getElementById('r-pass').value; 
+            if(i) {
+                try {
+                    await updateDoc(doc(db,"tournaments",tId),{roomDetails:{id:i,pass:p}, status:'Live'}); 
+                    UI.toast("Deployed!"); 
+                    UI.closeModal();
+                } catch(e) {}
+            } 
+        };
+        
+        window.updateTStatus = async(id,s) => {
+            try{ await updateDoc(doc(db,"tournaments",id),{status:s}); UI.toast("Updated"); }catch(e){}
+        };
+        
+        window.concludeUI = async (tId) => {
+            const s = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId))); 
+            if(s.empty) return UI.modal(`<h3>No Players</h3><button class="btn btn-danger w-100 mt-4" onclick="updateTStatus('${tId}','Completed'); UI.closeModal();">Close Event</button>`);
+            
+            let opts = ''; 
+            s.forEach(d => opts += `<option value="${d.data().userId}">${d.data().username}</option>`);
+            
+            UI.modal(`
+                <h3>Conclude Match</h3>
+                <p class="text-muted mt-2 mb-4">Select the verified winner to send to Escrow.</p>
+                <div class="form-group mb-4">
+                    <select id="w-sel" style="font-size:1.2rem;">${opts}</select>
+                </div>
+                <button class="btn btn-success w-100" style="padding:16px;" onclick="const s=document.getElementById('w-sel'); setWin('${tId}', s.value, s.options[s.selectedIndex].text)">Confirm Winner</button>
+            `);
+        };
+        
+        window.setWin = async (tId, wId, wN) => { 
+            try {
+                await updateDoc(doc(db,"tournaments",tId),{status:'Pending Settlement', winnerId:wId, winnerName:wN}); 
+                UI.toast("Sent to Escrow"); 
+                UI.closeModal();
+            } catch(e) {} 
+        };
+
+        // --- ADMIN LOGIC ---
         const routeAdmin = (tab, c) => {
-            if(tab === 'overview') c.innerHTML = `<div class="glass p-4 text-center mt-4" style="padding:80px 20px;"><i class="ph-duotone ph-cpu" style="font-size:5rem; color:var(--primary); margin-bottom:20px;"></i><h2 style="font-size:3rem; justify-content:center; border:none;">CORE ACTIVE</h2></div>`;
-            else if (tab === 'settlements') { c.innerHTML = `<h2><i class="ph-fill ph-scales"></i> Escrow Queue</h2><div id="a-escrow" class="grid-cards mt-4"></div>`; bindAdminSettlements(); } 
-            else if (tab === 'withdrawals') { c.innerHTML = `<h2><i class="ph-fill ph-bank"></i> Payouts</h2><div class="table-container mt-4"><div id="a-wd"></div></div>`; bindAdminTable('withdrawals', 'a-wd', 'Pending'); } 
-            else if (tab === 'recharges') { c.innerHTML = `<h2><i class="ph-fill ph-lightning"></i> Top-ups</h2><div class="table-container mt-4"><div id="a-rech"></div></div>`; bindAdminTable('recharges', 'a-rech', 'pending'); } 
-            else if (tab === 'users') { c.innerHTML = `<h2><i class="ph-fill ph-users"></i> Users</h2><div class="mb-4 mt-2"><input type="text" id="a-search" placeholder="Search username..." oninput="searchUsers(this.value)"></div><div class="table-container"><div id="a-users"></div></div>`; searchUsers(''); } 
-            else if (tab === 'tournaments') { c.innerHTML = `<h2><i class="ph-fill ph-globe"></i> Events</h2><div id="a-tours" class="grid-cards mt-4"></div>`; bindAdminTours(); }
+            if(tab === 'overview') {
+                c.innerHTML = `
+                    <div class="glass p-4 text-center mt-4" style="padding:100px 20px; border-color:var(--primary);">
+                        <i class="ph-duotone ph-cpu" style="font-size:6rem; color:var(--primary); margin-bottom:20px;"></i>
+                        <h2 style="font-size:3.5rem; justify-content:center; border:none;">CORE ACTIVE</h2>
+                    </div>
+                `;
+            } else if (tab === 'settlements') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-scales"></i> Escrow Queue</h2><div id="a-escrow" class="grid-cards mt-4"></div>`; 
+                bindAdminSettlements(); 
+            } else if (tab === 'withdrawals') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-bank"></i> Payouts</h2><div class="table-container mt-4"><div id="a-wd"></div></div>`; 
+                bindAdminTable('withdrawals', 'a-wd', 'Pending'); 
+            } else if (tab === 'recharges') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-lightning"></i> Top-ups</h2><div class="table-container mt-4"><div id="a-rech"></div></div>`; 
+                bindAdminTable('recharges', 'a-rech', 'pending'); 
+            } else if (tab === 'users') { 
+                c.innerHTML = `
+                    <h2><i class="ph-fill ph-users"></i> Users</h2>
+                    <div class="form-group mb-4 mt-2">
+                        <input type="text" id="a-search" placeholder="Search username..." oninput="searchUsers(this.value)">
+                    </div>
+                    <div class="table-container"><div id="a-users"></div></div>
+                `; 
+                searchUsers(''); 
+            } else if (tab === 'tournaments') { 
+                c.innerHTML = `<h2><i class="ph-fill ph-globe"></i> Events</h2><div id="a-tours" class="grid-cards mt-4"></div>`; 
+                bindAdminTours(); 
+            }
         };
 
         const bindAdminSettlements = () => {
             const unsub = onSnapshot(query(collection(db, "tournaments"), where("status", "==", "Pending Settlement")), (snap) => {
-                const c = document.getElementById('a-escrow'); if(!c) return; let h = '';
+                const c = document.getElementById('a-escrow'); 
+                if(!c) return; 
+                let h = '';
+                
                 snap.forEach(d => {
-                    const t = d.data(); const tot = t.filledSlots * t.entryFee; const aCut = tot * state.platformFee; const hCut = tot - aCut - t.prizePool;
-                    h += `<div class="glass card" style="border-left:4px solid var(--warning);"><h3 style="font-size:1.5rem;">${UI.esc(t.title)}</h3><div class="grid-cards mt-2 mb-2" style="grid-template-columns:1fr 1fr; gap:10px;"><div class="p-2" style="background:rgba(0,0,0,0.5); border-radius:8px;">Pool: ₹${tot}</div><div class="p-2" style="background:rgba(0,0,0,0.5); border-radius:8px;">Prize: <strong style="color:var(--success)">₹${t.prizePool}</strong></div><div class="p-2" style="background:rgba(0,0,0,0.5); border-radius:8px;">Host: ₹${hCut}</div><div class="p-2" style="background:rgba(139,92,246,0.1); border-radius:8px; color:var(--primary)">Admin: ₹${aCut}</div></div><div class="p-2 text-center mb-3" style="background:rgba(245,158,11,0.1); border-radius:8px;">Winner: <strong style="color:var(--warning)">${UI.esc(t.winnerName)}</strong></div><button class="btn btn-primary w-100" onclick="exePay('${d.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hCut})">Authorize Payouts</button><button class="btn btn-outline w-100 mt-2" style="border-color:var(--danger); color:var(--danger);" onclick="deleteT('${d.id}')">Delete Event</button></div>`;
-                }); c.innerHTML = h || `<div class="p-4 text-center text-muted" style="grid-column:1/-1;">Escrow clear.</div>`;
-            }); state.unsubs.push(unsub);
+                    const t = d.data(); 
+                    const tot = t.filledSlots * t.entryFee; 
+                    const aCut = tot * state.platformFee; 
+                    const hCut = tot - aCut - t.prizePool;
+                    
+                    h += `
+                        <div class="glass card" style="border-left:4px solid var(--warning);">
+                            <h3 style="font-size:1.6rem;">${UI.esc(t.title)}</h3>
+                            <div class="grid-cards mt-3 mb-3" style="grid-template-columns:1fr 1fr; gap:10px;">
+                                <div class="p-3" style="background:rgba(0,0,0,0.5); border-radius:10px;">Pool: <br><strong style="font-size:1.2rem;">₹${tot}</strong></div>
+                                <div class="p-3" style="background:rgba(0,0,0,0.5); border-radius:10px;">Prize: <br><strong style="color:var(--success); font-size:1.2rem;">₹${t.prizePool}</strong></div>
+                                <div class="p-3" style="background:rgba(0,0,0,0.5); border-radius:10px;">Host: <br><strong style="font-size:1.2rem;">₹${hCut}</strong></div>
+                                <div class="p-3" style="background:rgba(139,92,246,0.1); border-radius:10px; color:var(--primary)">Admin: <br><strong style="font-size:1.2rem;">₹${aCut}</strong></div>
+                            </div>
+                            <div class="p-3 text-center mb-4" style="background:rgba(245,158,11,0.1); border-radius:10px;">
+                                Winner: <strong style="color:var(--warning); font-size:1.2rem;">${UI.esc(t.winnerName)}</strong>
+                            </div>
+                            <button class="btn btn-primary w-100" style="padding:16px;" onclick="exePay('${d.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hCut})">Authorize Payouts</button>
+                            <button class="btn btn-outline w-100 mt-2" style="border-color:var(--danger); color:var(--danger);" onclick="deleteT('${d.id}')">Delete Event</button>
+                        </div>
+                    `;
+                }); 
+                c.innerHTML = h || `<div class="p-4 text-center text-muted" style="grid-column:1/-1;">Escrow clear.</div>`;
+            }); 
+            state.unsubs.push(unsub);
         };
-        window.exePay = async (tId, wId, pz, hId, hc) => { try{ if(wId&&wId!=='none'&&pz>0) await updateDoc(doc(db,"users",wId),{"wallet.coins":increment(pz),"stats.wins":increment(1)}); if(hId&&hc>0) await updateDoc(doc(db,"users",hId),{"wallet.coins":increment(hc)}); await updateDoc(doc(db,"tournaments",tId),{status:'Completed'}); UI.toast("Payouts Executed"); }catch(e){} };
+
+        window.exePay = async (tId, wId, pz, hId, hc) => { 
+            try { 
+                if(wId && wId !== 'none' && pz > 0) await updateDoc(doc(db,"users",wId), {"wallet.coins":increment(pz), "stats.wins":increment(1)}); 
+                if(hId && hc > 0) await updateDoc(doc(db,"users",hId), {"wallet.coins":increment(hc)}); 
+                await updateDoc(doc(db,"tournaments",tId), {status:'Completed'}); 
+                UI.toast("Payouts Executed"); 
+            } catch(e) {} 
+        };
 
         const bindAdminTable = (col, cId, pStat) => {
             const unsub = onSnapshot(query(collection(db, col), where("status", "==", pStat)), (snap) => {
-                const c = document.getElementById(cId); if(!c) return; if(snap.empty) { c.innerHTML = `<div class="p-4 text-center text-muted">Queue is clear.</div>`; return; }
+                const c = document.getElementById(cId); 
+                if(!c) return; 
+                
+                if(snap.empty) { 
+                    c.innerHTML = `<div class="p-4 text-center text-muted">Queue is clear.</div>`; 
+                    return; 
+                }
+                
                 let h = '<table><tr><th>User</th><th>Amount</th><th>Details</th><th>Action</th></tr>';
-                snap.forEach(d => { const x = d.data(); let det = col==='withdrawals'?(x.method==='upi'?x.details.upiId:x.details.acc):`UTR: ${x.utr}`; h += `<tr><td style="font-weight:700;">${x.username}</td><td><strong style="color:${col==='withdrawals'?'var(--danger)':'var(--success)'}">₹${x.amount}</strong></td><td style="font-family:monospace; color:var(--primary);">${det}</td><td style="display:flex; gap:10px;"><button class="btn btn-success" style="padding:6px 12px; font-size:0.8rem;" onclick="procTx('${col}','${d.id}',true,'${x.userId}',${x.amount})">Approve</button><button class="btn btn-danger" style="padding:6px 12px; font-size:0.8rem;" onclick="procTx('${col}','${d.id}',false,'${x.userId}',${x.amount})">Reject</button></td></tr>`; }); c.innerHTML = h + '</table>';
-            }); state.unsubs.push(unsub);
+                snap.forEach(d => { 
+                    const x = d.data(); 
+                    let det = col === 'withdrawals' ? (x.method === 'upi' ? x.details.upiId : x.details.acc) : `UTR: ${x.utr}`; 
+                    h += `
+                        <tr>
+                            <td style="font-weight:700;">${x.username}</td>
+                            <td><strong style="color:${col==='withdrawals'?'var(--danger)':'var(--success)'}; font-size:1.2rem;">₹${x.amount}</strong></td>
+                            <td style="font-family:monospace; color:var(--primary);">${det}</td>
+                            <td style="display:flex; gap:10px;">
+                                <button class="btn btn-success" style="padding:8px 16px; font-size:0.9rem;" onclick="procTx('${col}','${d.id}',true,'${x.userId}',${x.amount})">Approve</button>
+                                <button class="btn btn-danger" style="padding:8px 16px; font-size:0.9rem;" onclick="procTx('${col}','${d.id}',false,'${x.userId}',${x.amount})">Reject</button>
+                            </td>
+                        </tr>
+                    `; 
+                }); 
+                c.innerHTML = h + '</table>';
+            }); 
+            state.unsubs.push(unsub);
         };
-        window.procTx = async (col, id, isApp, uId, amt) => { try{ await updateDoc(doc(db, col, id), {status: isApp?(col==='withdrawals'?'Paid':'approved'):'Rejected'}); if(col==='withdrawals'&&!isApp) await updateDoc(doc(db,"users",uId), {"wallet.coins":increment(amt)}); if(col==='recharges'&&isApp) await updateDoc(doc(db,"users",uId), {"wallet.coins":increment(amt)}); UI.toast("Processed"); }catch(e){} };
 
-        window.searchUsers = async (val) => {
-            const c = document.getElementById('a-users'); if(!c) return; const sv = (val||'').toLowerCase();
-            const snap = await getDocs(collection(db, "users")); let h = '<table><tr><th>User</th><th>Role</th><th>Wallet</th><th>Actions</th></tr>';
-            snap.forEach(d => { const u = d.data(); const un = (u.username||'').toLowerCase();
-                if(un.includes(sv)) { h += `<tr><td><div style="font-weight:700; color:${u.isBanned?'var(--danger)':'white'}">${u.username} ${u.isBanned?'[BANNED]':''}</div><div style="font-size:0.7rem; color:var(--text-muted)">${d.id}</div></td><td><span class="badge" style="background:rgba(255,255,255,0.1)">${u.role}</span></td><td><strong style="color:var(--success)">₹${u.wallet?.coins||0}</strong></td><td style="display:flex; gap:5px; flex-wrap:wrap;"><button class="btn btn-outline" style="padding:6px 10px; font-size:0.75rem;" onclick="UI.modal('<h3>Edit Balance</h3><input type=\\'number\\' id=\\'a-wal\\' value=\\'${u.wallet?.coins||0}\\' class=\\'mt-4 mb-4\\'><button class=\\'btn btn-primary w-100\\' onclick=\\'updateUWallet(\\&#39;${d.id}\\&#39;)\\'>Save</button>')">Bal</button><button class="btn btn-danger" style="padding:6px 10px; font-size:0.75rem;" onclick="banUser('${d.id}', ${!u.isBanned})">${u.isBanned?'Unban':'Ban'}</button><button class="btn btn-outline" style="padding:6px 10px; font-size:0.75rem; border-color:var(--danger); color:var(--danger)" onclick="deleteUserDoc('${d.id}')">Del</button></td></tr>`; }
-            }); c.innerHTML = h + '</table>';
+        window.procTx = async (col, id, isApp, uId, amt) => { 
+            try { 
+                await updateDoc(doc(db, col, id), {status: isApp ? (col==='withdrawals'?'Paid':'approved') : 'Rejected'}); 
+                if(col==='withdrawals' && !isApp) await updateDoc(doc(db,"users",uId), {"wallet.coins":increment(amt)}); 
+                if(col==='recharges' && isApp) await updateDoc(doc(db,"users",uId), {"wallet.coins":increment(amt)}); 
+                UI.toast("Processed"); 
+            } catch(e) {} 
         };
-        window.updateUWallet = async (id) => { try{ await updateDoc(doc(db,"users",id), {"wallet.coins":parseInt(document.getElementById('a-wal').value)}); UI.closeModal(); searchUsers(document.getElementById('a-search').value); }catch(e){} };
-        window.banUser = async (id, s) => { try{ await updateDoc(doc(db,"users",id), {isBanned:s}); searchUsers(document.getElementById('a-search').value); }catch(e){} };
-        window.deleteUserDoc = async (id) => { if(confirm("Purge user?")) { try{ await deleteDoc(doc(db,"users",id)); searchUsers(''); }catch(e){} } };
+
+        // --- THE toLowerCase FIX ---
+        window.searchUsers = async (val) => {
+            const c = document.getElementById('a-users'); 
+            if(!c) return; 
+            
+            const searchVal = (val || '').toLowerCase();
+            const snap = await getDocs(collection(db, "users")); 
+            
+            let h = '<table><tr><th>User</th><th>Role</th><th>Wallet</th><th>Actions</th></tr>';
+            snap.forEach(d => { 
+                const u = d.data(); 
+                // SAFETY CHECK: Ensure username exists before calling toLowerCase
+                const uname = u.username ? u.username.toLowerCase() : '';
+                
+                if(uname.includes(searchVal)) { 
+                    h += `
+                        <tr>
+                            <td>
+                                <div style="font-weight:700; font-size:1.1rem; color:${u.isBanned?'var(--danger)':'white'}">${u.username || 'Unknown'} ${u.isBanned?'<span class="badge badge-live">BANNED</span>':''}</div>
+                                <div style="font-size:0.7rem; color:var(--text-muted); font-family:monospace; margin-top:4px;">${d.id}</div>
+                            </td>
+                            <td><span class="badge" style="background:rgba(255,255,255,0.1)">${u.role}</span></td>
+                            <td><strong style="color:var(--success); font-size:1.2rem;">₹${u.wallet?.coins||0}</strong></td>
+                            <td style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button class="btn btn-outline" style="padding:8px 12px; font-size:0.85rem;" onclick="UI.modal('<h3>Edit Balance</h3><div class=\\'form-group mt-4\\'><input type=\\'number\\' id=\\'a-wal\\' value=\\'${u.wallet?.coins||0}\\'></div><button class=\\'btn btn-primary w-100 mt-4\\' onclick=\\'updateUWallet(\\&#39;${d.id}\\&#39;)\\'>Save</button>')">Bal</button>
+                                <button class="btn btn-danger" style="padding:8px 12px; font-size:0.85rem;" onclick="banUser('${d.id}', ${!u.isBanned})">${u.isBanned?'Unban':'Ban'}</button>
+                                <button class="btn btn-outline" style="padding:8px 12px; font-size:0.85rem; border-color:var(--danger); color:var(--danger)" onclick="deleteUserDoc('${d.id}')">Del</button>
+                            </td>
+                        </tr>
+                    `; 
+                }
+            }); 
+            c.innerHTML = h + '</table>';
+        };
+
+        window.updateUWallet = async (id) => { 
+            try { 
+                await updateDoc(doc(db,"users",id), {"wallet.coins":parseInt(document.getElementById('a-wal').value)}); 
+                UI.closeModal(); 
+                searchUsers(document.getElementById('a-search').value); 
+            } catch(e) {} 
+        };
+        
+        window.banUser = async (id, s) => { 
+            try { 
+                await updateDoc(doc(db,"users",id), {isBanned:s}); 
+                searchUsers(document.getElementById('a-search').value); 
+            } catch(e) {} 
+        };
+        
+        window.deleteUserDoc = async (id) => { 
+            if(confirm("Purge user completely?")) { 
+                try { 
+                    await deleteDoc(doc(db,"users",id)); 
+                    searchUsers(''); 
+                } catch(e) {} 
+            } 
+        };
 
         const bindAdminTours = () => {
             const unsub = onSnapshot(collection(db, "tournaments"), (snap) => {
-                const c = document.getElementById('a-tours'); if(!c) return; let h = '';
-                snap.forEach(d => { const t = d.data(); h += `<div class="glass card p-3"><div class="flex-between mb-2"><span style="font-weight:700;">${UI.esc(t.title)}</span> <span class="badge badge-admin">${t.status}</span></div><div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Host: ${t.hostName} | Pool: ₹${t.prizePool}</div><div style="display:flex; gap:10px;"><button class="btn btn-outline w-100" style="padding:8px; font-size:0.8rem;" onclick="UI.modal('<h3>Force Status</h3><select id=\\'a-t-stat\\' class=\\'mt-3 mb-3\\'><option>Registration Open</option><option>Live</option><option>Pending Settlement</option><option>Completed</option></select><button class=\\'btn btn-primary w-100\\' onclick=\\'updateTStatus(\\&#39;${d.id}\\&#39;, document.getElementById(\\&#39;a-t-stat\\&#39;).value); UI.closeModal();\\'>Save</button>')">State</button><button class="btn btn-danger w-100" style="padding:8px; font-size:0.8rem;" onclick="deleteT('${d.id}')">Delete</button></div></div>`; }); c.innerHTML = h;
-            }); state.unsubs.push(unsub);
+                const c = document.getElementById('a-tours'); 
+                if(!c) return; 
+                let h = '';
+                
+                snap.forEach(d => { 
+                    const t = d.data(); 
+                    h += `
+                        <div class="glass card p-4">
+                            <div class="flex-between mb-3">
+                                <span style="font-weight:800; font-size:1.2rem;">${UI.esc(t.title)}</span> 
+                                <span class="badge badge-admin">${t.status}</span>
+                            </div>
+                            <div style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px;">
+                                Host: <strong style="color:white;">${t.hostName}</strong> <br>
+                                Pool: <strong style="color:var(--primary)">₹${t.prizePool}</strong>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                                <button class="btn btn-outline w-100" style="padding:10px; font-size:0.9rem;" onclick="UI.modal('<h3>Force Status</h3><div class=\\'form-group mt-4 mb-4\\'><select id=\\'a-t-stat\\'><option>Registration Open</option><option>Live</option><option>Pending Settlement</option><option>Completed</option></select></div><button class=\\'btn btn-primary w-100\\' onclick=\\'updateTStatus(\\&#39;${d.id}\\&#39;, document.getElementById(\\&#39;a-t-stat\\&#39;).value); UI.closeModal();\\'>Save</button>')">State</button>
+                                <button class="btn btn-danger w-100" style="padding:10px; font-size:0.9rem;" onclick="deleteT('${d.id}')">Delete</button>
+                            </div>
+                        </div>
+                    `; 
+                }); 
+                c.innerHTML = h;
+            }); 
+            state.unsubs.push(unsub);
         };
-        window.deleteT = async (id) => { if(confirm("Purge lobby?")) { try{ await deleteDoc(doc(db,"tournaments",id)); UI.toast("Deleted"); }catch(e){} } };
 
-        // Wallet Modals
-        window.showTopup = () => { UI.modal(`<h3 class="mb-4"><i class="ph-bold ph-lightning"></i> Add Funds</h3><div class="glass text-center p-3 mt-2" style="background:rgba(255,255,255,0.02);"><img id="r-qr" src="" style="width:160px; border-radius:12px; border:2px solid var(--primary); margin-bottom:10px;"><div style="font-weight:700; color:var(--primary); font-family:monospace; font-size:1.1rem;">${state.upiId}</div></div><div class="form-group mt-3 mb-3"><label class="text-muted" style="font-size:0.8rem;">AMOUNT (₹)</label><input type="number" id="r-amt" value="100" min="10" oninput="document.getElementById('r-qr').src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=8b5cf6&bgcolor=09090b&data='+encodeURIComponent('upi://pay?pa=${state.upiId}&pn=Nexus&am='+this.value)"></div><div class="form-group mb-4"><label class="text-muted" style="font-size:0.8rem;">12-DIGIT UTR</label><input type="text" id="r-utr" required placeholder="e.g. 123456789012" style="font-family:monospace;"></div><button class="btn btn-primary w-100" onclick="const a=parseInt(document.getElementById('r-amt').value),u=document.getElementById('r-utr').value; if(a>=10&&u.length>=8){addDoc(collection(db,'recharges'),{userId:state.user.uid,username:state.userData.username,amount:a,utr:u,status:'pending',createdAt:new Date().toISOString()}); UI.toast('Sent!'); UI.closeModal();}">Submit Top-up</button>`); document.getElementById('r-amt').dispatchEvent(new Event('input')); };
-        window.showWithdraw = () => { UI.modal(`<h3 class="mb-4"><i class="ph-bold ph-bank"></i> Withdraw</h3><p class="text-muted mb-4">Available: <strong style="color:var(--success)">₹${state.userData.wallet.coins}</strong></p><div class="form-group mb-3"><label class="text-muted" style="font-size:0.8rem;">AMOUNT (MIN ₹50)</label><input type="number" id="w-amt" min="50" max="${state.userData.wallet.coins}" value="50"></div><div class="form-group mb-4"><label class="text-muted" style="font-size:0.8rem;">UPI ID</label><input type="text" id="w-upi" required placeholder="name@bank"></div><button class="btn btn-primary w-100" onclick="const a=parseInt(document.getElementById('w-amt').value),u=document.getElementById('w-upi').value; if(a>=50&&a<=state.userData.wallet.coins&&u){updateDoc(doc(db,'users',state.user.uid),{'wallet.coins':increment(-a)}); addDoc(collection(db,'withdrawals'),{userId:state.user.uid,username:state.userData.username,amount:a,method:'upi',details:{upiId:u},status:'Pending',createdAt:new Date().toISOString()}); UI.toast('Requested!'); UI.closeModal();}">Authorize Payout</button>`); };
+        window.deleteT = async (id) => { 
+            if(confirm("Purge lobby?")) { 
+                try { 
+                    await deleteDoc(doc(db,"tournaments",id)); 
+                    UI.toast("Deleted"); 
+                } catch(e) {} 
+            } 
+        };
+
+        // --- WALLET MODALS ---
+        window.showTopup = () => { 
+            UI.modal(`
+                <h3 class="mb-4"><i class="ph-bold ph-lightning"></i> Add Funds</h3>
+                <div class="glass text-center p-4 mt-2" style="background:rgba(255,255,255,0.02);">
+                    <img id="r-qr" src="" style="width:200px; border-radius:16px; border:2px solid var(--primary); margin-bottom:15px;">
+                    <div style="font-weight:800; color:var(--primary); font-family:monospace; font-size:1.2rem;">${state.upiId}</div>
+                </div>
+                <div class="form-group mt-4 mb-3">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="r-amt" value="100" min="10" style="font-size:1.5rem; font-weight:800;" oninput="document.getElementById('r-qr').src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&color=8b5cf6&bgcolor=09090b&data='+encodeURIComponent('upi://pay?pa=${state.upiId}&pn=Nexus&am='+this.value)">
+                </div>
+                <div class="form-group mb-4">
+                    <label>12-Digit UTR / Reference No.</label>
+                    <input type="text" id="r-utr" required placeholder="e.g. 123456789012" style="font-family:monospace;">
+                </div>
+                <button class="btn btn-primary w-100" style="padding:16px;" onclick="const a=parseInt(document.getElementById('r-amt').value),u=document.getElementById('r-utr').value; if(a>=10&&u.length>=8){addDoc(collection(db,'recharges'),{userId:state.user.uid,username:state.userData.username,amount:a,utr:u,status:'pending',createdAt:new Date().toISOString()}); UI.toast('Sent!'); UI.closeModal();}">Submit Top-up</button>
+            `); 
+            document.getElementById('r-amt').dispatchEvent(new Event('input')); 
+        };
+
+        window.showWithdraw = () => { 
+            UI.modal(`
+                <h3 class="mb-4"><i class="ph-bold ph-bank"></i> Withdraw</h3>
+                <p class="text-muted mb-4">Available Balance: <strong style="color:var(--success)">₹${state.userData.wallet.coins}</strong></p>
+                <div class="form-group mb-3">
+                    <label>Amount (Min ₹50)</label>
+                    <input type="number" id="w-amt" min="50" max="${state.userData.wallet.coins}" value="50" style="font-size:1.5rem; font-weight:800;">
+                </div>
+                <div class="form-group mb-4">
+                    <label>UPI ID</label>
+                    <input type="text" id="w-upi" required placeholder="name@bank">
+                </div>
+                <button class="btn btn-primary w-100" style="padding:16px;" onclick="const a=parseInt(document.getElementById('w-amt').value),u=document.getElementById('w-upi').value; if(a>=50&&a<=state.userData.wallet.coins&&u){updateDoc(doc(db,'users',state.user.uid),{'wallet.coins':increment(-a)}); addDoc(collection(db,'withdrawals'),{userId:state.user.uid,username:state.userData.username,amount:a,method:'upi',details:{upiId:u},status:'Pending',createdAt:new Date().toISOString()}); UI.toast('Requested!'); UI.closeModal();}">Authorize Payout</button>
+            `); 
+        };
+
+        // --- UNIVERSAL CHAT CONTROLLER ---
+        window.openChat = (targetId, type, nameOrTitle, targetName = '') => {
+            let title = '', placeholder = '', col = '', qStr = '', rId = '';
+            
+            if(type === 'global') {
+                title = `<i class="ph-bold ph-globe"></i> Lobby: ${nameOrTitle}`; 
+                placeholder = "Broadcast to lobby..."; col = "chats"; qStr = "tournamentId"; rId = targetId;
+            } else if (type === 'dm') {
+                const combinedId = targetId > state.user.uid ? `${targetId}_${state.user.uid}` : `${state.user.uid}_${targetId}`; 
+                title = `<i class="ph-bold ph-envelope"></i> DM: ${targetName}`; 
+                placeholder = "Direct message..."; col = "direct_msgs"; qStr = "roomId"; rId = combinedId;
+            }
+
+            UI.modal(`
+                <div class="flex-between mb-4" style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px;">
+                    <h3 style="font-size:1.3rem;">${title}</h3>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-box"></div>
+                    <form class="chat-input" id="chat-form">
+                        <input type="text" id="chat-in" placeholder="${placeholder}" required autocomplete="off" style="flex:1; border:none; padding:15px; font-size:1rem;">
+                        <button type="submit" class="btn btn-primary" style="padding:15px 25px; border-radius:10px;"><i class="ph-bold ph-paper-plane-right"></i></button>
+                    </form>
+                </div>
+            `);
+
+            const box = document.getElementById('chat-box');
+            if(window.chatLiveUnsub) window.chatLiveUnsub(); 
+            
+            window.chatLiveUnsub = onSnapshot(query(collection(db, col), where(qStr, "==", rId)), snap => {
+                let msgs = []; 
+                snap.forEach(d => msgs.push(d.data())); 
+                msgs.sort((a,b) => a.ts - b.ts);
+                
+                if(msgs.length === 0) {
+                    box.innerHTML = `<div class="text-center text-muted mt-4 p-4"><i class="ph-duotone ph-chats" style="font-size:3rem; opacity:0.3; margin-bottom:10px;"></i><br>Secure channel open.</div>`;
+                } else {
+                    let h = ''; 
+                    msgs.forEach(m => {
+                        const isM = m.senderId === state.user.uid;
+                        h += `
+                            <div class="chat-msg ${isM?'mine':''}">
+                                <div class="content">
+                                    <div class="author">${m.sender}</div>
+                                    <div>${UI.esc(m.text)}</div>
+                                </div>
+                            </div>
+                        `;
+                    }); 
+                    box.innerHTML = h; 
+                    box.scrollTop = box.scrollHeight;
+                }
+            });
+
+            document.getElementById('chat-form').onsubmit = async(e) => { 
+                e.preventDefault(); 
+                const i = document.getElementById('chat-in'); 
+                const txt = i.value.trim(); 
+                if(!txt) return;
+                try {
+                    const data = { sender: state.userData.username, senderId: state.user.uid, text: txt, ts: Date.now() };
+                    data[qStr] = rId;
+                    await addDoc(collection(db, col), data); 
+                    i.value = '';
+                } catch(err) {}
+            };
+        };
+
+        // --- TICKETS SYSTEM ---
+        const bindTicketsView = (c) => {
+            c.innerHTML = `
+                <div class="flex-between mb-4">
+                    <h2><i class="ph-fill ph-lifebuoy"></i> Support Center</h2>
+                    <button class="btn btn-primary" onclick="createTicketUI()"><i class="ph-bold ph-plus"></i> New Ticket</button>
+                </div>
+                <div id="ticket-list" class="grid-cards mt-4"></div>
+            `;
+            
+            const q = query(collection(db, "tickets"), where("userId", "==", state.user.uid));
+            const unsub = onSnapshot(q, snap => {
+                const tc = document.getElementById('ticket-list'); 
+                if(!tc) return;
+                
+                let tickets = [];
+                snap.forEach(d => tickets.push({id: d.id, ...d.data()}));
+                tickets.sort((a,b) => b.updatedAt - a.updatedAt);
+                
+                let html = '';
+                tickets.forEach(t => {
+                    html += `
+                        <div class="glass card" onclick="openTicket('${t.id}', '${UI.esc(t.subject)}', '${t.status}')" style="cursor:pointer; border-left:4px solid ${t.status==='Open'?'var(--secondary)':'var(--success)'};">
+                            <div class="flex-between mb-3">
+                                <span class="badge" style="background:rgba(255,255,255,0.05);">${t.category}</span> 
+                                <span class="badge ${t.status==='Open'?'badge-live':'badge-success'}">${t.status}</span>
+                            </div>
+                            <h4 style="font-size:1.3rem; margin-bottom:10px;">${UI.esc(t.subject)}</h4>
+                            <div class="text-muted" style="font-size:0.85rem;"><i class="ph-fill ph-clock"></i> Updated: ${UI.timeAgo(t.updatedAt)}</div>
+                        </div>
+                    `;
+                }); 
+                
+                tc.innerHTML = html || `<div class="p-4 text-center text-muted" style="grid-column:1/-1; padding:60px; background:rgba(0,0,0,0.3); border-radius:20px;">No active support tickets.</div>`;
+            }); 
+            state.unsubs.push(unsub);
+        };
+
+        window.createTicketUI = () => {
+            UI.modal(`
+                <h3 class="mb-4"><i class="ph-bold ph-lifebuoy" style="color:var(--secondary)"></i> Generate Support Ticket</h3>
+                <form id="f-ticket">
+                    <div class="form-group mb-3">
+                        <label>Issue Category</label>
+                        <select id="tk-cat">
+                            <option>Payment/Escrow Issue</option>
+                            <option>Match Verification Dispute</option>
+                            <option>Report Malicious Host/Player</option>
+                            <option>System Bug</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Subject / Match ID</label>
+                        <input type="text" id="tk-sub" placeholder="e.g. Scrim #123 Payout Not Received" required>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label>Detailed Report</label>
+                        <textarea id="tk-msg" rows="5" placeholder="Provide as much detail as possible..." required></textarea>
+                    </div>
+                    <button class="btn btn-primary w-100" style="padding:16px;" type="submit">Submit to Admin Queue</button>
+                </form>
+            `);
+            document.getElementById('f-ticket').onsubmit = async(e) => {
+                e.preventDefault();
+                try {
+                    const ref = await addDoc(collection(db, "tickets"), { userId: state.user.uid, username: state.userData.username, category: document.getElementById('tk-cat').value, subject: document.getElementById('tk-sub').value, status: 'Open', createdAt: Date.now(), updatedAt: Date.now() });
+                    await addDoc(collection(db, "ticket_msgs"), { ticketId: ref.id, sender: state.userData.username, senderId: state.user.uid, text: document.getElementById('tk-msg').value, ts: Date.now() });
+                    UI.toast("Ticket Transmitted"); 
+                    UI.closeModal();
+                } catch(err) {}
+            };
+        };
+
+        window.openTicket = (tId, sub, stat) => {
+            UI.modal(`
+                <div class="flex-between mb-4" style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px;">
+                    <h3 style="font-size:1.3rem;"><i class="ph-bold ph-lifebuoy" style="color:var(--secondary);"></i> ${sub}</h3>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="t-chat-box"></div>
+                    ${stat==='Open' ? `
+                    <form class="chat-input" id="t-chat-form">
+                        <input type="text" id="t-chat-in" placeholder="Transmit reply..." required autocomplete="off" style="flex:1; border:none; padding:15px;">
+                        <button type="submit" class="btn btn-primary" style="padding:15px 25px; border-radius:10px;"><i class="ph-bold ph-paper-plane-right"></i></button>
+                    </form>` : `<div class="p-4 text-center text-muted" style="background:rgba(0,0,0,0.8); border-top:1px solid var(--border); font-weight:700;"><i class="ph-bold ph-lock-key"></i> INCIDENT CLOSED</div>`}
+                </div>
+            `);
+            const box = document.getElementById('t-chat-box');
+            if(window.chatLiveUnsub) window.chatLiveUnsub();
+            
+            window.chatLiveUnsub = onSnapshot(query(collection(db, "ticket_msgs"), where("ticketId", "==", tId)), snap => {
+                let msgs = []; 
+                snap.forEach(d => msgs.push(d.data())); 
+                msgs.sort((a,b) => a.ts - b.ts);
+                
+                let h = ''; 
+                msgs.forEach(m => { 
+                    const isM = m.senderId === state.user.uid; 
+                    h += `
+                        <div class="chat-msg ${isM?'mine':''}">
+                            <div class="content">
+                                <div class="author">${m.sender}</div>
+                                <div>${UI.esc(m.text)}</div>
+                            </div>
+                        </div>
+                    `; 
+                });
+                box.innerHTML = h; 
+                box.scrollTop = box.scrollHeight;
+            });
+            
+            const f = document.getElementById('t-chat-form'); 
+            if(f) f.onsubmit = async(e) => { 
+                e.preventDefault(); 
+                const i = document.getElementById('t-chat-in'); 
+                const txt = i.value.trim(); 
+                if(!txt) return;
+                try { 
+                    await addDoc(collection(db, "ticket_msgs"), { ticketId: tId, sender: state.userData.username, senderId: state.user.uid, text: txt, ts: Date.now() }); 
+                    await updateDoc(doc(db,"tickets",tId), {updatedAt: Date.now()}); 
+                    i.value = ''; 
+                } catch(err) {}
+            };
+        };
+
+        // --- WALLET LEDGER ---
+        const bindLedger = (id) => {
+            const unsub1 = onSnapshot(query(collection(db, "recharges"), where("userId", "==", state.user.uid)), s1 => {
+                const unsub2 = onSnapshot(query(collection(db, "withdrawals"), where("userId", "==", state.user.uid)), s2 => {
+                    const c = document.getElementById(id); 
+                    if(!c) return;
+                    
+                    let h = []; 
+                    s1.forEach(d=>{let k=d.data(); h.push({t:'Top-up', d:k.createdAt, a:k.amount, s:k.status})});
+                    s2.forEach(d=>{let k=d.data(); h.push({t:'Withdrawal', d:k.createdAt, a:-k.amount, s:k.status})});
+                    h.sort((a,b)=>new Date(b.d) - new Date(a.d));
+                    
+                    if(h.length===0){
+                        c.innerHTML=`<div class="p-4 text-center text-muted" style="padding:60px;"><i class="ph-duotone ph-receipt" style="font-size:4rem; opacity:0.3; margin-bottom:15px;"></i><br>No financial records found.</div>`; 
+                        return;
+                    }
+                    
+                    let tbl = '<table><tr><th>Date</th><th>Action</th><th>Amount</th><th>Status</th></tr>';
+                    h.forEach(r => { 
+                        let col = r.s.toLowerCase()==='approved'||r.s.toLowerCase()==='paid'?'var(--success)':(r.s.toLowerCase()==='rejected'?'var(--danger)':'var(--warning)');
+                        tbl += `
+                            <tr>
+                                <td style="color:var(--text-muted);">${new Date(r.d).toLocaleString()}</td>
+                                <td style="font-weight:700;">${r.t}</td>
+                                <td style="color:${r.a>0?'var(--success)':'white'}; font-weight:800; font-size:1.1rem;">${r.a>0?'+':''}₹${Math.abs(r.a)}</td>
+                                <td><span class="badge" style="color:${col}; border-color:${col}; background:transparent;">${r.s}</span></td>
+                            </tr>
+                        `;
+                    }); 
+                    c.innerHTML = tbl+'</table>';
+                }); 
+                state.unsubs.push(unsub2);
+            }); 
+            state.unsubs.push(unsub1);
+        };
+
+        // --- INIT APP ---
+        document.addEventListener('DOMContentLoaded', () => navigate('landing'));
 
     </script>
 </body>
