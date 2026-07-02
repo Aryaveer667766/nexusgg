@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus GT | Premium Esports Ecosystem</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            --bg-base: #050508;
+            --surface: rgba(20, 20, 28, 0.6);
+            --surface-hover: rgba(30, 30, 42, 0.8);
+            --primary: #6c5ce7;
+            --primary-glow: rgba(108, 92, 231, 0.5);
+            --secondary: #00cec9;
+            --accent: #fdcb6e;
+            --danger: #ff7675;
+            --success: #00b894;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --border: rgba(255, 255, 255, 0.08);
+            
+            --font-display: 'Rajdhani', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --glass-blur: blur(16px);
+            --shadow-float: 0 20px 40px rgba(0,0,0,0.4);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--surface-hover); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        .aurora-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; background: var(--bg-base);
+        }
+        .aurora-blob {
+            position: absolute; filter: blur(100px); opacity: 0.4;
+            animation: float 20s infinite alternate cubic-bezier(0.5, 0, 0.5, 1);
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--primary); }
+        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: var(--secondary); animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: #8a2be2; animation-delay: -10s; opacity: 0.2; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 10%) scale(1.1); }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass {
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 24px; font-family: var(--font-display); font-size: 1.1rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            border-radius: 8px; border: none; cursor: pointer; transition: var(--transition);
+            position: relative; overflow: hidden; text-decoration: none;
+        }
+        .btn-primary { background: linear-gradient(45deg, var(--primary), #8a2be2); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.7); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--text-main); }
+        .btn-outline:hover:not(:disabled) { background: var(--primary-glow); }
+        .btn-danger { background: rgba(255, 118, 117, 0.2); border: 1px solid var(--danger); color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: white; }
+        .btn-success { background: rgba(0, 184, 148, 0.2); border: 1px solid var(--success); color: var(--success); }
+        .btn-success:hover { background: var(--success); color: white; }
+        
+        input, select, textarea {
+            width: 100%; padding: 14px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            border-radius: 8px; color: white; font-family: var(--font-body); transition: var(--transition);
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+        
+        .badge {
+            padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; display: inline-block;
+        }
+        .badge-live { background: rgba(255, 118, 117, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .badge-upcoming { background: rgba(0, 206, 201, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+        .badge-admin { background: rgba(253, 203, 110, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+        .badge-game { background: rgba(108, 92, 231, 0.2); color: #a29bfe; border: 1px solid #a29bfe; }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .logo i { color: var(--primary); }
+        .nav-links { display: flex; gap: 16px; align-items: center; }
+        
+        #app-content { margin-top: 80px; padding: 20px 5%; min-height: calc(100vh - 80px); animation: fadeIn 0.5s ease-out; }
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeIn 0.4s ease-out; }
+
+        .hero { display: flex; align-items: center; justify-content: space-between; min-height: 80vh; gap: 40px;}
+        .hero-text { max-width: 600px; }
+        .hero h1 { font-family: var(--font-display); font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; background: linear-gradient(to right, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px; }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 24px; }
+        .card { padding: 20px; transition: var(--transition); display: flex; flex-direction: column; gap: 12px; }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); border-color: rgba(255,255,255,0.15); }
+        .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: rgba(0,0,0,0.5); }
+        .card-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+        .card-meta { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem; }
+        
+        .dashboard-layout { display: grid; grid-template-columns: 250px 1fr; gap: 30px; }
+        .sidebar { padding: 20px; display: flex; flex-direction: column; gap: 10px; height: calc(100vh - 120px); position: sticky; top: 100px; }
+        .sidebar-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; color: var(--text-muted); }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(255,255,255,0.05); color: white; border-left: 3px solid var(--primary); }
+        
+        @media (max-width: 900px) {
+            .dashboard-layout { grid-template-columns: 1fr; }
+            .sidebar { position: relative; height: auto; top: 0; flex-direction: row; overflow-x: auto; flex-wrap: nowrap; white-space: nowrap; }
+            .hero { flex-direction: column; text-align: center; justify-content: center;}
+            .hero h1 { font-size: 3.5rem; }
+            .hero-image { display: none; }
+        }
+
+        .auth-container { max-width: 400px; margin: 50px auto; padding: 40px; text-align: center; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 500; }
+        tr:hover { background: rgba(255,255,255,0.03); }
+
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 16px 24px; border-radius: 8px; color: white; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: fadeIn 0.3s ease-out; }
+        .toast.success { background: rgba(0, 184, 148, 0.9); border: 1px solid var(--success); }
+        .toast.error { background: rgba(255, 118, 117, 0.9); border: 1px solid var(--danger); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
+        .modal-content { width: 90%; max-width: 600px; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto;}
+        .close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; color: var(--text-muted); font-size: 1.5rem; transition: var(--transition); z-index: 10;}
+        .close-modal:hover { color: white; }
+
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 16px; } .mt-4 { margin-top: 32px; } .mb-2 { margin-bottom: 16px; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .stat-box { text-align: center; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid var(--border); transition: var(--transition); }
+        .stat-box:hover { background: rgba(255,255,255,0.05); transform: translateY(-3px); }
+        .stat-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--primary); margin: 5px 0;}
+        
+        .referral-box { background: linear-gradient(45deg, rgba(108, 92, 231, 0.1), rgba(0, 206, 201, 0.1)); border: 1px dashed var(--primary); padding: 20px; border-radius: 12px; text-align: center; }
+        .referral-code { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; letter-spacing: 4px; margin: 10px 0; user-select: all; }
+
+        .chat-container { height: 350px; display: flex; flex-direction: column; background: rgba(0,0,0,0.4); border-radius: 8px; border: 1px solid var(--border); overflow: hidden;}
+        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { padding: 10px 15px; border-radius: 8px; background: rgba(255,255,255,0.05); max-width: 85%; align-self: flex-start; }
+        .chat-msg.mine { background: rgba(108, 92, 231, 0.2); border: 1px solid rgba(108, 92, 231, 0.5); align-self: flex-end; }
+        .chat-msg .author { font-size: 0.75rem; color: var(--primary); margin-bottom: 4px; font-weight: 600; text-transform: uppercase;}
+        .chat-msg.mine .author { color: var(--text-muted); }
+        .chat-input-area { display: flex; padding: 10px; background: rgba(0,0,0,0.6); border-top: 1px solid var(--border); }
+        .chat-input-area input { border-radius: 8px 0 0 8px; border-right: none; }
+        .chat-input-area button { border-radius: 0 8px 8px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+    </div>
+
+    <nav class="glass">
+        <div class="logo" onclick="navigate('landing')">
+            <i class="ph-fill ph-sword"></i> NEXUS<span style="color:var(--primary)">GT</span>
+        </div>
+        <div class="nav-links" id="nav-auth-container"></div>
+    </nav>
+
+    <div id="toast-container"></div>
+    <div id="modal-container" class="modal-overlay">
+        <div class="glass modal-content" id="modal-body"></div>
+    </div>
+
+    <main id="app-content">
+        
+        <section id="view-landing" class="view-section active">
+            <div class="hero">
+                <div class="hero-text">
+                    <h1>The Pinnacle of Esports Tournaments</h1>
+                    <p>Compete in BGMI, Free Fire, Among Us, and Valorant. Build your legacy, connect with hosts, and withdraw real earnings instantly to your bank.</p>
+                    <div style="display:flex; gap:16px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="navigate('register')">Start Your Legacy <i class="ph-bold ph-arrow-right"></i></button>
+                        <button class="btn btn-outline" onclick="navigate('login')">Host an Event</button>
+                    </div>
+                    <div class="mt-4 flex-between" style="max-width:450px; flex-wrap: wrap; gap:15px;">
+                        <div><h3 class="stat-value">2.4M+</h3><span style="color:var(--text-muted); font-size:0.9rem;">Active Players</span></div>
+                        <div><h3 class="stat-value">₹12M+</h3><span style="color:var(--text-muted); font-size:0.9rem;">Prizes Settled</span></div>
+                        <div><h3 class="stat-value">Escrow</h3><span style="color:var(--text-muted); font-size:0.9rem;">Secured Payouts</span></div>
+                    </div>
+                </div>
+                <div class="hero-image" style="width: 450px; height: 550px; background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80') center/cover; border-radius: 20px; box-shadow: 0 0 50px rgba(108, 92, 231, 0.3); border: 1px solid var(--border);"></div>
+            </div>
+
+            <div class="mt-4">
+                <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom: 20px;">Featured Tournaments</h2>
+                <div class="grid-cards" id="landing-tournaments-list">
+                    <div class="text-center" style="grid-column: 1/-1; color: var(--text-muted);">Loading premium events...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-auth" class="view-section">
+            <div class="glass auth-container" id="auth-box"></div>
+        </section>
+
+        <section id="view-player-dash" class="view-section">
+            <div class="dashboard-layout">
+                <div class="glass sidebar">
+                    <div class="sidebar-item active" data-tab="player-overview"><i class="ph ph-squares-four"></i> Overview</div>
+                    <div class="sidebar-item" data-tab="player-browse"><i class="ph ph-magnifying-glass"></i> Tournaments</div>
+                    <div class="sidebar-item" data-tab="player-my-tournaments"><i class="ph ph-trophy"></i> My Matches & Chat</div>
+                    <div class="sidebar-item" data-tab="player-wallet"><i class="ph ph-wallet"></i> Wallet & Payouts</div>
+                    <div class="sidebar-item" data-tab="player-refer"><i class="ph ph-users"></i> Refer & Earn</div>
+                    <div class="sidebar-item" data-tab="player-profile"><i class="ph ph-user"></i> Profiles</div>
+                </div>
+                <div class="dashboard-content" id="player-dash-content"></div>
+            </div>
+        </section>
+
+        <section id="view-host-dash" class="view-section">
+            <div class="dashboard-layout">
+                <div class="glass sidebar">
+                    <div class="sidebar-item active" data-tab="host-overview"><i class="ph ph-squares-four"></i> Overview</div>
+                    <div class="sidebar-item" data-tab="host-create"><i class="ph ph-plus-circle"></i> Create Event</div>
+                    <div class="sidebar-item" data-tab="host-manage"><i class="ph ph-kanban"></i> Manage Rooms & Chat</div>
+                    <div class="sidebar-item" data-tab="host-wallet"><i class="ph ph-wallet"></i> Wallet & Payouts</div>
+                </div>
+                <div class="dashboard-content" id="host-dash-content"></div>
+            </div>
+        </section>
+
+        <section id="view-admin-dash" class="view-section">
+            <div class="dashboard-layout">
+                <div class="glass sidebar">
+                    <div class="sidebar-item active" data-tab="admin-overview"><i class="ph ph-cpu"></i> System Status</div>
+                    <div class="sidebar-item" data-tab="admin-settlements"><i class="ph ph-scales"></i> Match Settlements</div>
+                    <div class="sidebar-item" data-tab="admin-withdrawals"><i class="ph ph-bank"></i> Payout Queue</div>
+                    <div class="sidebar-item" data-tab="admin-tournaments"><i class="ph ph-game-controller"></i> Override Events</div>
+                    <div class="sidebar-item" data-tab="admin-recharges"><i class="ph ph-wallet"></i> Approve Top-ups</div>
+                    <div class="sidebar-item" data-tab="admin-users"><i class="ph ph-users-three"></i> Users</div>
+                </div>
+                <div class="dashboard-content" id="admin-dash-content"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, addDoc, updateDoc, onSnapshot, increment, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",
+            authDomain: "designsnap-f3309.firebaseapp.com",
+            databaseURL: "https://designsnap-f3309-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "designsnap-f3309",
+            storageBucket: "designsnap-f3309.firebasestorage.app",
+            messagingSenderId: "741888249963",
+            appId: "1:741888249963:web:9540c9f68d6f0d5da9a12e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let appState = {
+            user: null, userData: null, currentView: 'landing',
+            upiId: "gpay-11245353662@okbizaxis",
+            games: ["BGMI", "Free Fire", "Among Us", "Call of Duty Mobile", "Valorant"],
+            platformFee: 0.10
+        };
+
+        window.chatUnsub = null; // Global reference to clear chat listeners
+
+        const UI = {
+            showToast: (msg, type = 'success') => {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `<i class="ph-bold ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}"></i> ${msg}`;
+                container.appendChild(toast);
+                setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+            },
+            showModal: (htmlContent) => {
+                const modal = document.getElementById('modal-container');
+                const body = document.getElementById('modal-body');
+                body.innerHTML = `<i class="ph ph-x close-modal" onclick="closeModal()"></i>` + htmlContent;
+                modal.classList.add('active');
+            },
+            closeModal: () => {
+                document.getElementById('modal-container').classList.remove('active');
+                if(window.chatUnsub) { window.chatUnsub(); window.chatUnsub = null; }
+            },
+            setLoading: (btnId, isLoading, text = 'Processing...') => {
+                const btn = document.getElementById(btnId);
+                if(!btn) return;
+                if(isLoading) {
+                    btn.dataset.original = btn.innerHTML;
+                    btn.innerHTML = `<i class="ph ph-spinner ph-spin"></i> ${text}`;
+                    btn.disabled = true;
+                } else {
+                    btn.innerHTML = btn.dataset.original;
+                    btn.disabled = false;
+                }
+            },
+            escapeHTML: (str) => {
+                if (str === null || str === undefined) return '';
+                return String(str).replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag));
+            }
+        };
+        window.closeModal = UI.closeModal; 
+
+        window.navigate = (viewName) => {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            if(viewName === 'login' || viewName === 'register') {
+                document.getElementById('view-auth').classList.add('active');
+                renderAuthForm(viewName);
+                appState.currentView = viewName;
+                return;
+            }
+            const target = document.getElementById(`view-${viewName}`);
+            if(target) {
+                target.classList.add('active');
+                appState.currentView = viewName;
+                if(viewName === 'landing') setTimeout(() => { if (typeof loadTournamentsList === 'function') loadTournamentsList('landing-tournaments-list'); }, 0);
+                if(viewName === 'player-dash') renderPlayerDashboard();
+                if(viewName === 'host-dash') renderHostDashboard();
+                if(viewName === 'admin-dash') renderAdminDashboard();
+            }
+        };
+
+        const updateNav = () => {
+            const nav = document.getElementById('nav-auth-container');
+            if (appState.user && appState.userData) {
+                const role = appState.userData.role || 'player';
+                let dashTarget = role === 'admin' ? 'admin-dash' : (role === 'host' ? 'host-dash' : 'player-dash');
+                let roleBadge = role === 'admin' ? 'badge-admin' : (role === 'host' ? 'badge-live' : 'badge-upcoming');
+                
+                nav.innerHTML = `
+                    <div style="text-align:right; display:none; @media(min-width:600px){display:block;}">
+                        <span style="color:var(--text-muted)">${appState.userData.username || 'User'}</span><br>
+                        <span class="badge ${roleBadge}">${role.toUpperCase()}</span>
+                        ${role !== 'admin' ? `<span class="badge" style="background:rgba(253, 203, 110, 0.2); color:var(--accent);">₹${appState.userData.wallet?.coins || 0}</span>` : ''}
+                    </div>
+                    <button class="btn btn-outline" onclick="navigate('${dashTarget}')">Dashboard</button>
+                    <button class="btn btn-primary" id="btn-logout" style="padding: 8px 16px; font-size: 0.9rem;">Logout</button>
+                `;
+                document.getElementById('btn-logout').addEventListener('click', () => { signOut(auth); window.location.reload(); });
+            } else {
+                nav.innerHTML = `
+                    <button class="btn btn-outline" onclick="navigate('login')">Log In</button>
+                    <button class="btn btn-primary" onclick="navigate('register')">Sign Up</button>
+                `;
+            }
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                appState.user = user;
+                try {
+                    const docRef = doc(db, "users", user.uid);
+                    let docSnap = await getDoc(docRef);
+                    if (!docSnap.exists()) { await new Promise(r => setTimeout(r, 1500)); docSnap = await getDoc(docRef); }
+
+                    if (docSnap.exists()) {
+                        appState.userData = docSnap.data();
+                        updateNav();
+                        if(['login', 'register', 'landing'].includes(appState.currentView)) {
+                            let role = appState.userData.role || 'player';
+                            navigate(role === 'admin' ? 'admin-dash' : (role === 'host' ? 'host-dash' : 'player-dash'));
+                        }
+                    } else { signOut(auth); }
+                } catch (e) { UI.showToast("Database Blocked by Rules", "error"); }
+            } else {
+                appState.user = null; appState.userData = null; updateNav();
+                if(!['landing', 'register', 'login'].includes(appState.currentView)) navigate('landing');
+            }
+        });
+
+        const renderAuthForm = (type) => {
+                const container = document.getElementById('auth-box');
+                if(type === 'login') {
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:20px;">Welcome Back</h2>
+                        <form id="login-form">
+                            <div class="form-group"><input type="email" id="l-email" placeholder="Email Address" required></div>
+                            <div class="form-group"><input type="password" id="l-pass" placeholder="Password" required></div>
+                            <button type="submit" class="btn btn-primary" style="width:100%" id="btn-login-submit">Login</button>
+                        </form>
+                        <p class="mt-2" style="color:var(--text-muted); font-size:0.9rem;">New here? <a href="#" onclick="navigate('register')" style="color:var(--primary);">Create Account</a></p>
+                        <div class="mt-4" style="font-size:0.8rem; color:var(--text-muted); border-top:1px solid var(--border); padding-top:10px;">God Mode: admin@admin.com / admin@123</div>
+                    `;
+                    document.getElementById('login-form').onsubmit = handleLogin;
+                } else {
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:20px;">Create Legacy</h2>
+                        <form id="reg-form">
+                            <div class="form-group">
+                                <select id="r-role" required>
+                                    <option value="" disabled selected>Select Role</option>
+                                    <option value="player">Player (Compete & Earn)</option>
+                                    <option value="host">Host (Organize & Earn)</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><input type="text" id="r-username" placeholder="Global Username" required></div>
+                            <div class="form-group"><input type="email" id="r-email" placeholder="Email Address" required></div>
+                            <div class="form-group"><input type="password" id="r-pass" placeholder="Password (min 6 chars)" required minlength="6"></div>
+                            <button type="submit" class="btn btn-primary" style="width:100%" id="btn-reg-submit">Sign Up</button>
+                        </form>
+                        <p class="mt-2" style="color:var(--text-muted); font-size:0.9rem;">Already have an account? <a href="#" onclick="navigate('login')" style="color:var(--primary);">Login</a></p>
+                    `;
+                    document.getElementById('reg-form').onsubmit = handleRegister;
+            }
+        };
+
+        const handleLogin = async (e) => {
+            e.preventDefault();
+            UI.setLoading('btn-login-submit', true);
+            const email = document.getElementById('l-email').value;
+            const pass = document.getElementById('l-pass').value;
+            
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, pass);
+                UI.showToast("Authentication Successful");
+                const dSnap = await getDoc(doc(db, "users", cred.user.uid));
+                if(dSnap.exists()) {
+                    appState.userData = dSnap.data();
+                    let role = appState.userData.role || 'player';
+                    navigate(role === 'admin' ? 'admin-dash' : (role === 'host' ? 'host-dash' : 'player-dash'));
+                }
+            } catch (err) {
+                if (email === 'admin@admin.com' && err.code === 'auth/invalid-credential') {
+                    try {
+                        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                        const adminData = { uid: cred.user.uid, email: email, username: "Super Admin", role: "admin", createdAt: new Date().toISOString(), wallet: { coins: 0 }, stats: { matches: 0, wins: 0 } };
+                        await setDoc(doc(db, "users", cred.user.uid), adminData);
+                        UI.showToast("Admin God Mode Initialized");
+                        appState.userData = adminData;
+                        navigate('admin-dash');
+                    } catch(e) { UI.showToast(e.message, "error"); }
+                } else { UI.showToast(err.message, "error"); }
+            } finally { UI.setLoading('btn-login-submit', false); }
+        };
+
+        const generateRefCode = (username) => `NEXUS-${username.substring(0,4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        const handleRegister = async (e) => {
+            e.preventDefault();
+            UI.setLoading('btn-reg-submit', true);
+            const email = document.getElementById('r-email').value;
+            const pass = document.getElementById('r-pass').value;
+            const username = document.getElementById('r-username').value;
+            const role = document.getElementById('r-role').value;
+
+            try {
+                const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+                const newData = {
+                    uid: userCred.user.uid, email: email, username: username, role: role,
+                    referralCode: generateRefCode(username), referredBy: null, createdAt: new Date().toISOString(),
+                    wallet: { coins: 0 }, stats: { matches: 0, wins: 0 }, gamertags: { 'BGMI': '', 'Free Fire': '', 'Among Us': '', 'Call of Duty Mobile': '', 'Valorant': '' }
+                };
+                await setDoc(doc(db, "users", userCred.user.uid), newData);
+                appState.userData = newData;
+                UI.showToast("Account created successfully!");
+                navigate(role === 'host' ? 'host-dash' : 'player-dash');
+            } catch (err) { UI.showToast(err.message, "error"); }
+            finally { UI.setLoading('btn-reg-submit', false); }
+        };
+
+        const setupSidebar = (role, callback) => {
+            const items = document.querySelectorAll(`#view-${role}-dash .sidebar-item`);
+            items.forEach(item => {
+                const newEl = item.cloneNode(true);
+                item.parentNode.replaceChild(newEl, item);
+                newEl.addEventListener('click', (e) => {
+                    document.querySelectorAll(`#view-${role}-dash .sidebar-item`).forEach(el => el.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    callback(e.currentTarget.dataset.tab);
+                });
+            });
+            const activeTab = document.querySelector(`#view-${role}-dash .sidebar-item.active`);
+            if(activeTab) callback(activeTab.dataset.tab);
+        };
+
+        const renderPlayerDashboard = () => {
+            const container = document.getElementById('player-dash-content');
+            
+            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => {
+                if(docSnap.exists() && appState.userData) {
+                    appState.userData = docSnap.data();
+                    updateNav(); 
+                }
+            });
+
+            setupSidebar('player', (tab) => {
+                if(tab === 'player-overview') {
+                    container.innerHTML = `
+                        <h2>Welcome, ${appState.userData.username}</h2>
+                        <div class="grid-cards" style="margin-bottom:30px;">
+                            <div class="glass stat-box">
+                                <div style="color:var(--text-muted)">Wallet Balance</div>
+                                <div class="stat-value">₹${appState.userData.wallet.coins || 0}</div>
+                                <button class="btn btn-outline mt-2" onclick="rechargeWalletUI()" style="padding: 5px 15px; font-size:0.8rem;">Add Funds</button>
+                            </div>
+                            <div class="glass stat-box">
+                                <div style="color:var(--text-muted)">Matches Played</div>
+                                <div class="stat-value">${appState.userData.stats?.matches || 0}</div>
+                            </div>
+                            <div class="glass stat-box">
+                                <div style="color:var(--text-muted)">Matches Won</div>
+                                <div class="stat-value" style="color:var(--success);">${appState.userData.stats?.wins || 0}</div>
+                            </div>
+                        </div>
+                    `;
+                } else if(tab === 'player-browse') {
+                    container.innerHTML = `<h2>Premium Tournaments</h2><div id="player-browse-list" class="grid-cards">Loading...</div>`;
+                    loadTournamentsList('player-browse-list');
+                } else if(tab === 'player-my-tournaments') {
+                    container.innerHTML = `<h2>My Matches</h2><div id="player-my-list" class="grid-cards">Loading...</div>`;
+                    loadMyTournaments();
+                } else if(tab === 'player-wallet') {
+                    container.innerHTML = `
+                        <div class="flex-between mb-2">
+                            <h2>Nexus Wallet & Payouts</h2>
+                            <div style="display:flex; gap:10px;">
+                                <button class="btn btn-outline" onclick="rechargeWalletUI()">Top-up</button>
+                                <button class="btn btn-primary" onclick="requestWithdrawalUI()">Withdraw to Bank</button>
+                            </div>
+                        </div>
+                        <div class="glass p-4 text-center" style="padding:30px;">
+                            <h1 style="font-size:3.5rem; margin:0; color:var(--accent);">₹${appState.userData.wallet.coins || 0}</h1>
+                            <p style="color:var(--text-muted)">Available Balance</p>
+                        </div>
+                        <h3 class="mt-4">Ledger History</h3>
+                        <div id="wallet-history">Loading...</div>
+                    `;
+                    loadWalletHistory();
+                } else if(tab === 'player-refer') {
+                    const code = appState.userData.referralCode || generateRefCode(appState.userData.username);
+                    container.innerHTML = `
+                        <h2>Refer & Earn Ecosystem</h2>
+                        <div class="grid-cards" style="grid-template-columns: 1fr 1fr;">
+                            <div class="referral-box">
+                                <h3>Your Referral Code</h3>
+                                <p style="color:var(--text-muted); font-size:0.9rem;">Share this. You both get ₹20 instantly upon redemption.</p>
+                                <div class="referral-code">${code}</div>
+                                <button class="btn btn-primary" onclick="navigator.clipboard.writeText('${code}'); UI.showToast('Code Copied!');">Copy Code</button>
+                            </div>
+                            <div class="glass" style="padding:20px; display:flex; flex-direction:column; justify-content:center;">
+                                <h3>Redeem Code</h3>
+                                ${appState.userData.referredBy ? 
+                                    `<div class="mt-2 text-center" style="padding:15px; background:rgba(0,184,148,0.1); border:1px solid var(--success); color:var(--success);">Redeemed. Check Wallet.</div>` 
+                                    : 
+                                    `<form id="redeem-form" class="mt-2">
+                                        <div class="form-group"><input type="text" id="ref-input" placeholder="Enter Friend's Code" required></div>
+                                        <button type="submit" class="btn btn-outline w-100" style="width:100%;">Claim ₹20 Reward</button>
+                                    </form>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                    if(!appState.userData.referredBy) document.getElementById('redeem-form').onsubmit = handleRedeemCode;
+                } else if(tab === 'player-profile') {
+                    let tagsHtml = '';
+                    appState.games.forEach(game => {
+                        let tag = appState.userData.gamertags ? (appState.userData.gamertags[game] || '') : '';
+                        tagsHtml += `<div class="form-group"><label>${game} In-Game ID</label><input type="text" id="tag-${game.replace(/\s+/g,'-')}" value="${tag}"></div>`;
+                    });
+                    container.innerHTML = `
+                        <h2>Gamertags & Identity</h2>
+                        <div class="glass" style="padding:20px; max-width:500px;">
+                            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Save your in-game IDs here so hosts can verify you.</p>
+                            <form id="profile-form">
+                                ${tagsHtml}
+                                <button type="submit" class="btn btn-primary w-100" style="width:100%;">Save Profiles</button>
+                            </form>
+                        </div>
+                    `;
+                    document.getElementById('profile-form').onsubmit = async (e) => {
+                        e.preventDefault();
+                        let tags = {};
+                        appState.games.forEach(game => tags[game] = document.getElementById(`tag-${game.replace(/\s+/g,'-')}`).value);
+                        try { await updateDoc(doc(db, "users", appState.user.uid), { gamertags: tags }); UI.showToast("Profiles updated!");
+                        } catch(err) { UI.showToast("Error updating.", "error"); }
+                    };
+                }
+            });
+        };
+
+        const handleRedeemCode = async (e) => {
+            e.preventDefault();
+            const inputCode = document.getElementById('ref-input').value.trim();
+            if(inputCode === appState.userData.referralCode) return UI.showToast("Cannot redeem your own code.", "error");
+
+            try {
+                const q = query(collection(db, "users"), where("referralCode", "==", inputCode));
+                const snap = await getDocs(q);
+                if(snap.empty) return UI.showToast("Invalid Referral Code.", "error");
+
+                const referrerId = snap.docs[0].id;
+                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(20), "referredBy": inputCode });
+                await updateDoc(doc(db, "users", referrerId), { "wallet.coins": increment(20) });
+
+                UI.showToast("Reward Claimed! ₹20 added.");
+                document.querySelector('[data-tab="player-refer"]').click();
+            } catch(err) { UI.showToast("Error processing referral.", "error"); }
+        };
+
+        window.rechargeWalletUI = () => {
+            UI.showModal(`
+                <h3>Top-up Wallet</h3>
+                <div class="form-group mt-2"><label>Amount (₹)</label><input type="number" id="rech-amount" min="10" value="100" oninput="updateQR()"></div>
+                <div class="glass text-center" style="padding:20px; background:rgba(255,255,255,0.02);">
+                    <img id="rech-qr" src="" style="width:150px; border-radius:10px; border:2px solid white; margin-bottom:10px;">
+                    <p style="font-size:0.9rem; color:var(--text-muted);">Scan via GPay/PhonePe/Paytm</p>
+                    <p style="color:var(--accent); font-weight:600; font-size:0.9rem;">${appState.upiId}</p>
+                </div>
+                <div class="form-group mt-4"><label>Enter 12-Digit UTR No.</label><input type="text" id="rech-utr" required></div>
+                <button class="btn btn-primary" style="width:100%" onclick="submitRecharge()">Submit UTR</button>
+            `);
+            window.updateQR = () => {
+                let amt = document.getElementById('rech-amount').value || 0;
+                document.getElementById('rech-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`upi://pay?pa=${appState.upiId}&pn=NexusEsports&am=${amt}&cu=INR`)}&color=6c5ce7&bgcolor=ffffff`;
+            };
+            window.updateQR();
+        };
+
+        window.submitRecharge = async () => {
+            const amt = parseInt(document.getElementById('rech-amount').value);
+            const utr = document.getElementById('rech-utr').value;
+            if(!amt || !utr || utr.length < 8) return UI.showToast("Invalid Amount or UTR", "error");
+            try {
+                await addDoc(collection(db, "recharges"), { userId: appState.user.uid, username: appState.userData.username, amount: amt, utr: utr, status: 'pending', createdAt: new Date().toISOString() });
+                UI.showToast("Top-up request submitted."); UI.closeModal();
+                if(document.querySelector('[data-tab="player-wallet"]')?.classList.contains('active')) loadWalletHistory();
+            } catch(e) { UI.showToast(e.message, "error"); }
+        };
+
+        window.requestWithdrawalUI = () => {
+            UI.showModal(`
+                <h3>Withdraw to Bank/UPI</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Available Balance: <strong>₹${appState.userData.wallet.coins}</strong><br>Payouts process within 24-48 hours.</p>
+                <div class="form-group"><label>Amount to Withdraw (₹)</label><input type="number" id="wd-amount" min="50" max="${appState.userData.wallet.coins}" value="50"></div>
+                <div class="form-group"><label>Withdrawal Method</label><select id="wd-method" onchange="toggleWdFields()"><option value="upi">UPI ID</option><option value="bank">Bank Transfer</option></select></div>
+                
+                <div id="wd-upi-fields" class="form-group"><label>Your UPI ID</label><input type="text" id="wd-upi-id" placeholder="name@bank"></div>
+                
+                <div id="wd-bank-fields" style="display:none;">
+                    <div class="form-group"><label>Account Holder Name</label><input type="text" id="wd-bank-name"></div>
+                    <div class="form-group"><label>Account Number</label><input type="text" id="wd-bank-acc"></div>
+                    <div class="form-group"><label>IFSC Code</label><input type="text" id="wd-bank-ifsc"></div>
+                </div>
+                
+                <button class="btn btn-primary" style="width:100%" onclick="submitWithdrawal()">Request Payout</button>
+            `);
+            window.toggleWdFields = () => {
+                const method = document.getElementById('wd-method').value;
+                document.getElementById('wd-upi-fields').style.display = method === 'upi' ? 'block' : 'none';
+                document.getElementById('wd-bank-fields').style.display = method === 'bank' ? 'block' : 'none';
+            };
+        };
+
+        window.submitWithdrawal = async () => {
+            const amt = parseInt(document.getElementById('wd-amount').value);
+            const method = document.getElementById('wd-method').value;
+            if(amt < 50 || amt > appState.userData.wallet.coins) return UI.showToast("Invalid Amount.", "error");
+
+            let details = {};
+            if(method === 'upi') details = { upiId: document.getElementById('wd-upi-id').value };
+            else details = { name: document.getElementById('wd-bank-name').value, acc: document.getElementById('wd-bank-acc').value, ifsc: document.getElementById('wd-bank-ifsc').value };
+
+            try {
+                // Deduct instantly for safety
+                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-amt) });
+                await addDoc(collection(db, "withdrawals"), {
+                    userId: appState.user.uid, username: appState.userData.username,
+                    amount: amt, method: method, details: details,
+                    status: 'Pending', createdAt: new Date().toISOString()
+                });
+                UI.showToast("Withdrawal Requested! Check ledger."); UI.closeModal();
+                if(document.querySelector('[data-tab="player-wallet"]')?.classList.contains('active') || document.querySelector('[data-tab="host-wallet"]')?.classList.contains('active')) {
+                    loadWalletHistory();
+                }
+            } catch(e) { UI.showToast("Error processing request.", "error"); }
+        };
+
+        const loadWalletHistory = async () => {
+            const container = document.getElementById('wallet-history');
+            try {
+                // Fetch Recharges
+                const q1 = query(collection(db, "recharges"), where("userId", "==", appState.user.uid));
+                const snap1 = await getDocs(q1);
+                let history = snap1.docs.map(d => ({ type: 'Top-up', date: d.data().createdAt, amount: d.data().amount, status: d.data().status }));
+                
+                // Fetch Withdrawals
+                const q2 = query(collection(db, "withdrawals"), where("userId", "==", appState.user.uid));
+                const snap2 = await getDocs(q2);
+                snap2.docs.forEach(d => history.push({ type: 'Withdrawal', date: d.data().createdAt, amount: -d.data().amount, status: d.data().status }));
+
+                history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                if(history.length === 0) { container.innerHTML = `<p style="color:var(--text-muted)">No transactions yet.</p>`; return; }
+                
+                let html = '<table><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr>';
+                history.forEach(r => {
+                    let color = r.status.toLowerCase() === 'approved' || r.status.toLowerCase() === 'paid' ? 'var(--success)' : (r.status.toLowerCase() === 'rejected' ? 'var(--danger)' : 'var(--accent)');
+                    html += `<tr>
+                        <td>${new Date(r.date).toLocaleDateString()}</td>
+                        <td>${r.type}</td>
+                        <td style="color:${r.amount > 0 ? 'var(--success)' : 'white'}; font-weight:700;">${r.amount > 0 ? '+' : ''}₹${Math.abs(r.amount)}</td>
+                        <td style="color:${color}; text-transform:uppercase; font-size:0.8rem; font-weight:700;">${r.status}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+            } catch(e) { container.innerHTML = `<p>Error loading ledger.</p>`; }
+        };
+
+        const loadTournamentsList = async (containerId) => {
+            const container = document.getElementById(containerId);
+            try {
+                const snap = await getDocs(collection(db, "tournaments"));
+                let docsData = []; snap.forEach(doc => docsData.push({ id: doc.id, ...doc.data() }));
+                docsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                let count = 0; let html = '';
+                docsData.forEach(t => {
+                    if(t.status === 'Upcoming' || t.status === 'Registration Open') {
+                        count++;
+                        html += `
+                            <div class="glass card">
+                                <div class="flex-between mb-2">
+                                    <span class="badge badge-game">${t.game}</span>
+                                    <span class="badge ${t.status==='Registration Open' ? 'badge-live':'badge-upcoming'}">${t.status}</span>
+                                </div>
+                                <div class="card-title">${UI.escapeHTML(t.title)}</div>
+                                <div class="card-meta mb-2"><span><i class="ph ph-users"></i> ${t.filledSlots}/${t.maxSlots}</span><span>₹${t.entryFee} Entry</span></div>
+                                <button class="btn btn-primary" onclick="viewTournamentDetails('${t.id}')">View Details</button>
+                            </div>
+                        `;
+                    }
+                });
+                container.innerHTML = count > 0 ? html : `<p>No active tournaments.</p>`;
+            } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+        };
+
+        const loadMyTournaments = async () => {
+            const container = document.getElementById('player-my-list');
+            try {
+                const q = query(collection(db, "registrations"), where("userId", "==", appState.user.uid));
+                const snap = await getDocs(q);
+                if(snap.empty) { container.innerHTML = `<p>You haven't joined any events.</p>`; return; }
+                
+                let html = '';
+                for(let regDoc of snap.docs) {
+                    const regData = regDoc.data();
+                    const tDoc = await getDoc(doc(db, "tournaments", regData.tournamentId));
+                    if(tDoc.exists()) {
+                        const t = tDoc.data();
+                        html += `
+                            <div class="glass card">
+                                <div class="flex-between">
+                                    <span class="badge badge-game">${t.game}</span>
+                                    <span style="font-size:0.8rem; color:var(--text-muted);">${new Date(t.startTime).toLocaleDateString()}</span>
+                                </div>
+                                <h4>${UI.escapeHTML(t.title)}</h4>
+                                <div style="padding:8px; border-radius:4px; background:rgba(0,0,0,0.3); margin-bottom:10px;">
+                                    Host Status: <strong style="color:var(--accent)">${t.status}</strong>
+                                </div>
+                                ${t.roomDetails && (t.status==='Live' || t.status==='Pending Settlement') ? `
+                                    <div style="padding:10px; background:rgba(0,184,148,0.1); border:1px solid var(--success); border-radius:4px; margin-bottom:10px;">
+                                        <div style="font-size:0.8rem; color:var(--success);">Room Released</div>
+                                        <div><strong>ID:</strong> ${t.roomDetails.id}</div>
+                                        <div><strong>Pass:</strong> ${t.roomDetails.pass}</div>
+                                    </div>
+                                ` : `<div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Room hidden.</div>`}
+                                <button class="btn btn-outline" style="width:100%; border-color:var(--secondary);" onclick="openLobbyChat('${tDoc.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-fill ph-chat-circle-text"></i> Open Lobby Chat</button>
+                            </div>
+                        `;
+                    }
+                }
+                container.innerHTML = html;
+            } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+        };
+
+        window.openLobbyChat = (tId, title) => {
+            UI.showModal(`
+                <div class="flex-between" style="margin-bottom:15px;">
+                    <h3 style="margin:0;"><i class="ph-fill ph-chat-centered"></i> ${title} Lobby</h3>
+                    <span class="badge badge-live">Live Chat</span>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages-box">Loading messages...</div>
+                    <form class="chat-input-area" id="chat-form">
+                        <input type="text" id="chat-input" placeholder="Type a message..." required autocomplete="off">
+                        <button type="submit" class="btn btn-primary"><i class="ph-bold ph-paper-plane-right"></i></button>
+                    </form>
+                </div>
+            `);
+
+            const msgBox = document.getElementById('chat-messages-box');
+            
+            // Real-time listener
+            const q = query(collection(db, "chats"), where("tournamentId", "==", tId));
+            window.chatUnsub = onSnapshot(q, (snapshot) => {
+                let msgs = [];
+                snapshot.forEach(doc => msgs.push(doc.data()));
+                msgs.sort((a,b) => a.timestamp - b.timestamp);
+                
+                if(msgs.length === 0) { msgBox.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding-top:20px;">No messages yet. Say hi!</div>`; }
+                else {
+                    let html = '';
+                    msgs.forEach(m => {
+                        const isMine = m.userId === appState.user.uid;
+                        const roleTag = m.role === 'host' ? '<span style="color:var(--danger)">[HOST]</span> ' : '';
+                        html += `<div class="chat-msg ${isMine ? 'mine' : ''}"><div class="author">${roleTag}${UI.escapeHTML(m.username)}</div>${UI.escapeHTML(m.text)}</div>`;
+                    });
+                    msgBox.innerHTML = html;
+                    msgBox.scrollTop = msgBox.scrollHeight;
+                }
+            });
+
+            document.getElementById('chat-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const input = document.getElementById('chat-input');
+                const text = input.value.trim();
+                if(!text) return;
+                try {
+                    await addDoc(collection(db, "chats"), {
+                        tournamentId: tId, userId: appState.user.uid, username: appState.userData.username,
+                        role: appState.userData.role, text: text, timestamp: Date.now()
+                    });
+                    input.value = '';
+                } catch(err) { UI.showToast("Failed to send", "error"); }
+            };
+        };
+
+        window.viewTournamentDetails = async (id) => {
+            try {
+                const docSnap = await getDoc(doc(db, "tournaments", id));
+                if(!docSnap.exists()) return;
+                const t = docSnap.data();
+                const isFull = t.filledSlots >= t.maxSlots;
+                let actionBtn = '';
+                
+                if(!appState.user) actionBtn = `<button class="btn btn-primary" onclick="closeModal(); navigate('login')">Login to Join</button>`;
+                else if(appState.userData.role === 'host') actionBtn = `<div class="badge badge-live" style="display:inline-block;">Hosts cannot join</div>`;
+                else if(appState.userData.role === 'admin') actionBtn = `<div class="badge badge-admin" style="display:inline-block;">Admins observe</div>`;
+                else if(isFull) actionBtn = `<button class="btn btn-outline" disabled>Tournament Full</button>`;
+                else actionBtn = `<button class="btn btn-primary" onclick="initWalletJoinFlow('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}')">Pay ₹${t.entryFee} from Wallet</button>`;
+
+                UI.showModal(`
+                    <div class="flex-between">
+                        <span class="badge badge-game">${t.game}</span>
+                        <span><i class="ph ph-users"></i> ${t.filledSlots}/${t.maxSlots} Slots</span>
+                    </div>
+                    <h2 class="mt-2" style="font-family:var(--font-display); font-size:2rem;">${UI.escapeHTML(t.title)}</h2>
+                    <p style="color:var(--text-muted); margin-bottom:20px;">Hosted by: ${UI.escapeHTML(t.hostName)}</p>
+                    
+                    <div class="grid-cards" style="grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px; margin-top:0;">
+                        <div class="glass stat-box" style="padding:10px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted)">Prize Pool</div>
+                            <div style="font-weight:600; color:var(--accent); font-size:1.2rem;">₹${t.prizePool}</div>
+                        </div>
+                        <div class="glass stat-box" style="padding:10px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted)">Mode</div>
+                            <div style="font-weight:600;">${t.mode}</div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <h4 style="margin-bottom:8px;">Rules & Match Description</h4>
+                        <p style="color:var(--text-muted); font-size:0.9rem; white-space: pre-wrap;">${UI.escapeHTML(t.description)}</p>
+                    </div>
+                    <div class="text-center">${actionBtn}
+                        ${appState.userData?.role === 'player' ? `<p class="mt-2" style="font-size:0.8rem; color:var(--text-muted);">Current Wallet: ₹${appState.userData.wallet.coins || 0}</p>` : ''}
+                    </div>
+                `);
+            } catch(e) { console.error(e); }
+        };
+
+        window.initWalletJoinFlow = async (tId, fee, title) => {
+            const balance = appState.userData.wallet.coins || 0;
+            const q = query(collection(db, "registrations"), where("tournamentId", "==", tId));
+            const snap = await getDocs(q);
+            let alreadyJoined = false;
+            snap.forEach(doc => { if(doc.data().userId === appState.user.uid) alreadyJoined = true; });
+            
+            if(alreadyJoined) return UI.showToast("Already registered for this event.", "error");
+            if(balance < fee) {
+                UI.showToast("Insufficient Wallet Balance", "error"); UI.closeModal();
+                if(appState.currentView !== 'player-dash') navigate('player-dash');
+                setTimeout(() => document.querySelector('[data-tab="player-wallet"]').click(), 100);
+                setTimeout(rechargeWalletUI, 500); return;
+            }
+
+            UI.showModal(`<div class="text-center" style="padding:20px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:3rem; color:var(--primary);"></i><h3 class="mt-2">Processing Join...</h3><p style="color:var(--text-muted)">Deducting ₹${fee} from wallet</p></div>`);
+            try {
+                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee), "stats.matches": increment(1) });
+                await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, joinedAt: new Date().toISOString() });
+                await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
+                UI.showToast(`Successfully joined ${title}!`); UI.closeModal();
+                if(appState.currentView === 'landing') navigate('player-dash');
+                setTimeout(() => document.querySelector('[data-tab="player-my-tournaments"]').click(), 100);
+            } catch (e) { UI.showToast("Transaction failed.", "error"); UI.closeModal(); }
+        };
+
+        const renderHostDashboard = () => {
+            const container = document.getElementById('host-dash-content');
+            setupSidebar('host', (tab) => {
+                if(tab === 'host-overview') {
+                    container.innerHTML = `
+                        <h2>Host Command Center</h2>
+                        <div class="glass p-4 mt-2" style="padding:20px;">
+                            <h3 style="color:var(--success)"><i class="ph-fill ph-shield-check"></i> Escrow System Active</h3>
+                            <p style="color:var(--text-muted)">Nexus handles all player entry collections. When your match ends, select the winner. Admins will verify and release payouts (Prize to winner, cut to you) securely.</p>
+                        </div>
+                    `;
+                } else if(tab === 'host-create') {
+                    let gameOptions = appState.games.map(g => `<option value="${g}">${g}</option>`).join('');
+                    container.innerHTML = `
+                        <div class="glass" style="padding: 30px;">
+                            <h2>Deploy New Event</h2>
+                            <form id="form-create-tournament" class="mt-4">
+                                <div class="grid-cards" style="grid-template-columns: 1fr 1fr; margin-top:0;">
+                                    <div class="form-group"><label>Tournament Title</label><input type="text" id="c-title" required></div>
+                                    <div class="form-group"><label>Game</label><select id="c-game" required>${gameOptions}</select></div>
+                                    <div class="form-group"><label>Format</label><input type="text" id="c-mode" placeholder="e.g. Squads" required></div>
+                                    <div class="form-group"><label>Start Time</label><input type="datetime-local" id="c-time" required></div>
+                                    <div class="form-group"><label>Entry Fee (₹)</label><input type="number" id="c-fee" min="0" value="50" required></div>
+                                    <div class="form-group"><label>Guaranteed Prize (₹)</label><input type="number" id="c-prize" min="0" value="1000" required></div>
+                                    <div class="form-group" style="grid-column: 1/-1;"><label>Max Slots</label><input type="number" id="c-slots" min="2" max="100" value="48" required></div>
+                                </div>
+                                <div class="form-group mt-2"><label>Rules & Disclaimers</label><textarea id="c-desc" rows="3" required></textarea></div>
+                                <button type="submit" class="btn btn-primary" style="width:100%" id="btn-create-submit">Publish Event</button>
+                            </form>
+                        </div>
+                    `;
+                    document.getElementById('form-create-tournament').onsubmit = handleCreateTournament;
+                } else if (tab === 'host-manage') {
+                    container.innerHTML = `<h2>Manage Rooms & Operations</h2><div id="host-manage-list" class="grid-cards">Loading...</div>`;
+                    loadHostTournaments();
+                } else if (tab === 'host-wallet') {
+                    // Host uses exact same wallet logic as player, just different tab layout hook
+                    container.innerHTML = `
+                        <div class="flex-between mb-2"><h2>Host Wallet Engine</h2><button class="btn btn-primary" onclick="requestWithdrawalUI()">Withdraw Earnings</button></div>
+                        <div class="glass p-4 text-center" style="padding:30px;"><h1 style="font-size:3.5rem; margin:0; color:var(--success);">₹${appState.userData.wallet.coins || 0}</h1><p style="color:var(--text-muted)">Available Revenue</p></div>
+                        <h3 class="mt-4">Withdrawal Ledgers</h3><div id="wallet-history">Loading...</div>
+                    `;
+                    loadWalletHistory();
+                }
+            });
+        };
+
+        const handleCreateTournament = async (e) => {
+            e.preventDefault(); UI.setLoading('btn-create-submit', true);
+            try {
+                await addDoc(collection(db, "tournaments"), {
+                    hostId: appState.user.uid, hostName: appState.userData.username,
+                    title: document.getElementById('c-title').value, game: document.getElementById('c-game').value,
+                    mode: document.getElementById('c-mode').value, startTime: document.getElementById('c-time').value,
+                    entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value),
+                    maxSlots: parseInt(document.getElementById('c-slots').value), filledSlots: 0,
+                    description: document.getElementById('c-desc').value, status: 'Registration Open', createdAt: new Date().toISOString()
+                });
+                UI.showToast("Event published!"); document.querySelector('[data-tab="host-manage"]').click();
+            } catch(err) { UI.showToast(err.message, "error"); } finally { UI.setLoading('btn-create-submit', false); }
+        };
+
+        const loadHostTournaments = async () => {
+            const container = document.getElementById('host-manage-list');
+            try {
+                const snap = await getDocs(collection(db, "tournaments"));
+                let docsData = []; snap.forEach(doc => { if(doc.data().hostId === appState.user.uid) docsData.push({ id: doc.id, ...doc.data() }); });
+                docsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                if(docsData.length === 0) { container.innerHTML = `<p>No active events.</p>`; return; }
+                let html = '';
+                docsData.forEach(t => {
+                    let actions = '';
+                    if(t.status === 'Registration Open' || t.status === 'Upcoming') {
+                        actions = `<button class="btn btn-outline mb-2" style="width:100%;" onclick="releaseRoomUI('${t.id}')">Deploy Room ID</button>
+                                   <button class="btn btn-primary" style="width:100%;" onclick="forceStartMatch('${t.id}')">Force Start (Lock)</button>`;
+                    } else if(t.status === 'Live') {
+                        actions = `<button class="btn btn-success" style="width:100%;" onclick="concludeMatchUI('${t.id}')"><i class="ph-bold ph-check"></i> Conclude & Pick Winner</button>`;
+                    } else {
+                        actions = `<button class="btn btn-outline" style="width:100%;" disabled>${t.status}</button>`;
+                    }
+
+                    html += `
+                        <div class="glass card">
+                            <span class="badge badge-game">${t.game}</span>
+                            <h4>${UI.escapeHTML(t.title)}</h4>
+                            <div class="flex-between mb-2 mt-2">
+                                <span class="badge ${t.status==='Registration Open'?'badge-upcoming':(t.status==='Live'?'badge-live':'badge-admin')}">${t.status}</span>
+                                <span>${t.filledSlots}/${t.maxSlots} Slots</span>
+                            </div>
+                            <div class="mb-2"><button class="btn btn-outline" style="width:100%; padding:8px; border-color:var(--secondary);" onclick="openLobbyChat('${t.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-fill ph-chat-circle-text"></i> Open Host Chat</button></div>
+                            <div class="mt-auto pt-2" style="border-top:1px solid var(--border)">${actions}</div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+        };
+
+        window.releaseRoomUI = (tId) => {
+            UI.showModal(`
+                <h3>Release Room Details</h3>
+                <div class="form-group mt-4"><label>Room ID</label><input type="text" id="r-id" required></div>
+                <div class="form-group"><label>Room Password</label><input type="text" id="r-pass" required></div>
+                <button class="btn btn-primary" style="width:100%;" onclick="submitRoomUpdate('${tId}')">Publish to Lobby</button>
+            `);
+        };
+        window.submitRoomUpdate = async (tId) => {
+            const rId = document.getElementById('r-id').value; const rPass = document.getElementById('r-pass').value;
+            if(!rId || !rPass) return;
+            try { await updateDoc(doc(db, "tournaments", tId), { roomDetails: { id: rId, pass: rPass }, status: 'Live' }); UI.showToast("Room Published! Match is Live."); UI.closeModal(); loadHostTournaments(); } catch(e) { UI.showToast(e.message, "error"); }
+        };
+        window.forceStartMatch = async (tId) => {
+            try { await updateDoc(doc(db, "tournaments", tId), { status: 'Live' }); UI.showToast("Match locked and Live."); loadHostTournaments(); } catch(e) {}
+        };
+
+        window.concludeMatchUI = async (tId) => {
+            UI.showModal(`<div class="text-center"><i class="ph-duotone ph-spinner ph-spin" style="font-size:2rem;"></i><p>Loading Players...</p></div>`);
+            try {
+                const q = query(collection(db, "registrations"), where("tournamentId", "==", tId));
+                const snap = await getDocs(q);
+                if(snap.empty) {
+                    UI.showModal(`<h3>No Players Joined</h3><p>You can close this event without a winner.</p><button class="btn btn-danger w-100" onclick="submitWinnerSelection('${tId}', 'none', 'No Winner')">Close Event</button>`); return;
+                }
+                
+                let options = '';
+                snap.forEach(d => { options += `<option value="${d.data().userId}">${d.data().username}</option>`; });
+                
+                UI.showModal(`
+                    <h3>Conclude Match & Pick Winner</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Select the winner from the deployed players. This sends the match to Admins for Escrow Settlement.</p>
+                    <div class="form-group">
+                        <label>Select Winning Player</label>
+                        <select id="winner-select">${options}</select>
+                    </div>
+                    <button class="btn btn-success" style="width:100%;" onclick="processWinnerSelection('${tId}')">Send to Escrow</button>
+                `);
+            } catch(e) { UI.showToast("Error loading participants.", "error"); }
+        };
+
+        window.processWinnerSelection = (tId) => {
+            const sel = document.getElementById('winner-select');
+            const winnerId = sel.value; const winnerName = sel.options[sel.selectedIndex].text;
+            window.submitWinnerSelection(tId, winnerId, winnerName);
+        };
+
+        window.submitWinnerSelection = async (tId, winnerId, winnerName) => {
+            try {
+                await updateDoc(doc(db, "tournaments", tId), { status: 'Pending Settlement', winnerId: winnerId, winnerName: winnerName });
+                UI.showToast("Match sent to Admin Escrow for payout."); UI.closeModal(); loadHostTournaments();
+            } catch(e) { UI.showToast("Error", "error"); }
+        };
+
+        const renderAdminDashboard = () => {
+            const container = document.getElementById('admin-dash-content');
+            setupSidebar('admin', (tab) => {
+                if(tab === 'admin-overview') {
+                    container.innerHTML = `
+                        <h2>God Mode Analytics</h2>
+                        <div class="glass p-4 mt-4 text-center" style="padding:40px;">
+                            <i class="ph-duotone ph-cpu" style="font-size:4rem; color:var(--primary);"></i>
+                            <h3 class="mt-2">Nexus Core Active</h3>
+                            <p style="color:var(--text-muted)">Manage escrows, user wallets, and overrides from this terminal.</p>
+                        </div>
+                    `;
+                } else if(tab === 'admin-settlements') {
+                    container.innerHTML = `<h2>Match Settlements (Escrow)</h2><div id="admin-settlements-list" class="mt-4">Loading...</div>`;
+                    loadAdminSettlements();
+                } else if(tab === 'admin-withdrawals') {
+                    container.innerHTML = `<h2>Payout Queue</h2><div id="admin-withdrawals-list" class="mt-4">Loading...</div>`;
+                    loadAdminWithdrawals();
+                } else if(tab === 'admin-tournaments') {
+                    container.innerHTML = `<h2>Global Tournament Override</h2><div id="admin-t-list" class="mt-4">Loading...</div>`;
+                    loadAdminTournaments();
+                } else if(tab === 'admin-recharges') {
+                    container.innerHTML = `<h2>Approve Wallet Top-ups</h2><div id="admin-r-list" class="mt-4">Loading...</div>`;
+                    loadAdminRecharges();
+                } else if(tab === 'admin-users') {
+                    container.innerHTML = `<h2>User Management</h2><div id="admin-u-list" class="mt-4">Loading...</div>`;
+                    loadAdminUsers();
+                }
+            });
+        };
+
+        const loadAdminSettlements = async () => {
+            const container = document.getElementById('admin-settlements-list');
+            try {
+                const snap = await getDocs(collection(db, "tournaments"));
+                let html = '';
+                snap.forEach(doc => {
+                    const t = doc.data();
+                    if(t.status === 'Pending Settlement') {
+                        // Math logic
+                        const totalCollected = t.filledSlots * t.entryFee;
+                        const adminCut = totalCollected * appState.platformFee;
+                        const hostCut = totalCollected - adminCut - t.prizePool;
+                        
+                        html += `
+                            <div class="glass card mb-4">
+                                <h3>${UI.escapeHTML(t.title)}</h3>
+                                <div class="grid-cards" style="grid-template-columns:1fr 1fr 1fr; margin:10px 0; gap:10px;">
+                                    <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px;">Total Pool: <strong>₹${totalCollected}</strong></div>
+                                    <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px;">Prize Pool: <strong>₹${t.prizePool}</strong></div>
+                                    <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; color:var(--success);">Host Net: <strong>₹${hostCut}</strong></div>
+                                </div>
+                                <p style="color:var(--text-muted)">Selected Winner: <strong>${t.winnerName || 'None'}</strong></p>
+                                <button class="btn btn-primary mt-2" onclick="adminExecutePayout('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hostCut})">Approve & Execute Payouts</button>
+                            </div>
+                        `;
+                    }
+                });
+                container.innerHTML = html || `<p>No matches pending settlement.</p>`;
+            } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+        };
+
+        window.adminExecutePayout = async (tId, winnerId, prize, hostId, hostCut) => {
+            try {
+                if(winnerId && winnerId !== 'none' && prize > 0) { await updateDoc(doc(db, "users", winnerId), { "wallet.coins": increment(prize), "stats.wins": increment(1) }); }
+                if(hostId && hostCut > 0) { await updateDoc(doc(db, "users", hostId), { "wallet.coins": increment(hostCut) }); }
+                await updateDoc(doc(db, "tournaments", tId), { status: 'Completed' });
+                UI.showToast("Wallets updated and Match Completed."); loadAdminSettlements();
+            } catch(e) { UI.showToast("Error executing payouts.", "error"); }
+        };
+
+        const loadAdminWithdrawals = async () => {
+            const container = document.getElementById('admin-withdrawals-list');
+            try {
+                const q = query(collection(db, "withdrawals"), where("status", "==", "Pending"));
+                const snap = await getDocs(q);
+                if(snap.empty) { container.innerHTML = `<p>No pending withdrawals.</p>`; return; }
+                
+                let html = '<table><tr><th>User</th><th>Amount</th><th>Method</th><th>Details</th><th>Action</th></tr>';
+                snap.forEach(d => {
+                    const w = d.data();
+                    let detailStr = w.method === 'upi' ? w.details.upiId : `${w.details.acc} (${w.details.ifsc})`;
+                    html += `<tr>
+                        <td>${w.username}</td><td><strong style="color:var(--danger)">₹${w.amount}</strong></td><td>${w.method.toUpperCase()}</td>
+                        <td style="font-size:0.8rem; font-family:monospace;">${detailStr}</td>
+                        <td>
+                            <button class="btn btn-success" style="padding:5px 10px; font-size:0.8rem;" onclick="adminProcessWd('${d.id}', true, '${w.userId}', ${w.amount})">Mark Paid</button>
+                            <button class="btn btn-danger" style="padding:5px 10px; font-size:0.8rem; margin-top:5px;" onclick="adminProcessWd('${d.id}', false, '${w.userId}', ${w.amount})">Reject (Refund)</button>
+                        </td>
+                    </tr>`;
+                });
+                container.innerHTML = html + '</table>';
+            } catch(e) { container.innerHTML = `<p>Error.</p>`; }
+        };
+
+        window.adminProcessWd = async (wdId, isPaid, userId, amount) => {
+            try {
+                await updateDoc(doc(db, "withdrawals", wdId), { status: isPaid ? 'Paid' : 'Rejected' });
+                if(!isPaid) { await updateDoc(doc(db, "users", userId), { "wallet.coins": increment(amount) }); } // Refund
+                UI.showToast(`Withdrawal ${isPaid ? 'marked Paid' : 'Rejected & Refunded'}`);
+                loadAdminWithdrawals();
+            } catch(e) { UI.showToast("Error.", "error"); }
+        };
+
+        const loadAdminTournaments = async () => {
+            const container = document.getElementById('admin-t-list');
+            try {
+                const snap = await getDocs(collection(db, "tournaments"));
+                let html = '<table><tr><th>Title</th><th>Prize</th><th>Slots</th><th>Status</th><th>Actions</th></tr>';
+                snap.forEach(doc => {
+                    const t = doc.data();
+                    html += `<tr><td>${t.title}</td><td>₹${t.prizePool}</td><td>${t.filledSlots}/${t.maxSlots}</td><td>${t.status}</td>
+                            <td><button class="btn btn-outline" style="padding:5px 10px; font-size:0.8rem;" onclick="adminEditT('${doc.id}')">EDIT</button></td></tr>`;
+                });
+                container.innerHTML = html + '</table>';
+                window._adminTData = window._adminTData || {}; snap.forEach(d => window._adminTData[d.id] = d.data());
+            } catch(e) { container.innerHTML = `<p>Error.</p>`; }
+        };
+
+        window.adminEditT = (id) => {
+            const t = window._adminTData[id];
+            UI.showModal(`
+                <h3>Override Event</h3>
+                <div class="form-group mt-4"><label>Prize Pool</label><input type="number" id="ae-prize" value="${t.prizePool}"></div>
+                <div class="form-group"><label>Filled Slots</label><input type="number" id="ae-slots" value="${t.filledSlots}"></div>
+                <div class="form-group"><label>Status</label>
+                    <select id="ae-status">
+                        <option value="Registration Open" ${t.status==='Registration Open'?'selected':''}>Registration Open</option>
+                        <option value="Upcoming" ${t.status==='Upcoming'?'selected':''}>Upcoming</option>
+                        <option value="Live" ${t.status==='Live'?'selected':''}>Live</option>
+                        <option value="Completed" ${t.status==='Completed'?'selected':''}>Completed</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="adminSaveT('${id}')">Force Update</button>
+            `);
+        };
+
+        window.adminSaveT = async (id) => {
+            try { await updateDoc(doc(db, "tournaments", id), { prizePool: parseInt(document.getElementById('ae-prize').value), filledSlots: parseInt(document.getElementById('ae-slots').value), status: document.getElementById('ae-status').value }); UI.showToast("Overridden."); UI.closeModal(); loadAdminTournaments(); } catch(e) { UI.showToast(e.message, "error"); }
+        };
+
+        const loadAdminRecharges = async () => {
+            const container = document.getElementById('admin-r-list');
+            try {
+                const q = query(collection(db, "recharges"), where("status", "==", "pending"));
+                const snap = await getDocs(q);
+                if(snap.empty) { container.innerHTML = `<p>No pending top-ups.</p>`; return; }
+                let html = '<table><tr><th>User</th><th>UTR</th><th>Amount</th><th>Actions</th></tr>';
+                snap.forEach(d => {
+                    const r = d.data();
+                    html += `<tr><td>${r.username}</td><td>${r.utr}</td><td><strong style="color:var(--success)">₹${r.amount}</strong></td>
+                        <td><button class="btn btn-primary" style="padding:5px; font-size:0.8rem; background:var(--success);" onclick="adminHandleRech('${d.id}', true, '${r.userId}', ${r.amount})">Approve</button></td>
+                    </tr>`;
+                });
+                container.innerHTML = html + '</table>';
+            } catch(e) { container.innerHTML = `<p>Error.</p>`; }
+        };
+
+        window.adminHandleRech = async (rId, approve, userId, amount) => {
+            try {
+                await updateDoc(doc(db, "recharges", rId), { status: approve ? 'approved' : 'rejected' });
+                if(approve) await updateDoc(doc(db, "users", userId), { "wallet.coins": increment(amount) });
+                UI.showToast("Recharge Approved"); loadAdminRecharges();
+            } catch(e) { UI.showToast(e.message, "error"); }
+        };
+
+        const loadAdminUsers = async () => {
+            const container = document.getElementById('admin-u-list');
+            try {
+                const snap = await getDocs(collection(db, "users"));
+                let html = '<table><tr><th>User</th><th>Role</th><th>Wallet</th><th>Actions</th></tr>';
+                snap.forEach(d => {
+                    const u = d.data(); html += `<tr><td>${u.username}</td><td>${u.role}</td><td>₹${u.wallet?.coins||0}</td>
+                    <td><button class="btn btn-outline" style="padding:5px 10px; font-size:0.8rem;" onclick="adminEditUser('${d.id}', ${u.wallet?.coins||0})">Edit</button></td></tr>`;
+                });
+                container.innerHTML = html + '</table>';
+            } catch(e) {}
+        };
+
+        window.adminEditUser = (uId, coins) => { UI.showModal(`<h3>Inject Funds</h3><div class="form-group mt-4"><label>Set Exact Balance (₹)</label><input type="number" id="au-wallet" value="${coins}"></div><button class="btn btn-primary" onclick="adminSaveUser('${uId}')">Force Inject</button>`); };
+        window.adminSaveUser = async (uId) => { try { await updateDoc(doc(db, "users", uId), { "wallet.coins": parseInt(document.getElementById('au-wallet').value) }); UI.showToast("Injected."); UI.closeModal(); loadAdminUsers(); } catch(e) {} };
+
+        window.addEventListener('DOMContentLoaded', () => navigate('landing'));
+    </script>
+</body>
+</html>
