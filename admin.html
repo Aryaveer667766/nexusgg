@@ -118,6 +118,19 @@
             background: rgba(245, 158, 11, 0.03);
             box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15); 
         }
+        
+        /* Advanced Search Bar */
+        .search-wrapper { position: relative; margin-bottom: 24px; }
+        .search-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; }
+        .search-wrapper input { padding-left: 48px; background: rgba(0,0,0,0.4); border-radius: 12px; }
+
+        /* Custom Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px; border: 1px solid var(--border); }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--danger); border-color: var(--danger); box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
         .badge {
             padding: 6px 14px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;
@@ -311,7 +324,7 @@
 
         let appState = {
             user: null, userData: null,
-            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"]
+            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, maintenanceMode: false, games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"]
         };
 
         const UI = {
@@ -332,9 +345,20 @@
         };
         window.closeModal = UI.closeModal; 
 
-        window.logoutUser = () => { signOut(auth).then(() => { window.location.href = 'index.html'; }); };
+        // Safe Fallback Auth Redirection System for IDE/Sandbox Support
+        const redirectToLogin = () => {
+            document.body.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--bg-base); color:white; text-align:center;">
+                    <i class="ph-duotone ph-shield-warning" style="font-size:6rem; color:var(--danger); margin-bottom:20px;"></i>
+                    <h1 style="font-family:var(--font-display); font-size:3rem; margin-bottom:10px; text-transform:uppercase;">Access Restricted</h1>
+                    <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom:30px;">You must be logged in as an Administrator.</p>
+                    <a href="index.html" style="padding:14px 28px; background:var(--primary); color:black; text-decoration:none; font-weight:bold; border-radius:8px; font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; letter-spacing:1px; box-shadow: 0 0 20px var(--primary-glow);">Return to Portal</a>
+                </div>
+            `;
+        };
 
-        // Mobile Menu Logic
+        window.logoutUser = () => { signOut(auth).then(() => { redirectToLogin(); }); };
+
         window.toggleMobileMenu = () => {
             const drawer = document.getElementById('mobileDrawer');
             const overlay = document.getElementById('drawerOverlay');
@@ -345,7 +369,21 @@
             }
         };
 
-        // Load Platform Settings Sync
+        window.searchTable = (containerId, query) => {
+            let filter = query.toUpperCase();
+            let table = document.querySelector(`#${containerId} table`);
+            if(!table) return;
+            let tr = table.getElementsByTagName("tr");
+            for (let i = 1; i < tr.length; i++) {
+                let txtValue = tr[i].textContent || tr[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        };
+
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -356,6 +394,7 @@
                 if(data.platformFeePercent !== undefined) appState.platformFeePercent = parseInt(data.platformFeePercent);
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
                 if(data.hostCreationFee !== undefined) appState.hostCreationFee = parseInt(data.hostCreationFee);
+                if(data.maintenanceMode !== undefined) appState.maintenanceMode = data.maintenanceMode;
                 if(data.brandLogo) {
                     appState.brandLogo = data.brandLogo;
                     document.getElementById('nav-logo-icon').style.display = 'none';
@@ -365,7 +404,6 @@
             }
         });
 
-        // CORE AUTH LOGIC: Strict Admin Lockout
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 appState.user = user;
@@ -376,17 +414,17 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         if (appState.userData.role !== 'admin') {
-                            window.location.href = 'index.html';
+                            redirectToLogin();
                             return;
                         }
                         
                         document.getElementById('desk-username').innerText = appState.userData.username;
                         document.getElementById('drawer-username').innerText = appState.userData.username;
                         renderAdminDashboard();
-                    } else { window.location.href = 'index.html'; }
+                    } else { redirectToLogin(); }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
             } else {
-                window.location.href = 'index.html';
+                redirectToLogin();
             }
         });
 
@@ -400,7 +438,6 @@
                         const tab = e.currentTarget.dataset.tab;
                         document.querySelectorAll(`.sidebar-item[data-tab="${tab}"]`).forEach(el => el.classList.add('active'));
                         
-                        // Close mobile menu if open
                         const drawer = document.getElementById('mobileDrawer');
                         if(drawer.classList.contains('open')) window.toggleMobileMenu();
                         
@@ -426,6 +463,20 @@
                     container.innerHTML = `
                         <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Platform Config</h2>
                         <div class="glass stagger-card" style="padding:48px; max-width:700px;">
+                            
+                            <div class="form-group" style="margin-bottom:32px; padding:24px; border:1px dashed var(--danger); border-radius:12px; background:rgba(239, 68, 68, 0.05);">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <label style="display:block; margin-bottom:4px; color:var(--danger); font-weight:700; letter-spacing:1px; font-size:0.95rem; text-transform:uppercase;"><i class="ph-bold ph-warning"></i> Maintenance Mode</label>
+                                        <span style="font-size:0.8rem; color:var(--text-muted);">Lock out all non-admin users instantly.</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="cfg-maintenance" ${appState.maintenanceMode ? 'checked' : ''}>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="form-group" style="margin-bottom:24px;">
                                 <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Platform Brand Name</label>
                                 <input type="text" id="cfg-brand" value="${appState.brandName}" style="padding:16px;">
@@ -479,36 +530,59 @@
                                 brandLogo: document.getElementById('cfg-logo-base64').value,
                                 platformFeePercent: parseInt(document.getElementById('cfg-host-fee').value), 
                                 withdrawalFeePercent: parseInt(document.getElementById('cfg-withdraw-fee').value),
-                                hostCreationFee: parseInt(document.getElementById('cfg-create-fee').value)
+                                hostCreationFee: parseInt(document.getElementById('cfg-create-fee').value),
+                                maintenanceMode: document.getElementById('cfg-maintenance').checked
                             };
                             await setDoc(doc(db, "platform", "settings"), payload, {merge: true}); 
-                            UI.showToast("Settings Deployed."); 
+                            UI.showToast("Settings Deployed Globally."); 
                         } catch(e){} 
                     };
                 } else if(tab === 'admin-tournaments') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Global Event Override</h2><div id="admin-t-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Global Event Override</h2>
+                        <div class="search-wrapper stagger-card"><i class="ph-bold ph-magnifying-glass"></i><input type="text" id="search-tournaments" onkeyup="searchTable('admin-t-list', this.value)" placeholder="Search operations by title or host..."></div>
+                        <div id="admin-t-list"><div class="skeleton" style="height:250px;"></div></div>
+                    `; 
                     loadAdminTournaments();
                 } else if(tab === 'admin-settlements') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Escrow Queue</h2><div id="admin-s-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Escrow Queue</h2>
+                        <div class="search-wrapper stagger-card"><i class="ph-bold ph-magnifying-glass"></i><input type="text" id="search-settlements" onkeyup="searchTable('admin-s-list', this.value)" placeholder="Search pending settlements..."></div>
+                        <div id="admin-s-list"><div class="skeleton" style="height:250px;"></div></div>
+                    `; 
                     loadAdminSettlements();
                 } else if(tab === 'admin-recharges') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">UTR Verifications</h2><div id="admin-r-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">UTR Verifications</h2>
+                        <div class="search-wrapper stagger-card"><i class="ph-bold ph-magnifying-glass"></i><input type="text" id="search-recharges" onkeyup="searchTable('admin-r-list', this.value)" placeholder="Search by UTR or username..."></div>
+                        <div id="admin-r-list"><div class="skeleton" style="height:250px;"></div></div>
+                    `; 
                     loadAdminRecharges();
                 } else if(tab === 'admin-withdrawals') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Payout Queue</h2><div id="admin-w-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Payout Queue</h2>
+                        <div class="search-wrapper stagger-card"><i class="ph-bold ph-magnifying-glass"></i><input type="text" id="search-withdrawals" onkeyup="searchTable('admin-w-list', this.value)" placeholder="Search payout requests..."></div>
+                        <div id="admin-w-list"><div class="skeleton" style="height:250px;"></div></div>
+                    `; 
                     loadAdminWithdrawals();
                 } else if(tab === 'admin-users') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">User Matrix</h2><div id="admin-u-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">User Matrix</h2>
+                        <div class="search-wrapper stagger-card"><i class="ph-bold ph-magnifying-glass"></i><input type="text" id="search-users" onkeyup="searchTable('admin-u-list', this.value)" placeholder="Search users by name, email, or ID..."></div>
+                        <div id="admin-u-list"><div class="skeleton" style="height:250px;"></div></div>
+                    `; 
                     loadAdminUsers();
                 } else if(tab === 'admin-support') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Admin Comms Desk</h2><div id="admin-tkt-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Admin Comms Desk</h2>
+                        <div class="search-wrapper stagger-card"><i class="ph-bold ph-magnifying-glass"></i><input type="text" id="search-tickets" onkeyup="searchTable('admin-tkt-list', this.value)" placeholder="Search tickets..."></div>
+                        <div id="admin-tkt-list"><div class="skeleton" style="height:250px;"></div></div>
+                    `; 
                     loadAdminTickets(); 
                 }
             });
         };
         
-        // --- ADMIN FUNCTIONS ---
-
         const loadAdminOverview = async () => {
             const container = document.getElementById('admin-analytics');
             try {
@@ -549,7 +623,7 @@
                             <div class="stat-value" style="color:var(--success); text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">${activeTournaments}</div>
                         </div>
                         <div class="glass stat-box stagger-card" style="animation-delay: 0.4s; border-color:rgba(225, 29, 72, 0.3);">
-                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Critical Alerts (Tkt/Payouts)</div>
+                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Critical Alerts</div>
                             <div class="stat-value" style="color:var(--accent); text-shadow: 0 0 20px var(--accent-glow);">${pendingTickets + pendingPayouts}</div>
                         </div>
                     </div>
@@ -755,10 +829,12 @@
             const container = document.getElementById('admin-u-list');
             try {
                 const snap = await getDocs(collection(db, "users"));
-                let html = '<div class="table-responsive stagger-card"><table><tr><th>User Matrix</th><th>Role</th><th>Ledger</th><th>System Commands</th></tr>';
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>User Matrix</th><th>Role</th><th>Status</th><th>Ledger</th><th>System Commands</th></tr>';
                 snap.forEach(doc => { 
                     const u = doc.data(); 
                     let roleCol = u.role === 'admin' ? 'var(--primary)' : (u.role === 'host' ? '#d946ef' : 'var(--text-muted)');
+                    let statusBadge = u.isBanned ? `<span class="badge" style="background:rgba(239,68,68,0.2); color:var(--danger); border:1px solid var(--danger); font-size:0.65rem;">SUSPENDED</span>` : `<span class="badge" style="background:rgba(16,185,129,0.1); color:var(--success); border:1px solid var(--success); font-size:0.65rem;">ACTIVE</span>`;
+
                     html += `<tr>
                         <td>
                             <span style="font-weight:600; font-size:1.05rem; color:white;">${UI.escapeHTML(u.username)}</span><br>
@@ -766,18 +842,32 @@
                             <span style="font-size:0.7rem; color:rgba(255,255,255,0.3); font-family:monospace;">ID: ${doc.id}</span>
                         </td>
                         <td><span class="badge" style="border:1px solid ${roleCol}; color:${roleCol}; background:rgba(0,0,0,0.3);">${u.role.toUpperCase()}</span></td>
+                        <td>${statusBadge}</td>
                         <td style="color:var(--success); font-weight:800; font-size:1.2rem;">₹${u.wallet?.coins || 0}</td>
-                        <td><button class="btn btn-outline" style="padding:8px 14px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="aEU('${doc.id}', ${u.wallet?.coins || 0}, '${UI.escapeHTML(u.username)}', '${u.role}')"><i class="ph-bold ph-pencil-simple"></i> Edit Matrix</button></td>
+                        <td><button class="btn btn-outline" style="padding:8px 14px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="aEU('${doc.id}', ${u.wallet?.coins || 0}, '${UI.escapeHTML(u.username)}', '${u.role}', ${!!u.isBanned})"><i class="ph-bold ph-pencil-simple"></i> Edit Matrix</button></td>
                     </tr>`; 
                 });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aEU = (uId, c, uName, currentRole) => { 
+        window.aEU = (uId, c, uName, currentRole, isBanned) => { 
             UI.showModal(`
                 <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Matrix Editor</h3>
                 <p style="color:var(--text-muted); margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border);">Target: <strong style="color:white; font-size:1.1rem;">${uName}</strong></p>
                 
+                <div class="form-group" style="margin-bottom:24px; padding:16px; background:rgba(239, 68, 68, 0.05); border:1px dashed rgba(239, 68, 68, 0.3); border-radius:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:var(--danger); font-weight:700; text-transform:uppercase; font-size:0.85rem; letter-spacing:1px;"><i class="ph-bold ph-shield-slash"></i> Account Suspension</span>
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Ban user from accessing the platform.</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="au-ban" ${isBanned ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-group" style="margin-bottom:24px;">
                     <label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">New Exact Balance (₹)</label>
                     <input type="number" id="au-wallet" value="${c}" style="padding:16px; font-size:1.2rem; font-weight:700;">
@@ -800,7 +890,8 @@
             try { 
                 await updateDoc(doc(db, "users", uId), { 
                     "wallet.coins": parseInt(document.getElementById('au-wallet').value),
-                    "role": document.getElementById('au-role').value
+                    "role": document.getElementById('au-role').value,
+                    "isBanned": document.getElementById('au-ban').checked
                 }); 
                 UI.showToast("Matrix Injection Complete."); UI.closeModal(); loadAdminUsers(); 
             } catch(e) {} 
@@ -855,7 +946,7 @@
                     <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:16px; letter-spacing:1px; text-transform:uppercase;">${UI.escapeHTML(t.subject)}</h3>
                     <div class="mt-4 mb-4" style="max-width:95%; padding:20px; border-radius:16px; font-size:1.05rem; align-self:flex-start; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-muted); font-style:italic; box-shadow:inset 0 0 15px rgba(0,0,0,0.5);">"${UI.escapeHTML(t.message)}"</div>
                     <div style="display:flex; flex-direction:column; gap:14px; height:350px; overflow-y:auto; padding:20px; background:rgba(0,0,0,0.3); border-radius:16px; border:1px solid var(--border); margin-bottom:24px;">${rHtml}</div>
-                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:12px;"><input type="text" id="tr-txt" placeholder="Transmit reply as Admin..." style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; font-size:1.05rem;"><button class="btn btn-primary" style="padding:16px 20px; border-radius:12px; box-shadow:0 10px 20px var(--primary-glow);" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,42,95,0.3); background:rgba(255,42,95,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>'}
+                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:12px;"><input type="text" id="tr-txt" placeholder="Transmit reply as Admin..." style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; font-size:1.05rem;"><button class="btn btn-primary" style="padding:16px 20px; border-radius:12px; box-shadow:0 10px 20px var(--primary-glow);" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(239,68,68,0.3); background:rgba(239,68,68,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>'}
                 `);
             } catch(e) {}
         };
