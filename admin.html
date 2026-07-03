@@ -14,15 +14,17 @@
 
     <style>
         :root {
-            /* Deep Night Esports Theme - Admin Specific (Amber/Gold & Crimson) */
-            --bg-base: #050303;
-            --surface: rgba(20, 15, 15, 0.65);
-            --surface-hover: rgba(40, 30, 30, 0.8);
+            /* Deep Night Esports Theme - Admin "God Mode" (Amber & Crimson) */
+            --bg-base: #050303; 
+            --surface: rgba(20, 15, 15, 0.7); 
+            --surface-hover: rgba(40, 20, 20, 0.85);
             
-            --primary: #f59e0b; /* Neon Amber / Gold for Admin */
+            --primary: #f59e0b; /* Neon Amber / Gold */
             --primary-glow: rgba(245, 158, 11, 0.4);
             
-            --accent: #e11d48; /* Crimson */
+            --accent: #e11d48; /* Crimson / Blood Red */
+            --accent-glow: rgba(225, 29, 72, 0.5);
+            
             --danger: #ef4444;
             --success: #10b981;
             
@@ -33,8 +35,8 @@
             --font-display: 'Rajdhani', sans-serif;
             --font-body: 'Inter', sans-serif;
             
-            --shadow-float: 0 20px 40px -10px rgba(0,0,0,0.8);
-            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-float: 0 20px 40px -10px rgba(0,0,0,0.9);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -47,8 +49,8 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(225, 29, 72, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 15% 50%, rgba(225, 29, 72, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
             background-attachment: fixed;
         }
 
@@ -59,11 +61,11 @@
 
         .glass {
             background: var(--surface);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border);
             border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
         .btn {
@@ -78,11 +80,11 @@
         .btn-primary { 
             background: linear-gradient(135deg, var(--primary), #d97706); 
             color: #000; 
-            box-shadow: 0 0 15px var(--primary-glow); 
+            box-shadow: 0 0 20px var(--primary-glow); 
         }
         .btn-primary:hover:not(:disabled) { 
-            box-shadow: 0 0 25px var(--primary-glow);
-            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--primary-glow);
+            transform: translateY(-3px);
             filter: brightness(1.2);
         }
         
@@ -95,70 +97,95 @@
             border-color: var(--primary); 
             color: var(--primary);
             background: rgba(245, 158, 11, 0.05);
-            transform: translateY(-2px); 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
-        
+
         .btn-danger { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); }
         .btn-danger:hover { background: var(--danger); color: white; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);}
 
         input, select, textarea {
             width: 100%; padding: 14px 18px; 
-            background: rgba(0,0,0,0.4); 
+            background: rgba(0,0,0,0.5); 
             border: 1px solid var(--border);
             border-radius: 8px; color: white; 
             font-family: var(--font-body); transition: var(--transition);
-            font-size: 0.95rem;
+            font-size: 0.95rem; resize: vertical;
         }
         input:focus, select:focus, textarea:focus { 
             outline: none; 
             border-color: var(--primary); 
-            background: rgba(245, 158, 11, 0.02);
-            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1); 
+            background: rgba(245, 158, 11, 0.03);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15); 
         }
 
         .badge {
             padding: 6px 14px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 6px;
+            text-transform: uppercase; letter-spacing: 1.5px; display: inline-flex; align-items: center; gap: 6px;
         }
 
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 5%;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border); 
-            background: rgba(5, 3, 3, 0.8);
+            background: rgba(5, 3, 3, 0.85);
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
         }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: white; letter-spacing: 1px; }
+        .logo-text { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: white; letter-spacing: 2px; text-transform: uppercase; }
 
-        #app-content { margin-top: 85px; padding: 20px 5%; min-height: calc(100vh - 85px); padding-bottom: 100px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        /* Mobile Hamburger & Drawer Styles */
+        .mobile-menu-btn { 
+            display: none; background: transparent; border: none; color: white; 
+            font-size: 2.2rem; cursor: pointer; transition: var(--transition);
+        }
+        .mobile-menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+        
+        .drawer-overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 1999; display: none; opacity: 0; transition: 0.4s ease; 
+        }
+        .drawer-overlay.open { display: block; opacity: 1; }
+
+        .mobile-drawer { 
+            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; 
+            background: linear-gradient(180deg, rgba(20,15,15,0.95) 0%, rgba(10,5,5,0.98) 100%); 
+            backdrop-filter: blur(30px); border-left: 1px solid var(--border); 
+            z-index: 2000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+            display: flex; flex-direction: column; padding: 32px 24px; box-shadow: -20px 0 50px rgba(0,0,0,0.9); 
+        }
+        .mobile-drawer.open { right: 0; }
+        
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px;}
+        .drawer-close { font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
+        .drawer-close:hover { color: var(--danger); transform: rotate(90deg); }
+
+        #app-content { margin-top: 90px; padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 60px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         .dashboard-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
         .sidebar { padding: 24px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 110px; height: max-content; }
-        .sidebar-item { padding: 14px 20px; border-radius: 8px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 500; font-size: 1.05rem;}
-        .sidebar-item:hover { background: rgba(255,255,255,0.03); color: white; }
-        .sidebar-item.active { background: rgba(245, 158, 11, 0.1); color: var(--primary); box-shadow: inset 3px 0 0 var(--primary); }
-        
-        .bottom-nav { display: none; }
+        .sidebar-item { 
+            padding: 16px 20px; border-radius: 12px; cursor: pointer; transition: var(--transition); 
+            display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 600; font-size: 1.1rem;
+        }
+        .sidebar-item:hover { background: rgba(255,255,255,0.03); color: white; transform: translateX(5px); }
+        .sidebar-item.active { background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, transparent 100%); color: var(--primary); border-left: 4px solid var(--primary); }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 24px; }
+        .stagger-card { animation: fadeUpStagger 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
 
         @media (max-width: 900px) {
             .dashboard-layout { grid-template-columns: 1fr; gap: 20px; }
             .sidebar { display: none; }
-            .bottom-nav {
-                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 999;
-                background: rgba(8, 5, 5, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border);
-                padding: 12px 5px; padding-bottom: env(safe-area-inset-bottom, 15px); justify-content: space-around; flex-wrap: wrap; gap: 5px;
-            }
-            .b-nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.7rem; font-weight: 500; cursor: pointer; transition: 0.2s; width: 60px;}
-            .b-nav-item i { font-size: 1.4rem; }
-            .b-nav-item.active { color: var(--primary); transform: translateY(-4px); }
-            #app-content { padding-bottom: 120px; }
+            .mobile-menu-btn { display: block; }
+            .hide-mobile { display: none !important; }
+            .nav-actions { gap: 12px; }
+            .modal-content { padding: 32px 20px; }
         }
 
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 24px; }
-
+        @keyframes fadeUpStagger { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
 
@@ -169,56 +196,85 @@
         }
         
         .empty-state { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
-        .empty-state i { font-size: 4.5rem; color: rgba(255,255,255,0.1); }
+        .empty-state i { font-size: 5rem; color: rgba(255,255,255,0.05); filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.2)); }
 
-        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); }
+        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 16px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); }
         table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th, td { padding: 18px 20px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;}
-        tr:hover { background: rgba(255,255,255,0.02); }
+        th, td { padding: 20px 24px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;}
+        tr { transition: var(--transition); }
+        tr:hover { background: rgba(255,255,255,0.03); }
 
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { pointer-events: auto; padding: 16px 24px; border-radius: 8px; color: white; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-float); animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(15, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); min-width: 320px; font-weight: 500;}
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.success i { color: var(--success); font-size: 1.6rem; }
-        .toast.error { border-left: 4px solid var(--danger); }
-        .toast.error i { color: var(--danger); font-size: 1.6rem; }
-        @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+        .toast { pointer-events: auto; padding: 18px 24px; border-radius: 12px; color: white; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-float); animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); min-width: 320px; font-weight: 600; font-size: 1.05rem;}
+        .toast.success { border-left: 4px solid var(--success); } .toast.success i { color: var(--success); font-size: 1.8rem; }
+        .toast.error { border-left: 4px solid var(--danger); } .toast.error i { color: var(--danger); font-size: 1.8rem; }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;}
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;}
         .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content { width: 95%; max-width: 550px; padding: 40px; position: relative; max-height: 90vh; overflow-y: auto; background: var(--bg-base); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 0 50px rgba(0,0,0,0.8); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        .close-modal { position: absolute; top: 24px; right: 24px; cursor: pointer; color: var(--text-muted); font-size: 1.5rem; transition: var(--transition); background: rgba(255,255,255,0.05); border-radius: 8px; padding: 6px; display: flex;}
-        .close-modal:hover { color: white; background: rgba(255,255,255,0.1); }
+        .modal-content { width: 95%; max-width: 700px; padding: 48px; position: relative; max-height: 90vh; overflow-y: auto; background: linear-gradient(180deg, rgba(20,15,15,1) 0%, rgba(10,5,5,1) 100%); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        .close-modal { position: absolute; top: 24px; right: 24px; cursor: pointer; color: var(--text-muted); font-size: 1.8rem; transition: var(--transition); background: rgba(255,255,255,0.05); border-radius: 50%; padding: 8px; display: flex;}
+        .close-modal:hover { color: var(--danger); background: rgba(255,42,95,0.1); transform: rotate(90deg); }
+
+        .stat-box { text-align: center; padding: 32px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border); transition: var(--transition); position: relative; overflow: hidden;}
+        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--border); transition: var(--transition); }
+        .stat-box:hover { background: rgba(255,255,255,0.04); transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0,0,0,0.5);}
+        .stat-box:hover::before { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .stat-value { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: white; margin: 12px 0 0 0; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo-container">
-            <img id="nav-logo-img" src="" style="display:none; height:32px;">
-            <i id="nav-logo-icon" class="ph-fill ph-cpu" style="font-size: 32px; color: var(--primary); text-shadow: 0 0 10px var(--primary-glow);"></i>
-            <span class="logo-text brand-name" style="letter-spacing: 2px;">NEXUS <span style="font-size:1rem; color:var(--primary); font-weight:600; vertical-align:super;">CORE</span></span>
+            <img id="nav-logo-img" src="" style="display:none; height:36px;">
+            <i id="nav-logo-icon" class="ph-fill ph-cpu" style="font-size: 36px; color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);"></i>
+            <span class="logo-text brand-name">NEXUS <span style="font-size:1.1rem; color:var(--primary); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--primary-glow);">CORE</span></span>
         </div>
         <div class="nav-actions" id="nav-auth-container">
-            <div style="text-align:right; display:none; @media(min-width:600px){display:block;}">
-                <span id="nav-username" style="color:white; font-weight:600;">System Admin</span>
-            </div>
-            <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding: 8px; font-size: 0.9rem;" onclick="logoutUser()"><i class="ph-bold ph-power"></i></button>
+            <button class="btn btn-outline hide-mobile" style="border-color:var(--danger); color:var(--danger); padding: 10px 16px; font-size: 0.95rem;" onclick="logoutUser()"><i class="ph-bold ph-power"></i> System Halt</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="ph-bold ph-list"></i></button>
         </div>
     </nav>
 
-    <div id="toast-container"></div>
-    <div id="modal-container" class="modal-overlay">
-        <div class="modal-content" id="modal-body"></div>
+    <!-- Mobile Drawer Overlay & Menu -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span class="logo-text brand-name" style="font-size:1.5rem;">NEXUS <span style="color:var(--primary);">CORE</span></span>
+            <i class="ph-bold ph-x drawer-close" onclick="toggleMobileMenu()"></i>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y:auto; padding-right:10px;">
+            <div class="sidebar-item active" data-tab="admin-overview"><i class="ph-fill ph-cpu"></i> Diagnostics</div>
+            <div class="sidebar-item" data-tab="admin-settings"><i class="ph-fill ph-gear"></i> System Config</div>
+            <div class="sidebar-item" data-tab="admin-tournaments"><i class="ph-fill ph-game-controller"></i> Global Override</div>
+            <div class="sidebar-item" data-tab="admin-settlements"><i class="ph-fill ph-scales"></i> Settlements</div>
+            <div class="sidebar-item" data-tab="admin-recharges"><i class="ph-fill ph-bank"></i> UTR Verification</div>
+            <div class="sidebar-item" data-tab="admin-withdrawals"><i class="ph-fill ph-money"></i> Payout Queue</div>
+            <div class="sidebar-item" data-tab="admin-users"><i class="ph-fill ph-users-three"></i> User Matrix</div>
+            <div class="sidebar-item" data-tab="admin-support"><i class="ph-fill ph-lifebuoy"></i> Comms Desk</div>
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 24px; margin-top: 20px;">
+            <div style="color:var(--text-muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px;">God Mode Active</div>
+            <div style="color:white; font-weight:700; font-size:1.1rem; margin-bottom:16px;" id="drawer-username">Admin</div>
+            <button class="btn btn-danger w-100" style="width:100%; padding: 12px;" onclick="logoutUser()"><i class="ph-bold ph-power"></i> Terminate Link</button>
+        </div>
     </div>
 
+    <div id="toast-container"></div>
+    <div id="modal-container" class="modal-overlay"><div class="modal-content" id="modal-body"></div></div>
+
     <main id="app-content">
-        <!-- ADMIN DASHBOARD -->
         <section id="view-admin-dash" class="view-section active">
             <div class="dashboard-layout">
+                <!-- Desktop Sidebar -->
                 <div class="glass sidebar">
+                    <div style="padding: 0 10px 20px 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border);">
+                        <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">System Administrator</div>
+                        <div style="color:var(--primary); font-weight:800; font-size:1.2rem; font-family:var(--font-display); letter-spacing:1px; text-shadow:0 0 10px var(--primary-glow);" id="desk-username">Admin</div>
+                    </div>
                     <div class="sidebar-item active" data-tab="admin-overview"><i class="ph-fill ph-cpu"></i> Diagnostics</div>
                     <div class="sidebar-item" data-tab="admin-settings"><i class="ph-fill ph-gear"></i> System Config</div>
                     <div class="sidebar-item" data-tab="admin-tournaments"><i class="ph-fill ph-game-controller"></i> Global Override</div>
@@ -228,15 +284,7 @@
                     <div class="sidebar-item" data-tab="admin-users"><i class="ph-fill ph-users-three"></i> User Matrix</div>
                     <div class="sidebar-item" data-tab="admin-support"><i class="ph-fill ph-lifebuoy"></i> Comms Desk</div>
                 </div>
-                <div class="bottom-nav" id="bnav-admin">
-                    <div class="b-nav-item active" data-tab="admin-overview"><i class="ph-fill ph-cpu"></i>Core</div>
-                    <div class="b-nav-item" data-tab="admin-settings"><i class="ph-fill ph-gear"></i>Config</div>
-                    <div class="b-nav-item" data-tab="admin-tournaments"><i class="ph-fill ph-game-controller"></i>Events</div>
-                    <div class="b-nav-item" data-tab="admin-settlements"><i class="ph-fill ph-scales"></i>Escrow</div>
-                    <div class="b-nav-item" data-tab="admin-recharges"><i class="ph-fill ph-bank"></i>UTR</div>
-                    <div class="b-nav-item" data-tab="admin-withdrawals"><i class="ph-fill ph-money"></i>Payouts</div>
-                    <div class="b-nav-item" data-tab="admin-users"><i class="ph-fill ph-users-three"></i>Users</div>
-                </div>
+                
                 <div class="dashboard-content" id="admin-dash-content"></div>
             </div>
         </section>
@@ -263,17 +311,16 @@
 
         let appState = {
             user: null, userData: null,
-            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50
+            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"]
         };
 
         const UI = {
             showToast: (msg, type = 'success') => {
                 const container = document.getElementById('toast-container');
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
+                const toast = document.createElement('div'); toast.className = `toast ${type}`;
                 toast.innerHTML = `<i class="ph-fill ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}"></i> <span>${msg}</span>`;
                 container.appendChild(toast);
-                setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(40px)'; setTimeout(() => toast.remove(), 400); }, 4000);
+                setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(50px)'; setTimeout(() => toast.remove(), 500); }, 4000);
             },
             showModal: (html) => {
                 document.getElementById('modal-body').innerHTML = `<i class="ph-bold ph-x close-modal" onclick="closeModal()"></i>` + html;
@@ -281,12 +328,21 @@
             },
             closeModal: () => document.getElementById('modal-container').classList.remove('active'),
             escapeHTML: (str) => String(str || '').replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)),
-            emptyState: (icon, title, desc) => `<div class="empty-state"><i class="ph-duotone ${icon}"></i><h3 style="font-family:var(--font-display); font-size:2rem;">${title}</h3><p>${desc}</p></div>`
+            emptyState: (icon, title, desc) => `<div class="empty-state"><i class="ph-duotone ${icon}"></i><h3 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin-bottom:8px;">${title}</h3><p style="font-size:1.1rem;">${desc}</p></div>`
         };
         window.closeModal = UI.closeModal; 
 
-        window.logoutUser = () => {
-            signOut(auth).then(() => { window.location.href = 'index.html'; });
+        window.logoutUser = () => { signOut(auth).then(() => { window.location.href = 'index.html'; }); };
+
+        // Mobile Menu Logic
+        window.toggleMobileMenu = () => {
+            const drawer = document.getElementById('mobileDrawer');
+            const overlay = document.getElementById('drawerOverlay');
+            if (drawer.classList.contains('open')) {
+                drawer.classList.remove('open'); overlay.classList.remove('open');
+            } else {
+                drawer.classList.add('open'); overlay.classList.add('open');
+            }
         };
 
         // Load Platform Settings Sync
@@ -295,7 +351,7 @@
                 const data = docSnap.data();
                 if(data.brandName) { 
                     appState.brandName = data.brandName; 
-                    document.querySelectorAll('.brand-name').forEach(el => el.innerHTML = `${appState.brandName.toUpperCase()} <span style="font-size:1rem; color:var(--primary); font-weight:600; vertical-align:super;">CORE</span>`); 
+                    document.querySelectorAll('.brand-name').forEach(el => el.innerHTML = `${appState.brandName.toUpperCase()} <span style="font-size:1.1rem; color:var(--primary); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--primary-glow);">CORE</span>`); 
                 }
                 if(data.platformFeePercent !== undefined) appState.platformFeePercent = parseInt(data.platformFeePercent);
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
@@ -320,12 +376,12 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         if (appState.userData.role !== 'admin') {
-                            // Non-admins get booted immediately
                             window.location.href = 'index.html';
                             return;
                         }
                         
-                        document.getElementById('nav-username').innerText = appState.userData.username;
+                        document.getElementById('desk-username').innerText = appState.userData.username;
+                        document.getElementById('drawer-username').innerText = appState.userData.username;
                         renderAdminDashboard();
                     } else { window.location.href = 'index.html'; }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
@@ -335,28 +391,25 @@
         });
 
         const setupSidebar = (role, callback) => {
-            const sideItems = document.querySelectorAll(`#view-${role}-dash .sidebar-item`);
-            const botItems = document.querySelectorAll(`#bnav-${role} .b-nav-item`);
-            
-            const attach = (items) => {
-                items.forEach(item => {
+            const items = document.querySelectorAll(`.sidebar-item`);
+            const attach = (nodes) => {
+                nodes.forEach(item => {
                     const newEl = item.cloneNode(true); item.parentNode.replaceChild(newEl, item);
                     newEl.addEventListener('click', (e) => {
-                        sideItems.forEach(el => el.classList.remove('active'));
-                        if(botItems) botItems.forEach(el => el.classList.remove('active'));
-                        
+                        document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
                         const tab = e.currentTarget.dataset.tab;
-                        document.querySelector(`#view-${role}-dash .sidebar-item[data-tab="${tab}"]`)?.classList.add('active');
-                        document.querySelector(`#bnav-${role} .b-nav-item[data-tab="${tab}"]`)?.classList.add('active');
+                        document.querySelectorAll(`.sidebar-item[data-tab="${tab}"]`).forEach(el => el.classList.add('active'));
+                        
+                        // Close mobile menu if open
+                        const drawer = document.getElementById('mobileDrawer');
+                        if(drawer.classList.contains('open')) window.toggleMobileMenu();
                         
                         callback(tab);
                     });
                 });
             };
-            attach(sideItems); if(botItems) attach(botItems);
-            
-            const activeTab = document.querySelector(`#view-${role}-dash .sidebar-item.active`);
-            if(activeTab) callback(activeTab.dataset.tab);
+            attach(items);
+            const activeTab = document.querySelector(`.sidebar-item.active`); if(activeTab) callback(activeTab.dataset.tab);
         };
 
         const renderAdminDashboard = () => {
@@ -365,25 +418,21 @@
             setupSidebar('admin', (tab) => {
                 if(tab === 'admin-overview') {
                     container.innerHTML = `
-                        <h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">God Mode Diagnostics</h2>
-                        <div class="glass p-4 mt-4 text-center" style="padding:80px 20px; position:relative; overflow:hidden;">
-                            <div style="position:absolute; top:-50px; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--primary); opacity:0.05; filter:blur(60px);"></div>
-                            <i class="ph-duotone ph-cpu" style="font-size:6rem; color:var(--primary); margin-bottom:20px; filter:drop-shadow(0 0 20px var(--primary-glow));"></i>
-                            <h2 style="font-family:var(--font-display); font-size:3rem; letter-spacing:2px; margin:0; line-height:1;">NEXUS CORE ENGINE</h2>
-                            <p style="color:var(--success); font-weight:700; letter-spacing:4px; font-size:1.1rem; margin-top:16px;"><i class="ph-fill ph-check-circle"></i> SYSTEM ONLINE</p>
-                        </div>
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">God Mode Diagnostics</h2>
+                        <div id="admin-analytics"><div class="skeleton" style="height:250px;"></div></div>
                     `;
+                    loadAdminOverview();
                 } else if(tab === 'admin-settings') {
                     container.innerHTML = `
-                        <h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">Platform Config</h2>
-                        <div class="glass" style="padding:40px; max-width:700px;">
+                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Platform Config</h2>
+                        <div class="glass stagger-card" style="padding:48px; max-width:700px;">
                             <div class="form-group" style="margin-bottom:24px;">
-                                <label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:500;">Platform Brand Name</label>
-                                <input type="text" id="cfg-brand" value="${appState.brandName}">
+                                <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Platform Brand Name</label>
+                                <input type="text" id="cfg-brand" value="${appState.brandName}" style="padding:16px;">
                             </div>
                             
-                            <div class="form-group" style="margin-bottom:32px; padding:20px; border:1px dashed var(--border); border-radius:12px; background:rgba(0,0,0,0.2);">
-                                <label style="display:block; margin-bottom:12px; color:var(--text-muted); font-weight:500;">Upload Brand Logo</label>
+                            <div class="form-group" style="margin-bottom:32px; padding:24px; border:1px dashed var(--border); border-radius:12px; background:rgba(0,0,0,0.3);">
+                                <label style="display:block; margin-bottom:12px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Upload Brand Logo</label>
                                 <input type="file" id="cfg-logo-file" accept="image/*" style="padding:10px; border:none; background:transparent;">
                                 <input type="hidden" id="cfg-logo-base64" value="${appState.brandLogo || ''}">
                                 <div id="logo-preview" class="mt-2 text-center" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; margin-top:16px;">
@@ -391,13 +440,13 @@
                                 </div>
                             </div>
 
-                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:32px;">
-                                <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:500;">Host Revenue Cut (%)</label><input type="number" id="cfg-host-fee" value="${appState.platformFeePercent}"></div>
-                                <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:500;">Withdrawal Fee (%)</label><input type="number" id="cfg-withdraw-fee" value="${appState.withdrawalFeePercent}"></div>
-                                <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:500;">Event Creation Fee (₹) [Host Pays to Publish]</label><input type="number" id="cfg-create-fee" value="${appState.hostCreationFee}"></div>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:40px;">
+                                <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Host Cut (%)</label><input type="number" id="cfg-host-fee" value="${appState.platformFeePercent}" style="padding:16px;"></div>
+                                <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Withdrawal Fee (%)</label><input type="number" id="cfg-withdraw-fee" value="${appState.withdrawalFeePercent}" style="padding:16px;"></div>
+                                <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Event Creation Fee (₹)</label><input type="number" id="cfg-create-fee" value="${appState.hostCreationFee}" style="padding:16px;"></div>
                             </div>
                             
-                            <button class="btn btn-primary w-100" style="width:100%; padding:14px;" onclick="saveSettings()">Deploy Configuration</button>
+                            <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(245,158,11,0.3);" onclick="saveSettings()"><i class="ph-bold ph-rocket-launch"></i> Deploy Configuration</button>
                         </div>
                     `;
                     
@@ -437,22 +486,22 @@
                         } catch(e){} 
                     };
                 } else if(tab === 'admin-tournaments') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">Global Event Override</h2><div id="admin-t-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Global Event Override</h2><div id="admin-t-list"><div class="skeleton" style="height:250px;"></div></div>`; 
                     loadAdminTournaments();
                 } else if(tab === 'admin-settlements') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">Escrow Queue</h2><div id="admin-s-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Escrow Queue</h2><div id="admin-s-list"><div class="skeleton" style="height:250px;"></div></div>`; 
                     loadAdminSettlements();
                 } else if(tab === 'admin-recharges') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">UTR Verifications</h2><div id="admin-r-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">UTR Verifications</h2><div id="admin-r-list"><div class="skeleton" style="height:250px;"></div></div>`; 
                     loadAdminRecharges();
                 } else if(tab === 'admin-withdrawals') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">Payout Queue</h2><div id="admin-w-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Payout Queue</h2><div id="admin-w-list"><div class="skeleton" style="height:250px;"></div></div>`; 
                     loadAdminWithdrawals();
                 } else if(tab === 'admin-users') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">User Matrix</h2><div id="admin-u-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">User Matrix</h2><div id="admin-u-list"><div class="skeleton" style="height:250px;"></div></div>`; 
                     loadAdminUsers();
                 } else if(tab === 'admin-support') { 
-                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px;">Admin Comms Desk</h2><div id="admin-tkt-list"><div class="skeleton" style="height:250px;"></div></div>`; 
+                    container.innerHTML = `<h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Admin Comms Desk</h2><div id="admin-tkt-list"><div class="skeleton" style="height:250px;"></div></div>`; 
                     loadAdminTickets(); 
                 }
             });
@@ -460,20 +509,70 @@
         
         // --- ADMIN FUNCTIONS ---
 
+        const loadAdminOverview = async () => {
+            const container = document.getElementById('admin-analytics');
+            try {
+                // Fetch actual data
+                const usersSnap = await getDocs(collection(db, "users"));
+                let totalUsers = 0; let platformEconomy = 0;
+                usersSnap.forEach(d => { totalUsers++; platformEconomy += (d.data().wallet?.coins || 0); });
+
+                const tournSnap = await getDocs(collection(db, "tournaments"));
+                let activeTournaments = 0;
+                tournSnap.forEach(d => { if(d.data().status !== 'Completed' && d.data().status !== 'Cancelled') activeTournaments++; });
+
+                const ticketSnap = await getDocs(query(collection(db, "tickets"), where("status", "==", "Open")));
+                let pendingTickets = ticketSnap.size;
+
+                const withSnap = await getDocs(query(collection(db, "withdrawals"), where("status", "==", "pending")));
+                let pendingPayouts = withSnap.size;
+
+                container.innerHTML = `
+                    <div class="glass p-4 text-center stagger-card" style="padding:60px 20px; position:relative; overflow:hidden; margin-bottom:24px;">
+                        <div style="position:absolute; top:-50px; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--primary); opacity:0.05; filter:blur(60px); pointer-events:none;"></div>
+                        <i class="ph-duotone ph-cpu" style="font-size:6rem; color:var(--primary); margin-bottom:20px; filter:drop-shadow(0 0 20px var(--primary-glow));"></i>
+                        <h2 style="font-family:var(--font-display); font-size:3rem; letter-spacing:2px; margin:0; line-height:1; color:white;">SYSTEM ONLINE</h2>
+                        <p style="color:var(--success); font-weight:700; letter-spacing:4px; font-size:1.1rem; margin-top:16px;"><i class="ph-fill ph-check-circle"></i> ALL NODES RESPONDING</p>
+                    </div>
+                    
+                    <div class="grid-cards">
+                        <div class="glass stat-box stagger-card" style="animation-delay: 0.1s;">
+                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Total User Matrix</div>
+                            <div class="stat-value" style="color:white; text-shadow: 0 0 20px rgba(255,255,255,0.3);">${totalUsers}</div>
+                        </div>
+                        <div class="glass stat-box stagger-card" style="animation-delay: 0.2s;">
+                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Platform Economy</div>
+                            <div class="stat-value" style="color:var(--primary); text-shadow: 0 0 20px var(--primary-glow);">₹${platformEconomy}</div>
+                        </div>
+                        <div class="glass stat-box stagger-card" style="animation-delay: 0.3s; border-color:rgba(16, 185, 129, 0.3);">
+                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Active Operations</div>
+                            <div class="stat-value" style="color:var(--success); text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">${activeTournaments}</div>
+                        </div>
+                        <div class="glass stat-box stagger-card" style="animation-delay: 0.4s; border-color:rgba(225, 29, 72, 0.3);">
+                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Critical Alerts (Tkt/Payouts)</div>
+                            <div class="stat-value" style="color:var(--accent); text-shadow: 0 0 20px var(--accent-glow);">${pendingTickets + pendingPayouts}</div>
+                        </div>
+                    </div>
+                `;
+            } catch(e) {
+                container.innerHTML = `<p>Error loading analytics.</p>`;
+            }
+        };
+
         const loadAdminTournaments = async () => {
             const container = document.getElementById('admin-t-list');
             try {
                 const snap = await getDocs(collection(db, "tournaments"));
                 let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
                 
-                let html = '<div class="table-responsive"><table><tr><th>Operation</th><th>Host</th><th>Prize</th><th>Slots</th><th>Actions</th></tr>';
-                data.forEach(t => { 
-                    html += `<tr>
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>Operation</th><th>Host</th><th>Prize</th><th>Slots</th><th>Actions</th></tr>';
+                data.forEach((t, index) => { 
+                    html += `<tr style="animation-delay: ${index * 0.05}s;" class="stagger-card">
                         <td style="font-weight:600; font-size:1.05rem;">${UI.escapeHTML(t.title)}<br><span class="badge mt-1" style="border:1px solid var(--border); background:rgba(0,0,0,0.3); color:var(--text-muted); font-size:0.65rem;">${t.status}</span></td>
                         <td>${UI.escapeHTML(t.hostName)}</td>
                         <td style="color:var(--success); font-weight:700;">₹${t.prizePool}</td>
                         <td style="font-weight:500;">${t.filledSlots}/${t.maxSlots}</td>
-                        <td><button class="btn btn-outline" style="padding:8px 16px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="adminEditT('${t.id}')">Override</button></td>
+                        <td><button class="btn btn-outline" style="padding:8px 16px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="adminEditT('${t.id}')"><i class="ph-bold ph-pencil-simple"></i> Super Edit</button></td>
                     </tr>`; 
                 });
                 container.innerHTML = html + '</table></div>';
@@ -484,26 +583,69 @@
 
         window.adminEditT = (id) => {
             const t = window._aTData[id];
+            let gameOpts = appState.games.map(g => `<option value="${g}" ${t.game===g?'selected':''}>${g}</option>`).join('');
+            
             UI.showModal(`
-                <h3 style="font-family:var(--font-display); font-size:2.2rem; margin-bottom:24px;">Override Directive</h3>
-                <div class="form-group" style="margin-bottom:16px;"><label style="display:block; margin-bottom:8px; color:var(--text-muted);">Prize Pool</label><input type="number" id="ae-prize" value="${t.prizePool}"></div>
-                <div class="form-group" style="margin-bottom:16px;"><label style="display:block; margin-bottom:8px; color:var(--text-muted);">Filled Slots</label><input type="number" id="ae-slots" value="${t.filledSlots}"></div>
-                <div class="form-group" style="margin-bottom:32px;"><label style="display:block; margin-bottom:8px; color:var(--text-muted);">Status</label>
-                    <select id="ae-status">
-                        <option value="Registration Open" ${t.status==='Registration Open'?'selected':''}>Registration Open</option>
-                        <option value="Upcoming" ${t.status==='Upcoming'?'selected':''}>Upcoming</option>
-                        <option value="Live" ${t.status==='Live'?'selected':''}>Live</option>
-                        <option value="Cancelled" ${t.status==='Cancelled'?'selected':''}>Cancelled</option>
-                    </select>
+                <h3 style="font-family:var(--font-display); font-size:2.8rem; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; color:var(--primary); text-shadow:0 0 20px var(--primary-glow);">Ultimate Override</h3>
+                <p style="color:var(--text-muted); margin-bottom:32px;">You are directly manipulating database node: <span style="font-family:monospace; color:white;">${id}</span></p>
+                
+                <div class="grid-cards" style="grid-template-columns: 1fr 1fr; gap:20px; margin-top:0; margin-bottom:32px;">
+                    <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Operation Title</label><input type="text" id="ae-title" value="${UI.escapeHTML(t.title)}"></div>
+                    
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Game</label><select id="ae-game">${gameOpts}</select></div>
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Format</label><select id="ae-team-size"><option value="1" ${t.teamSize===1?'selected':''}>Solo</option><option value="2" ${t.teamSize===2?'selected':''}>Duo</option><option value="4" ${t.teamSize===4?'selected':''}>Squad</option></select></div>
+                    
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Start Time</label><input type="datetime-local" id="ae-time" value="${t.startTime}"></div>
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Status</label>
+                        <select id="ae-status" style="border-color:var(--accent);">
+                            <option value="Registration Open" ${t.status==='Registration Open'?'selected':''}>Registration Open</option>
+                            <option value="Upcoming" ${t.status==='Upcoming'?'selected':''}>Upcoming</option>
+                            <option value="Room Released" ${t.status==='Room Released'?'selected':''}>Room Released</option>
+                            <option value="Live" ${t.status==='Live'?'selected':''}>Live</option>
+                            <option value="Pending Settlement" ${t.status==='Pending Settlement'?'selected':''}>Pending Settlement</option>
+                            <option value="Completed" ${t.status==='Completed'?'selected':''}>Completed</option>
+                            <option value="Cancelled" ${t.status==='Cancelled'?'selected':''}>Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Entry Fee</label><input type="number" id="ae-fee" value="${t.entryFee}"></div>
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Prize Pool</label><input type="number" id="ae-prize" value="${t.prizePool}"></div>
+                    
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Filled Slots</label><input type="number" id="ae-filled" value="${t.filledSlots}"></div>
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Max Slots</label><input type="number" id="ae-slots" value="${t.maxSlots}"></div>
+                    
+                    <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Banner Image URL</label><input type="url" id="ae-banner" value="${t.bannerUrl}"></div>
+                    <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Operation Brief</label><textarea id="ae-desc" rows="4">${UI.escapeHTML(t.description || '')}</textarea></div>
+                    
+                    <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--accent); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Winner ID (If completed)</label><input type="text" id="ae-winner" value="${t.winnerId || ''}" placeholder="User ID of winner..."></div>
                 </div>
-                <button class="btn btn-primary w-100" style="width:100%; padding:14px;" onclick="aST('${id}')">Execute Override</button>
+                
+                <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="aST('${id}')"><i class="ph-bold ph-warning"></i> Force Update Document</button>
             `);
         };
+
         window.aST = async (id) => { 
             try { 
-                await updateDoc(doc(db, "tournaments", id), { prizePool: parseInt(document.getElementById('ae-prize').value), filledSlots: parseInt(document.getElementById('ae-slots').value), status: document.getElementById('ae-status').value }); 
-                UI.showToast("Override Successful."); UI.closeModal(); loadAdminTournaments(); 
-            } catch(e) {} 
+                const payload = {
+                    title: document.getElementById('ae-title').value,
+                    game: document.getElementById('ae-game').value,
+                    teamSize: parseInt(document.getElementById('ae-team-size').value),
+                    startTime: document.getElementById('ae-time').value,
+                    status: document.getElementById('ae-status').value,
+                    entryFee: parseInt(document.getElementById('ae-fee').value),
+                    prizePool: parseInt(document.getElementById('ae-prize').value),
+                    filledSlots: parseInt(document.getElementById('ae-filled').value),
+                    maxSlots: parseInt(document.getElementById('ae-slots').value),
+                    bannerUrl: document.getElementById('ae-banner').value,
+                    description: document.getElementById('ae-desc').value,
+                    winnerId: document.getElementById('ae-winner').value || null
+                };
+                
+                await updateDoc(doc(db, "tournaments", id), payload); 
+                UI.showToast("Super Override Executed."); 
+                UI.closeModal(); 
+                loadAdminTournaments(); 
+            } catch(e) { UI.showToast("Error updating document.", "error"); } 
         };
 
         const loadAdminSettlements = async () => {
@@ -512,7 +654,7 @@
                 const snap = await getDocs(query(collection(db, "tournaments"), where("status", "==", "Pending Settlement")));
                 if(snap.empty) { container.innerHTML = UI.emptyState('ph-scales', 'Escrow Clear', 'No operations pending settlement.'); return; }
                 
-                let html = '<div class="table-responsive"><table><tr><th>Operation</th><th>Gross / Prize</th><th>Platform/Host Split</th><th>Actions</th></tr>';
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>Operation</th><th>Gross / Prize</th><th>Platform/Host Split</th><th>Actions</th></tr>';
                 snap.forEach(doc => {
                     const t = doc.data(); 
                     let tot = t.filledSlots * t.entryFee; 
@@ -523,7 +665,7 @@
                     let pC = rem > 0 ? rem - hC : 0;
                     
                     html += `<tr>
-                        <td style="font-weight:600; font-size:1.05rem;">${UI.escapeHTML(t.title)}<br><span style="font-size:0.75rem; color:var(--text-muted); font-weight:400;">Winner ID: ${t.winnerId}</span></td>
+                        <td style="font-weight:600; font-size:1.05rem;">${UI.escapeHTML(t.title)}<br><span style="font-size:0.75rem; color:var(--text-muted); font-weight:400; font-family:monospace;">Winner: ${t.winnerId}</span></td>
                         <td>Total: ₹${tot}<br><span style="color:var(--success); font-weight:700;">Prize: ₹${t.prizePool}</span></td>
                         <td><span style="color:var(--primary)">Platform (${platformCutPercent}%): ₹${pC}</span><br><span style="color:#d946ef">Host (${hostCutPercent}%): ₹${hC}</span></td>
                         <td><button class="btn btn-primary" style="padding:8px 16px; font-size:0.85rem; background:var(--success); box-shadow:none;" onclick="aAS('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hC})"><i class="ph-bold ph-check"></i> Authorize</button></td>
@@ -549,12 +691,12 @@
                 
                 if(data.length === 0) { container.innerHTML = UI.emptyState('ph-bank', 'No Deposits', 'No pending UTR verifications.'); return; }
                 
-                let html = '<div class="table-responsive"><table><tr><th>Date</th><th>User</th><th>UTR</th><th>Amount</th><th>Actions</th></tr>';
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>Date</th><th>User</th><th>UTR</th><th>Amount</th><th>Actions</th></tr>';
                 data.forEach(r => { 
                     html += `<tr>
                         <td style="font-size:0.9rem; color:var(--text-muted);">${new Date(r.createdAt).toLocaleDateString()}</td>
                         <td style="font-weight:600;">${UI.escapeHTML(r.username)}</td>
-                        <td style="font-family:monospace; color:var(--primary); font-size:1.1rem; letter-spacing:1px;">${UI.escapeHTML(r.utr)}</td>
+                        <td style="font-family:monospace; color:var(--primary); font-size:1.1rem; letter-spacing:1px; background:rgba(245,158,11,0.05); padding:4px 8px; border-radius:4px;">${UI.escapeHTML(r.utr)}</td>
                         <td><strong style="color:var(--success); font-size:1.2rem;">₹${r.amount}</strong></td>
                         <td>
                             <div style="display:flex; gap:8px;">
@@ -583,7 +725,7 @@
                 
                 if(data.length === 0) { container.innerHTML = UI.emptyState('ph-money', 'Queue Clear', 'No pending payout requests.'); return; }
                 
-                let html = '<div class="table-responsive"><table><tr><th>Date</th><th>User</th><th>Net Payout</th><th>Target Details</th><th>Actions</th></tr>';
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>Date</th><th>User</th><th>Net Payout</th><th>Target Details</th><th>Actions</th></tr>';
                 data.forEach(w => { 
                     html += `<tr>
                         <td style="font-size:0.9rem; color:var(--text-muted);">${new Date(w.createdAt).toLocaleDateString()}</td>
@@ -601,7 +743,6 @@
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        // Rejection refunds the original requested amount
         window.aHW = async (wId, app, uId, amt) => { 
             try { 
                 await updateDoc(doc(db, "withdrawals", wId), { status: app ? 'paid' : 'rejected' }); 
@@ -614,7 +755,7 @@
             const container = document.getElementById('admin-u-list');
             try {
                 const snap = await getDocs(collection(db, "users"));
-                let html = '<div class="table-responsive"><table><tr><th>User Matrix</th><th>Role</th><th>Ledger</th><th>System Commands</th></tr>';
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>User Matrix</th><th>Role</th><th>Ledger</th><th>System Commands</th></tr>';
                 snap.forEach(doc => { 
                     const u = doc.data(); 
                     let roleCol = u.role === 'admin' ? 'var(--primary)' : (u.role === 'host' ? '#d946ef' : 'var(--text-muted)');
@@ -626,24 +767,42 @@
                         </td>
                         <td><span class="badge" style="border:1px solid ${roleCol}; color:${roleCol}; background:rgba(0,0,0,0.3);">${u.role.toUpperCase()}</span></td>
                         <td style="color:var(--success); font-weight:800; font-size:1.2rem;">₹${u.wallet?.coins || 0}</td>
-                        <td><button class="btn btn-outline" style="padding:8px 14px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="aEU('${doc.id}', ${u.wallet?.coins || 0}, '${UI.escapeHTML(u.username)}')"><i class="ph-bold ph-syringe"></i> Inject Assets</button></td>
+                        <td><button class="btn btn-outline" style="padding:8px 14px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="aEU('${doc.id}', ${u.wallet?.coins || 0}, '${UI.escapeHTML(u.username)}', '${u.role}')"><i class="ph-bold ph-pencil-simple"></i> Edit Matrix</button></td>
                     </tr>`; 
                 });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aEU = (uId, c, uName) => { 
+        window.aEU = (uId, c, uName, currentRole) => { 
             UI.showModal(`
-                <h3 style="font-family:var(--font-display); font-size:2.2rem; margin-bottom:24px;">Direct Asset Injection</h3>
-                <p style="color:var(--text-muted); margin-bottom:16px;">Target: <strong style="color:white;">${uName}</strong></p>
-                <div class="form-group" style="margin-bottom:32px;"><label style="display:block; margin-bottom:8px; color:var(--text-muted);">New Exact Balance (₹)</label><input type="number" id="au-wallet" value="${c}"></div>
-                <button class="btn btn-primary w-100" style="width:100%; padding:14px; background:var(--accent); box-shadow:0 0 15px rgba(225,29,72,0.4);" onclick="aSU('${uId}')"><i class="ph-bold ph-warning"></i> Execute Overwrite</button>
+                <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Matrix Editor</h3>
+                <p style="color:var(--text-muted); margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border);">Target: <strong style="color:white; font-size:1.1rem;">${uName}</strong></p>
+                
+                <div class="form-group" style="margin-bottom:24px;">
+                    <label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">New Exact Balance (₹)</label>
+                    <input type="number" id="au-wallet" value="${c}" style="padding:16px; font-size:1.2rem; font-weight:700;">
+                </div>
+                
+                <div class="form-group" style="margin-bottom:40px;">
+                    <label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">System Role</label>
+                    <select id="au-role" style="padding:16px; border-color:var(--accent);">
+                        <option value="player" ${currentRole==='player'?'selected':''}>Player</option>
+                        <option value="host" ${currentRole==='host'?'selected':''}>Host</option>
+                        <option value="admin" ${currentRole==='admin'?'selected':''}>Admin</option>
+                    </select>
+                    <p style="font-size:0.8rem; color:var(--danger); margin-top:8px;"><i class="ph-bold ph-warning"></i> Warning: Admin role grants total platform control.</p>
+                </div>
+
+                <button class="btn btn-primary w-100" style="width:100%; padding:16px; background:var(--accent); box-shadow:0 15px 30px rgba(225,29,72,0.3); font-size:1.1rem;" onclick="aSU('${uId}')"><i class="ph-bold ph-lightning"></i> Execute Overwrite</button>
             `); 
         };
         window.aSU = async (uId) => { 
             try { 
-                await updateDoc(doc(db, "users", uId), { "wallet.coins": parseInt(document.getElementById('au-wallet').value) }); 
-                UI.showToast("Injection Complete."); UI.closeModal(); loadAdminUsers(); 
+                await updateDoc(doc(db, "users", uId), { 
+                    "wallet.coins": parseInt(document.getElementById('au-wallet').value),
+                    "role": document.getElementById('au-role').value
+                }); 
+                UI.showToast("Matrix Injection Complete."); UI.closeModal(); loadAdminUsers(); 
             } catch(e) {} 
         };
 
@@ -655,12 +814,12 @@
                 
                 if(data.length === 0) { container.innerHTML = UI.emptyState('ph-headset', 'Queue Empty', 'No incoming support signals.'); return; }
                 
-                let html = '<div class="table-responsive"><table><tr><th>Date / Origin</th><th>Subject</th><th>Action</th></tr>';
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>Date / Origin</th><th>Subject</th><th>Action</th></tr>';
                 data.forEach(t => { 
                     let roleCol = t.role === 'host' ? '#d946ef' : 'var(--text-muted)';
                     html += `<tr>
                         <td>
-                            <span style="font-weight:600; color:white;">${UI.escapeHTML(t.username)}</span> <span style="font-size:0.7rem; color:${roleCol}; padding:2px 6px; border:1px solid ${roleCol}; border-radius:4px; margin-left:6px;">${(t.role || 'player').toUpperCase()}</span><br>
+                            <span style="font-weight:600; color:white;">${UI.escapeHTML(t.username)}</span> <span style="font-size:0.7rem; color:${roleCol}; padding:2px 6px; border:1px solid ${roleCol}; border-radius:4px; margin-left:6px; background:rgba(255,255,255,0.05);">${(t.role || 'player').toUpperCase()}</span><br>
                             <span style="font-size:0.8rem; color:var(--text-muted);">${new Date(t.createdAt).toLocaleDateString()}</span>
                         </td>
                         <td style="font-weight:600; font-size:1.05rem;">${UI.escapeHTML(t.subject)}</td>
@@ -693,10 +852,10 @@
                 `).join('') : '<div class="empty-state" style="padding:20px;"><p style="font-size:0.9rem;">Awaiting your response.</p></div>';
                 
                 UI.showModal(`
-                    <h3 style="font-family:var(--font-display); font-size:2rem; margin-bottom:16px;">${UI.escapeHTML(t.subject)}</h3>
-                    <div class="mt-4 mb-4" style="max-width:95%; padding:16px 20px; border-radius:12px; font-size:1rem; align-self:flex-start; background:rgba(0,0,0,0.4); border:1px solid var(--border); color:var(--text-muted); font-style:italic;">"${UI.escapeHTML(t.message)}"</div>
-                    <div style="display:flex; flex-direction:column; gap:14px; height:300px; overflow-y:auto; padding:16px; background:rgba(0,0,0,0.2); border-radius:12px; border:1px solid var(--border); margin-bottom:20px;">${rHtml}</div>
-                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:12px;"><input type="text" id="tr-txt" placeholder="Transmit reply as Admin..." style="border-radius:10px; background:rgba(255,255,255,0.05);"><button class="btn btn-primary" style="padding:14px 20px; border-radius:10px;" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.2rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,42,95,0.3); background:rgba(255,42,95,0.05); color:var(--danger); font-size:0.9rem;">SUPPORT LINE TERMINATED</div>'}
+                    <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:16px; letter-spacing:1px; text-transform:uppercase;">${UI.escapeHTML(t.subject)}</h3>
+                    <div class="mt-4 mb-4" style="max-width:95%; padding:20px; border-radius:16px; font-size:1.05rem; align-self:flex-start; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-muted); font-style:italic; box-shadow:inset 0 0 15px rgba(0,0,0,0.5);">"${UI.escapeHTML(t.message)}"</div>
+                    <div style="display:flex; flex-direction:column; gap:14px; height:350px; overflow-y:auto; padding:20px; background:rgba(0,0,0,0.3); border-radius:16px; border:1px solid var(--border); margin-bottom:24px;">${rHtml}</div>
+                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:12px;"><input type="text" id="tr-txt" placeholder="Transmit reply as Admin..." style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; font-size:1.05rem;"><button class="btn btn-primary" style="padding:16px 20px; border-radius:12px; box-shadow:0 10px 20px var(--primary-glow);" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,42,95,0.3); background:rgba(255,42,95,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>'}
                 `);
             } catch(e) {}
         };
