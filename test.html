@@ -34,6 +34,7 @@
             
             --font-display: 'Rajdhani', sans-serif;
             --font-body: 'Inter', sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
             
             --shadow-float: 0 20px 40px -10px rgba(0,0,0,0.8);
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -149,9 +150,9 @@
         
         .drawer-overlay { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 1999; display: none; opacity: 0; transition: 0.4s ease; 
+            z-index: 1999; visibility: hidden; opacity: 0; transition: all 0.4s ease; 
         }
-        .drawer-overlay.open { display: block; opacity: 1; }
+        .drawer-overlay.active { visibility: visible; opacity: 1; }
 
         .mobile-drawer { 
             position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; 
@@ -160,7 +161,7 @@
             z-index: 2000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
             display: flex; flex-direction: column; padding: 32px 24px; box-shadow: -20px 0 50px rgba(0,0,0,0.8); 
         }
-        .mobile-drawer.open { right: 0; }
+        .mobile-drawer.active { right: 0; }
         
         .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px;}
         .drawer-close { font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
@@ -212,8 +213,6 @@
         .role-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
 
         .dashboard-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
-        
-        /* Add min-width: 0 to content area so flex/grid children like tables don't stretch screen on mobile */
         .dashboard-content { min-width: 0; width: 100%; }
         
         .sidebar { padding: 24px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 110px; height: max-content; }
@@ -271,17 +270,14 @@
             .auth-container { padding: 32px 20px; max-width: 100%; margin: 0; }
             .btn { width: 100%; justify-content: center; } 
             
-            /* Enhanced Mobile Fixes for Modals and Wallet */
             .modal-content { padding: 24px 16px !important; }
             .glass.text-center { padding: 40px 16px !important; }
             .wallet-actions { flex-direction: column; gap: 12px !important; width: 100%; }
             .wallet-actions .btn { width: 100%; }
             
-            /* Responsive table fixes */
             .table-responsive { border-radius: 8px; }
             th, td { padding: 12px 10px; font-size: 0.9rem; }
             
-            /* Smaller card paddings */
             .card-content { padding: 20px !important; }
             .stat-value { font-size: 2.5rem !important; }
         }
@@ -298,7 +294,6 @@
         <div class="nav-actions" id="nav-auth-container-desktop">
             <!-- Desktop Auth Buttons populated by JS -->
         </div>
-        <!-- FIXED: changed toggleMobileMenu() to window.openMenu() -->
         <button class="mobile-menu-btn" onclick="window.openMenu()"><i class="ph-bold ph-list"></i></button>
     </nav>
 
@@ -354,17 +349,14 @@
             <!-- FOMO Ticker -->
             <div class="ticker-wrap">
                 <div class="ticker-content">
-                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> RAZOR SECURED ₹5,000 (SQUADS)</span>
-                    <span class="ticker-item"><i class="ph-fill ph-fire" style="color:var(--danger);"></i> VIPER DEPLOYED & CLAIMED ₹1,200</span>
-                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> GHOST WON ₹10,000 IN FREE FIRE</span>
-                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> ALPHA TEAM SPLIT ₹8,500</span>
-                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> VENOM SECURED ₹3,500</span>
-                    <!-- Loop duplication -->
-                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> RAZOR SECURED ₹5,000 (SQUADS)</span>
-                    <span class="ticker-item"><i class="ph-fill ph-fire" style="color:var(--danger);"></i> VIPER DEPLOYED & CLAIMED ₹1,200</span>
-                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> GHOST WON ₹10,000 IN FREE FIRE</span>
-                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> ALPHA TEAM SPLIT ₹8,500</span>
-                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> VENOM SECURED ₹3,500</span>
+                    <span class="ticker-item"><i class="ph-fill ph-shield-check" style="color:var(--success);"></i> ESCROW SECURED PAYOUTS</span>
+                    <span class="ticker-item"><i class="ph-fill ph-warning-circle" style="color:var(--danger);"></i> STRICT ANTI-CHEAT ENFORCED</span>
+                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> INSTANT WITHDRAWAL PROCESSING</span>
+                    <span class="ticker-item"><i class="ph-fill ph-headset" style="color:var(--accent);"></i> 24/7 SUPPORT AVAILABLE</span>
+                    <span class="ticker-item"><i class="ph-fill ph-shield-check" style="color:var(--success);"></i> ESCROW SECURED PAYOUTS</span>
+                    <span class="ticker-item"><i class="ph-fill ph-warning-circle" style="color:var(--danger);"></i> STRICT ANTI-CHEAT ENFORCED</span>
+                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> INSTANT WITHDRAWAL PROCESSING</span>
+                    <span class="ticker-item"><i class="ph-fill ph-headset" style="color:var(--accent);"></i> 24/7 SUPPORT AVAILABLE</span>
                 </div>
             </div>
 
@@ -374,7 +366,6 @@
                     <span class="badge badge-live" style="background:transparent; border:1px solid var(--danger); box-shadow:none;"><i class="ph-bold ph-broadcast"></i> Live Updates</span>
                 </div>
                 <div class="grid-cards" id="landing-tournaments-list">
-                    <!-- Loaded dynamically via JS -->
                     <div class="glass card"><div class="skeleton" style="height:200px;"></div><div style="padding:24px;"><div class="skeleton" style="height:30px; margin-bottom:12px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
                 </div>
             </div>
@@ -457,7 +448,6 @@
         };
         window.closeModal = UI.closeModal; 
 
-        // Live Brand Syncing
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -476,6 +466,10 @@
                     document.getElementById('nav-logo-icon').style.display = 'block';
                     document.getElementById('nav-logo-img').style.display = 'none';
                 }
+                
+                // FIXED: Dynamically sync global platform fees instantly
+                if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseFloat(data.withdrawalFeePercent);
+                if(data.clanCost !== undefined) appState.clanCost = parseInt(data.clanCost);
             }
         });
 
@@ -676,6 +670,13 @@
                         const snap = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
                         totalDeployments = snap.size;
                     } catch(e) {}
+                    
+                    // Dynamic Rank Logic
+                    let rank = "Rookie";
+                    let rankColor = "var(--text-muted)";
+                    if (totalDeployments >= 50) { rank = "Nexus Elite"; rankColor = "var(--primary)"; }
+                    else if (totalDeployments >= 10) { rank = "Vanguard"; rankColor = "var(--accent)"; }
+                    else if (totalDeployments >= 1) { rank = "Operative"; rankColor = "var(--success)"; }
 
                     container.innerHTML = `
                         <h2 style="font-family:var(--font-display); font-size: clamp(2rem, 5vw, 3rem); margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Player Identity</h2>
@@ -688,7 +689,7 @@
                             <h1 style="font-family:var(--font-display); font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom:12px; line-height:1; letter-spacing:2px; text-transform:uppercase;">
                                 ${appState.userData.clanTag ? `<span style="color:var(--accent);">[${appState.userData.clanTag}]</span> ` : ''}${UI.escapeHTML(appState.userData.username)}
                             </h1>
-                            <div class="badge mt-2" style="background:linear-gradient(90deg, rgba(0,229,255,0.1), rgba(139,92,246,0.1)); color:white; border:1px solid var(--border); font-size:0.9rem; padding:10px 20px; box-shadow:0 10px 20px rgba(0,0,0,0.5);">Active Competitor</div>
+                            <div class="badge mt-2" style="background:rgba(255,255,255,0.05); color:${rankColor}; border:1px solid ${rankColor}; font-size:0.9rem; padding:10px 20px; box-shadow:0 0 15px ${rankColor};"><i class="ph-fill ph-medal"></i> ${rank}</div>
                         </div>
 
                         <div class="grid-cards" style="margin-top:32px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
@@ -699,6 +700,18 @@
                             <div class="stat-box glass" style="animation-delay:0.2s;">
                                 <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; font-weight:700; letter-spacing:1.5px;">Total Deployments</div>
                                 <div class="stat-value" style="color:var(--primary); text-shadow:0 0 20px var(--primary-glow);">${totalDeployments}</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="font-family:var(--font-display); font-size:1.8rem; margin-top:40px; margin-bottom:24px; text-transform:uppercase; letter-spacing:1px;">Daily Bounties</h3>
+                        <div class="grid-cards" style="margin-top:0;">
+                            <div class="glass card" style="display:flex; flex-direction:row; align-items:center; gap:20px; padding:24px;">
+                                <div style="width:60px; height:60px; border-radius:50%; background:rgba(0,229,255,0.1); display:flex; align-items:center; justify-content:center; color:var(--primary); box-shadow:inset 0 0 10px rgba(0,229,255,0.3);"><i class="ph-fill ph-target" style="font-size:1.8rem;"></i></div>
+                                <div style="flex:1;">
+                                    <h4 style="margin:0; font-size:1.2rem; font-family:var(--font-display); text-transform:uppercase; letter-spacing:1px;">First Blood</h4>
+                                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Deploy in any operation today.</p>
+                                </div>
+                                <button class="btn btn-outline" style="padding:10px 16px; font-size:0.85rem;" ${totalDeployments > 0 ? 'disabled' : ''}>${totalDeployments > 0 ? 'Completed' : 'Pending'}</button>
                             </div>
                         </div>
                     `;
@@ -738,6 +751,18 @@
                                 <button class="btn btn-outline" style="border-color:var(--success); color:var(--success); padding:14px 32px;" onclick="withdrawWalletUI()"><i class="ph-bold ph-arrow-up-right"></i> Withdraw</button>
                             </div>
                         </div>
+                        
+                        <div class="glass" style="margin-top:32px; padding:32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px; background:linear-gradient(135deg, rgba(139,92,246,0.1) 0%, rgba(0,0,0,0.5) 100%); border:1px solid rgba(139,92,246,0.3);">
+                            <div>
+                                <h3 style="margin:0; font-family:var(--font-display); font-size:2rem; text-transform:uppercase; color:var(--accent); letter-spacing:1px;"><i class="ph-fill ph-users-three"></i> Refer & Earn</h3>
+                                <p style="margin:8px 0 0 0; color:var(--text-muted); font-size:1.05rem; max-width:400px;">Invite a squadmate using your secure code. You both receive ₹20 when they deploy in their first operation.</p>
+                            </div>
+                            <div style="display:flex; gap:12px; align-items:center; width:100%; max-width:350px;">
+                                <div style="flex:1; background:rgba(0,0,0,0.6); border:1px solid var(--accent); padding:16px 20px; border-radius:8px; font-family:var(--font-mono); font-weight:700; color:white; font-size:1.1rem; text-align:center; box-shadow:inset 0 0 15px rgba(139,92,246,0.2);">NEX-${appState.userData.username.substring(0,4).toUpperCase()}${appState.user.uid.substring(0,4).toUpperCase()}</div>
+                                <button class="btn btn-primary" style="padding:16px; background:var(--accent); box-shadow:0 0 15px rgba(139,92,246,0.4);" onclick="navigator.clipboard.writeText('NEX-${appState.userData.username.substring(0,4).toUpperCase()}${appState.user.uid.substring(0,4).toUpperCase()}'); UI.showToast('Referral Code Copied!');"><i class="ph-bold ph-copy" style="font-size:1.4rem;"></i></button>
+                            </div>
+                        </div>
+
                         <h3 class="mb-4" style="margin-top:48px; font-family:var(--font-display); font-size: clamp(1.8rem, 5vw, 2.2rem); text-transform:uppercase; letter-spacing:1px;">Transaction Ledger</h3>
                         <div id="wallet-history"><div class="skeleton" style="height:200px;"></div></div>
                     `;
@@ -1166,6 +1191,7 @@
 
         window.createTicketUI = () => { UI.showModal(`<h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Establish Support Line</h3><div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Subject</label><input type="text" id="t-sub" required style="padding:16px;"></div><div class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Message</label><textarea id="t-msg" rows="5" required style="background:rgba(0,0,0,0.5); padding:16px;"></textarea></div><button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="subT()"><i class="ph-bold ph-paper-plane-right"></i> Transmit to Support</button>`); };
         window.subT = async () => { const sub = document.getElementById('t-sub').value; const msg = document.getElementById('t-msg').value; if(!sub || !msg) return; try { await addDoc(collection(db, "tickets"), { userId: appState.user.uid, username: appState.userData.username, role: appState.userData.role, subject: sub, message: msg, status: 'Open', replies: [], createdAt: new Date().toISOString() }); UI.showToast("Line Established."); UI.closeModal(); loadSupportTickets(); } catch(e) {} };
+        
         const loadSupportTickets = async () => {
             const container = document.getElementById('support-list');
             try {
@@ -1177,6 +1203,7 @@
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
+        
         window.vT = async (tId) => {
             try {
                 const t = (await getDoc(doc(db, "tickets", tId))).data();
