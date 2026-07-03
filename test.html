@@ -48,10 +48,18 @@
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* MOBILE PERFORMANCE FIX: Move fixed background to pseudo-element */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: 
                 radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.08) 0%, transparent 50%);
-            background-attachment: fixed;
+            z-index: -1;
+            pointer-events: none;
         }
 
         ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -189,7 +197,8 @@
             padding: 14px 0; background: rgba(0, 229, 255, 0.02); 
             width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
         }
-        .ticker-content { display: inline-block; animation: marquee 30s linear infinite; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--text-muted); letter-spacing: 1px; }
+        /* Added will-change for smoother marquee performance on mobile */
+        .ticker-content { display: inline-block; animation: marquee 30s linear infinite; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--text-muted); letter-spacing: 1px; will-change: transform; }
         .ticker-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
 
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 24px; }
@@ -211,7 +220,7 @@
         .role-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
 
         .dashboard-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
-        .dashboard-content { min-width: 0; width: 100%; }
+        .dashboard-content { min-width: 0; width: 100%; } /* Prevents overflow pushing grid layout */
         
         .sidebar { padding: 24px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 110px; height: max-content; }
         .sidebar-item { padding: 16px 20px; border-radius: 12px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 600; font-size: 1.1rem;}
@@ -226,7 +235,7 @@
         .empty-state { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
         .empty-state i { font-size: 5rem; color: rgba(255,255,255,0.05); filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.2));}
         
-        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 16px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); }
+        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 16px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th, td { padding: 20px 24px; text-align: left; border-bottom: 1px solid var(--border); }
         th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;}
@@ -238,7 +247,7 @@
         .toast.error { border-left: 4px solid var(--danger); } .toast.error i { color: var(--danger); font-size: 1.8rem; }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;}
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;}
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content { width: 95%; max-width: 650px; padding: 48px; position: relative; max-height: 90vh; overflow-y: auto; background: linear-gradient(180deg, rgba(20,20,25,1) 0%, rgba(10,10,15,1) 100%); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
@@ -251,7 +260,12 @@
         .stat-box:hover::before { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
         .stat-value { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: white; margin: 12px 0 0 0; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
 
+        /* MOBILE OPTIMIZATION QUERIES */
         @media (max-width: 900px) {
+            .glass {
+                backdrop-filter: blur(8px); /* Lower blur drastically improves FPS */
+                -webkit-backdrop-filter: blur(8px);
+            }
             .nav-actions { display: none; }
             .mobile-menu-btn { display: block; }
             
@@ -265,14 +279,19 @@
             .sidebar { display: none; }
             
             .auth-container { padding: 32px 20px; max-width: 100%; margin: 0; }
+            
+            /* Input minimum size prevents iOS automatic zoom on focus */
+            input, select, textarea { font-size: 16px !important; }
+            
+            /* Fixes elements getting cut off */
+            .modal-content { width: 100%; margin: 10px; padding: 24px 16px !important; }
+            .glass.text-center { padding: 40px 16px !important; }
+            
+            /* Stack buttons vertically in wallet to prevent cut-offs */
+            .wallet-actions { flex-direction: column !important; gap: 12px !important; width: 100%; }
             .btn { width: 100%; justify-content: center; } 
             
-            .modal-content { padding: 24px 16px !important; }
-            .glass.text-center { padding: 40px 16px !important; }
-            .wallet-actions { flex-direction: column; gap: 12px !important; width: 100%; }
-            .wallet-actions .btn { width: 100%; }
-            
-            .table-responsive { border-radius: 8px; }
+            .table-responsive { border-radius: 8px; margin-top: 10px; }
             th, td { padding: 12px 10px; font-size: 0.9rem; }
             
             .card-content { padding: 20px !important; }
@@ -448,7 +467,7 @@
         };
         window.closeModal = UI.closeModal; 
 
-        // Live Brand Syncing
+        // Live Brand Syncing & Fee Syncing
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -466,6 +485,14 @@
                     appState.brandLogo = "";
                     document.getElementById('nav-logo-icon').style.display = 'block';
                     document.getElementById('nav-logo-img').style.display = 'none';
+                }
+                
+                // FIXED: Actively sync withdrawal fee and clan cost from admin DB
+                if(data.withdrawalFeePercent !== undefined) {
+                    appState.withdrawalFeePercent = parseFloat(data.withdrawalFeePercent);
+                }
+                if(data.clanCost !== undefined) {
+                    appState.clanCost = parseInt(data.clanCost);
                 }
             }
         });
@@ -672,7 +699,7 @@
                                     <i class="ph-duotone ph-warning-octagon" style="font-size:7rem; color:var(--danger); margin-bottom:24px; filter:drop-shadow(0 0 20px rgba(255,42,95,0.4));"></i>
                                     <h1 style="font-family:var(--font-display); font-size: 3rem; color:var(--danger); text-transform:uppercase; margin-bottom:16px;">Account Suspended</h1>
                                     <p style="color:var(--text-muted); font-size:1.15rem; line-height:1.6; margin-bottom:32px;">Your access to the Nexus platform has been revoked due to policy violations or suspicious activity detected during an operation.</p>
-                                    <button class="btn btn-primary" style="background:var(--danger); color:white; box-shadow:0 0 15px rgba(255,42,95,0.4); padding:16px 32px; font-size:1.1rem;" onclick="window.logoutUser()"><i class="ph-bold ph-sign-out"></i> Acknowledge & Logout</button>
+                                    <button class="btn btn-primary" style="background:var(--danger); color:white; box-shadow:0 0 15px rgba(255,42,95,0.4); padding:16px 32px; font-size:1.1rem; width: 100%;" onclick="window.logoutUser()"><i class="ph-bold ph-sign-out"></i> Acknowledge & Logout</button>
                                 </div>
                             `;
                         }
@@ -690,7 +717,6 @@
                 }
             });
 
-            // Prevent tab execution if banned
             if (appState.userData?.isBanned) return;
 
             setupSidebar('player', async (tab) => {
@@ -711,7 +737,7 @@
                             
                             <i class="ph-duotone ph-user-circle" style="font-size:6rem; color:var(--primary); margin-bottom:16px; filter:drop-shadow(0 0 20px var(--primary-glow));"></i>
                             
-                            <h1 style="font-family:var(--font-display); font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom:12px; line-height:1; letter-spacing:2px; text-transform:uppercase;">
+                            <h1 style="font-family:var(--font-display); font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom:12px; line-height:1; letter-spacing:2px; text-transform:uppercase; overflow-wrap: break-word;">
                                 ${appState.userData.clanTag ? `<span style="color:var(--accent);">[${appState.userData.clanTag}]</span> ` : ''}${UI.escapeHTML(appState.userData.username)}
                             </h1>
                             <div class="badge mt-2" style="background:linear-gradient(90deg, rgba(0,229,255,0.1), rgba(139,92,246,0.1)); color:white; border:1px solid var(--border); font-size:0.9rem; padding:10px 20px; box-shadow:0 10px 20px rgba(0,0,0,0.5);">Active Competitor</div>
@@ -974,92 +1000,11 @@
             }
         };
 
-        window.uploadProofUI = (regId, tTitle) => {
-            UI.showModal(`
-                <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">Placement Proof</h3>
-                <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:24px;">Upload a screenshot of your match results for <strong style="color:white;">${tTitle}</strong>. Escrow requires this to verify kills/placement.</p>
-                
-                <div style="background:rgba(0,0,0,0.4); border:1px dashed var(--primary); border-radius:12px; padding:24px; text-align:center; margin-bottom:24px; position:relative;">
-                    <input type="file" id="proof-file" accept="image/*" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
-                    <div id="proof-placeholder">
-                        <i class="ph-duotone ph-upload-simple" style="font-size:3rem; color:var(--primary); margin-bottom:12px;"></i>
-                        <div style="font-weight:600; color:white; font-size:1.1rem;">Tap to Select Image</div>
-                        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:8px;">Auto-compressed. No storage limits.</div>
-                    </div>
-                    <div id="proof-preview" style="display:none; position:relative; z-index:5;"></div>
-                </div>
-
-                <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" id="btn-submit-proof" onclick="submitProof('${regId}')" disabled><i class="ph-bold ph-check-circle"></i> Submit Image Proof</button>
-            `);
-
-            window._currentProofDataUrl = null;
-
-            setTimeout(() => {
-                const fileInput = document.getElementById('proof-file');
-                fileInput.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if(!file) return;
-                    
-                    UI.setLoading('btn-submit-proof', true, 'Compressing...');
-                    
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 800; // Resize to max 800px width
-                            let scaleSize = 1;
-                            if(img.width > MAX_WIDTH) {
-                                scaleSize = MAX_WIDTH / img.width;
-                            }
-                            canvas.width = img.width * scaleSize;
-                            canvas.height = img.height * scaleSize;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                            
-                            // High compression JPEG to bypass 1MB Firestore document limits
-                            const dataUrl = canvas.toDataURL('image/jpeg', 0.5); 
-                            window._currentProofDataUrl = dataUrl;
-                            
-                            document.getElementById('proof-placeholder').style.display = 'none';
-                            const preview = document.getElementById('proof-preview');
-                            preview.style.display = 'block';
-                            preview.innerHTML = `<img src="${dataUrl}" style="width:100%; max-height:250px; object-fit:contain; border-radius:8px; border:1px solid var(--border);">`;
-                            
-                            const btn = document.getElementById('btn-submit-proof');
-                            btn.innerHTML = `<i class="ph-bold ph-check-circle"></i> Submit Image Proof`;
-                            btn.disabled = false;
-                            btn.dataset.original = btn.innerHTML; // Reset original text memory for setLoading toggle
-                        }
-                        img.src = event.target.result;
-                    }
-                    reader.readAsDataURL(file);
-                });
-            }, 100);
-        };
-
-        window.submitProof = async (regId) => {
-            if(!window._currentProofDataUrl) return UI.showToast("Please select an image.", "error");
-            UI.setLoading('btn-submit-proof', true);
-            try {
-                await updateDoc(doc(db, "registrations", regId), {
-                    proofImage: window._currentProofDataUrl,
-                    proofSubmittedAt: new Date().toISOString()
-                });
-                UI.showToast("Match Proof Uploaded Successfully!");
-                UI.closeModal();
-                loadMyTournaments(); // Refresh list to show green check
-            } catch(e) {
-                UI.showToast("Upload failed. Try a smaller image.", "error");
-                UI.setLoading('btn-submit-proof', false);
-            }
-        };
-
         const loadMyTournaments = async () => {
             const container = document.getElementById('player-my-list');
             try {
                 const snap1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
-                let regs = []; snap1.forEach(d => regs.push({id: d.id, ...d.data()})); 
+                let regs = []; snap1.forEach(d => regs.push(d.data())); 
                 if(regs.length === 0) { container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); return; }
                 regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
                 let html = '';
@@ -1083,25 +1028,6 @@
                                 <div style="color:white; font-size:1.05rem; line-height:1.5;">${UI.escapeHTML(t.latestAnnouncement)}</div>
                             </div>` : '';
 
-                        let proofHtml = '';
-                        if (t.status === 'Live' || t.status === 'Completed' || t.status === 'Room Released') {
-                            if (rData.proofImage) {
-                                proofHtml = `
-                                    <div style="padding:16px 20px; background:rgba(0, 229, 255, 0.05); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; margin-bottom:24px; display:flex; align-items:center; gap:12px;">
-                                        <i class="ph-fill ph-check-circle" style="color:var(--primary); font-size:1.5rem;"></i>
-                                        <div>
-                                            <div style="color:white; font-weight:700; font-size:1rem;">Match Proof Uploaded</div>
-                                            <div style="color:var(--text-muted); font-size:0.85rem;">Escrow team will review.</div>
-                                        </div>
-                                    </div>`;
-                            } else {
-                                proofHtml = `
-                                    <div style="margin-bottom:24px;">
-                                        <button class="btn btn-outline" style="width:100%; border-color:var(--primary); color:var(--primary); padding:16px; font-size:1rem; box-shadow:0 10px 20px rgba(0,229,255,0.1);" onclick="uploadProofUI('${rData.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-upload-simple"></i> Upload Placement Proof (Optional)</button>
-                                    </div>`;
-                            }
-                        }
-
                         html += `
                             <div class="glass card" style="padding:32px;">
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -1111,7 +1037,6 @@
                                 <h3 style="font-family:var(--font-display); font-size:2rem; margin-bottom:24px; line-height:1.2;">${UI.escapeHTML(t.title)}</h3>
                                 ${announcementHtml}
                                 ${roomHtml}
-                                ${proofHtml}
                                 <div style="display:grid; grid-template-columns: 1fr; gap:16px; margin-top:auto;">
                                     <button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--primary); color:var(--primary);" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}')"><i class="ph-bold ph-chat-circle"></i> Secure Channel (Host)</button>
                                 </div>
@@ -1135,7 +1060,7 @@
                                 <div style="position:absolute; bottom:-50px; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--accent); opacity:0.15; filter:blur(60px); pointer-events:none;"></div>
                                 <h1 style="color:var(--primary); font-family:var(--font-display); font-size: clamp(3.5rem, 10vw, 5rem); margin-bottom:8px; line-height:1; text-shadow:0 0 30px var(--primary-glow);">[${UI.escapeHTML(clan.tag)}]</h1>
                                 <h2 style="color:white; margin-bottom:24px; font-weight:700; font-size:2rem; text-transform:uppercase; letter-spacing:1px;">${UI.escapeHTML(clan.name)}</h2>
-                                <div class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-main); font-size:1rem; padding:12px 24px; box-shadow:none; flex-wrap:wrap;">
+                                <div class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-main); font-size:1rem; padding:12px 24px; box-shadow:none; flex-wrap:wrap; justify-content:center;">
                                     Tag ID: <strong style="color:var(--primary); margin:0 8px; letter-spacing:2px; font-family:var(--font-mono);">${clan.tag}</strong> 
                                     <i class="ph-bold ph-copy" style="cursor:pointer; color:var(--text-muted); font-size:1.2rem; transition:0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-muted)'" onclick="navigator.clipboard.writeText('${clan.tag}'); UI.showToast('Tag Copied!');"></i>
                                 </div>
