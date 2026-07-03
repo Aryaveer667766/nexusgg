@@ -80,7 +80,7 @@
             padding: 12px 28px; font-family: var(--font-display); font-size: 1.1rem;
             font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
             border-radius: 8px; border: none; cursor: pointer; transition: var(--transition);
-            position: relative; overflow: hidden;
+            position: relative; overflow: hidden; white-space: nowrap;
         }
         .btn:active { transform: scale(0.96); }
         
@@ -127,13 +127,13 @@
             border-bottom: 1px solid var(--border); background: rgba(3, 3, 5, 0.8);
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
         }
-        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: white; letter-spacing: 1px; }
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; max-width: 60%; }
+        .logo-img { height: 32px; width: 32px; object-fit: cover; border-radius: 8px; display: none; }
+        .logo-text { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; color: white; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .nav-actions { display: flex; gap: 16px; align-items: center; }
         
-        /* Mobile Hamburger & Drawer */
-        .menu-btn { display: none; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; padding: 5px; }
+        .menu-btn { display: none; background: transparent; border: none; color: white; font-size: 2.2rem; cursor: pointer; padding: 5px; }
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
@@ -156,7 +156,7 @@
 
         .hero { display: flex; align-items: center; justify-content: space-between; min-height: calc(100vh - 180px); gap: 60px; padding: 40px 0; }
         .hero-text { flex: 1; max-width: 650px; }
-        .hero-text h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.1; margin-bottom: 24px; text-transform: uppercase; font-weight: 800; }
+        .hero-text h1 { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: 1.1; margin-bottom: 24px; text-transform: uppercase; font-weight: 800; }
         .hero-text h1 span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
         .hero-text p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 40px; line-height: 1.7; max-width: 550px;}
 
@@ -171,7 +171,8 @@
 
         .ticker-wrap {
             margin-top: 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); 
-            padding: 14px 0; background: rgba(0, 229, 255, 0.02); margin-left: -5%; margin-right: -5%; width: 110vw;
+            padding: 14px 0; background: rgba(0, 229, 255, 0.02); 
+            width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
         }
         .ticker-content { display: inline-block; animation: marquee 30s linear infinite; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--text-muted); letter-spacing: 1px; }
         .ticker-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
@@ -201,8 +202,8 @@
         .sidebar-item.active { background: rgba(0, 229, 255, 0.1); color: var(--primary); box-shadow: inset 3px 0 0 var(--primary); }
 
         @media (max-width: 900px) {
-            .nav-actions { display: none; } /* Hide desktop nav buttons */
-            .menu-btn { display: block; } /* Show hamburger */
+            .nav-actions { display: none; }
+            .menu-btn { display: block; }
             
             .hero { flex-direction: column; text-align: center; padding: 20px 0 40px 0; gap: 30px; justify-content: center; }
             .hero-text { display: flex; flex-direction: column; align-items: center; }
@@ -210,12 +211,12 @@
             .trust-badges { justify-content: center; }
             
             .dashboard-layout { grid-template-columns: 1fr; gap: 20px; }
-            .sidebar { display: none; } /* Dashboard sidebar goes away, relies on Drawer */
+            .sidebar { display: none; }
             
             .auth-container { padding: 32px 20px; margin: 20px; }
+            .btn { width: 100%; justify-content: center; } /* Make buttons full width on mobile hero */
         }
 
-        /* Utilities */
         .skeleton { 
             background: var(--surface-hover); 
             background-image: linear-gradient(to right, var(--surface-hover) 0%, rgba(255,255,255,0.05) 20%, var(--surface-hover) 40%, var(--surface-hover) 100%); 
@@ -229,7 +230,6 @@
         th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;}
         tr:hover { background: rgba(255,255,255,0.02); }
 
-        /* Toasts and Modals */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast { pointer-events: auto; padding: 16px 24px; border-radius: 8px; color: white; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-float); animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); min-width: 320px; font-weight: 500;}
         .toast.success { border-left: 4px solid var(--success); }
@@ -254,6 +254,7 @@
 
     <nav>
         <div class="logo-container" onclick="navigate('landing'); closeMenu();">
+            <img id="nav-logo-img" class="logo-img" alt="Brand Logo">
             <i id="nav-logo-icon" class="ph-fill ph-crosshair" style="font-size: 32px; color: var(--primary); text-shadow: 0 0 10px var(--primary-glow);"></i>
             <span class="logo-text brand-name">NEXUS</span>
         </div>
@@ -271,10 +272,8 @@
             <button class="close-drawer" onclick="closeMenu()"><i class="ph-bold ph-x"></i></button>
         </div>
         
-        <!-- Auth state determines what shows in the drawer -->
         <div id="drawer-auth-state" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);"></div>
         
-        <!-- Dashboard Links (Hidden if not logged in) -->
         <div id="drawer-dash-links" style="display:none; flex-direction:column; gap:8px;">
             <div class="sidebar-item active" data-tab="player-overview"><i class="ph-fill ph-squares-four"></i> Overview</div>
             <div class="sidebar-item" data-tab="player-browse"><i class="ph-fill ph-magnifying-glass"></i> Arena</div>
@@ -297,9 +296,9 @@
                 <div class="hero-text">
                     <h1>The Arena for <br><span id="typewriter">SQUADS</span><span class="typewriter-cursor">|</span></h1>
                     <p>Enter premium lobbies across BGMI, Free Fire, and Valorant. Play securely with 100% Escrow Guaranteed payouts and professional anti-cheat protocols.</p>
-                    <div style="display:flex; gap:16px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="navigateToRegister('player')" style="animation: pulseGlow 2.5s infinite;">Claim Your Spot <i class="ph-bold ph-lightning"></i></button>
-                        <button class="btn btn-outline" onclick="navigateToRegister('host')">Host an Operation</button>
+                    <div style="display:flex; gap:16px; flex-wrap: wrap; width: 100%;">
+                        <button class="btn btn-primary" onclick="navigateToRegister('player')" style="animation: pulseGlow 2.5s infinite;">Play Tournaments <i class="ph-bold ph-game-controller"></i></button>
+                        <button class="btn btn-outline" onclick="navigateToRegister('host')">Organize Matches</button>
                     </div>
                     <div class="trust-badges">
                         <div class="trust-badge"><i class="ph-fill ph-shield-check"></i> Escrow Secured</div>
@@ -370,7 +369,6 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, addDoc, updateDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",
             authDomain: "designsnap-f3309.firebaseapp.com",
@@ -385,11 +383,10 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Core Platform State
         let appState = {
             user: null, userData: null, currentView: 'landing',
             upiId: "gpay-11245353662@okbizaxis", games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"],
-            brandName: "NEXUS", clanCost: 50, withdrawalFeePercent: 5
+            brandName: "NEXUS", brandLogo: "", clanCost: 50, withdrawalFeePercent: 5
         };
 
         const UI = {
@@ -416,56 +413,50 @@
         };
         window.closeModal = UI.closeModal; 
 
-        // Typewriter Effect Logic
+        // Live Brand Syncing
+        onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
+            if(docSnap.exists()) {
+                const data = docSnap.data();
+                if(data.brandName) { 
+                    appState.brandName = data.brandName; 
+                    document.querySelectorAll('.brand-name').forEach(el => el.innerText = appState.brandName.toUpperCase()); 
+                }
+                if(data.brandLogo) {
+                    appState.brandLogo = data.brandLogo;
+                    document.getElementById('nav-logo-icon').style.display = 'none';
+                    const img = document.getElementById('nav-logo-img');
+                    img.src = data.brandLogo;
+                    img.style.display = 'block';
+                } else {
+                    appState.brandLogo = "";
+                    document.getElementById('nav-logo-icon').style.display = 'block';
+                    document.getElementById('nav-logo-img').style.display = 'none';
+                }
+            }
+        });
+
         const words = ["SQUADS", "CHAMPIONS", "LEGENDS", "RIVALS"];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        let wordIndex = 0; let charIndex = 0; let isDeleting = false;
         const typeTarget = document.getElementById('typewriter');
         
         function typeWriter() {
             if(!typeTarget) return;
             const currentWord = words[wordIndex];
-            
-            if (isDeleting) {
-                typeTarget.innerText = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typeTarget.innerText = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
+            if (isDeleting) { typeTarget.innerText = currentWord.substring(0, charIndex - 1); charIndex--; } 
+            else { typeTarget.innerText = currentWord.substring(0, charIndex + 1); charIndex++; }
             let typeSpeed = isDeleting ? 50 : 150;
-
-            if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 2000; // Pause at end of word
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-                typeSpeed = 500; // Pause before next word
-            }
+            if (!isDeleting && charIndex === currentWord.length) { typeSpeed = 2000; isDeleting = true; } 
+            else if (isDeleting && charIndex === 0) { isDeleting = false; wordIndex = (wordIndex + 1) % words.length; typeSpeed = 500; }
             setTimeout(typeWriter, typeSpeed);
         }
         setTimeout(typeWriter, 1000);
 
-        // Mobile Drawer Logic
-        window.openMenu = () => {
-            document.getElementById('drawer-overlay').classList.add('active');
-            document.getElementById('mobile-drawer').classList.add('active');
-        };
-        window.closeMenu = () => {
-            document.getElementById('drawer-overlay').classList.remove('active');
-            document.getElementById('mobile-drawer').classList.remove('active');
-        };
-
-        window.logoutUser = () => {
-            signOut(auth).then(() => { window.location.reload(); });
-        };
+        window.openMenu = () => { document.getElementById('drawer-overlay').classList.add('active'); document.getElementById('mobile-drawer').classList.add('active'); };
+        window.closeMenu = () => { document.getElementById('drawer-overlay').classList.remove('active'); document.getElementById('mobile-drawer').classList.remove('active'); };
+        window.logoutUser = () => { signOut(auth).then(() => { window.location.reload(); }); };
 
         window.navigate = (viewName) => {
-            closeMenu();
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            closeMenu(); document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             if(viewName === 'login' || viewName === 'register') {
                 document.getElementById('view-auth').classList.add('active'); renderAuthForm(viewName); appState.currentView = viewName; return;
             }
@@ -497,7 +488,7 @@
                 `;
                 
                 deskNav.innerHTML = `
-                    <div style="text-align:right;">
+                    <div style="text-align:right; display:none; @media(min-width:600px){display:block;}">
                         <span style="color:white; font-weight:600;">${UI.escapeHTML(appState.userData.username)}</span>
                     </div>
                     <button class="btn btn-outline" onclick="navigate('player-dash')" style="padding: 8px 16px; font-size: 0.9rem;">Dashboard</button>
@@ -514,7 +505,6 @@
             }
         };
 
-        // Redirection Logic
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 appState.user = user;
@@ -525,15 +515,11 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
-                        
-                        // Strict Redirection
                         if (role === 'admin') { window.location.href = 'admin.html'; return; } 
                         else if (role === 'host') { window.location.href = 'host.html'; return; }
                         
                         updateNav();
-                        if(['login', 'register', 'landing'].includes(appState.currentView)) {
-                            navigate('player-dash');
-                        }
+                        if(['login', 'register', 'landing'].includes(appState.currentView)) { navigate('player-dash'); }
                     } else { signOut(auth); }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
             } else {
@@ -587,10 +573,9 @@
 
         const handleLogin = async (e) => {
             e.preventDefault(); UI.setLoading('btn-login-submit', true);
-            try {
-                await signInWithEmailAndPassword(auth, document.getElementById('l-email').value, document.getElementById('l-pass').value);
-                // OnAuthStateChanged handles redirect
-            } catch (err) { UI.showToast("Invalid credentials.", "error"); } finally { UI.setLoading('btn-login-submit', false); }
+            try { await signInWithEmailAndPassword(auth, document.getElementById('l-email').value, document.getElementById('l-pass').value); } 
+            catch (err) { UI.showToast("Invalid credentials.", "error"); } 
+            finally { UI.setLoading('btn-login-submit', false); }
         };
 
         const handleRegister = async (e) => {
@@ -603,38 +588,27 @@
                 const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 } };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
-                
-                // Explicitly redirect based on newly assigned role before state listener kicks in
-                if (role === 'host') window.location.href = 'host.html';
-                else navigate('player-dash');
-                
+                if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
 
         const setupSidebar = (role, callback) => {
             const items = document.querySelectorAll(`#view-${role}-dash .sidebar-item`);
-            const drawerItems = document.querySelectorAll(`#drawer-dash-links .sidebar-item`); // Bind drawer items too
+            const drawerItems = document.querySelectorAll(`#drawer-dash-links .sidebar-item`);
             
             const attach = (elements) => {
                 elements.forEach(item => {
                     const newEl = item.cloneNode(true); item.parentNode.replaceChild(newEl, item);
                     newEl.addEventListener('click', (e) => {
-                        items.forEach(el => el.classList.remove('active'));
-                        drawerItems.forEach(el => el.classList.remove('active'));
-                        
+                        items.forEach(el => el.classList.remove('active')); drawerItems.forEach(el => el.classList.remove('active'));
                         const tab = e.currentTarget.dataset.tab;
                         document.querySelectorAll(`.sidebar-item[data-tab="${tab}"]`).forEach(el => el.classList.add('active'));
-                        
-                        closeMenu(); // Close drawer on mobile click
-                        callback(tab);
+                        closeMenu(); callback(tab);
                     });
                 });
             };
-            
-            attach(items);
-            attach(drawerItems);
-            
+            attach(items); attach(drawerItems);
             const activeTab = document.querySelector(`#view-${role}-dash .sidebar-item.active`);
             if(activeTab) callback(activeTab.dataset.tab);
         };
@@ -720,12 +694,10 @@
                                         <div style="font-size:0.9rem; color:var(--text-muted); font-weight:500;"><i class="ph-bold ph-users" style="color:var(--primary)"></i> ${formatStr}</div>
                                         <div style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">Slots: <span style="color:white;">${t.filledSlots}/${t.maxSlots}</span></div>
                                     </div>
-                                    
                                     <div class="progress-bar-bg">
                                         <div class="progress-bar-fill" style="width: ${fillPercentage}%"></div>
                                     </div>
                                     ${urgencyHtml}
-
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; border-top:1px solid var(--border); padding-top:20px;">
                                         <div><span style="font-size:0.75rem; color:var(--accent); text-transform:uppercase; letter-spacing:1px; font-weight:800;">🔥 WIN UP TO</span><br><strong style="color:var(--success); font-size:1.4rem; line-height:1; text-shadow:0 0 10px rgba(0,255,157,0.3);">₹${t.prizePool}</strong></div>
                                         <button class="btn btn-primary" style="padding:10px 24px; font-size:0.9rem;" onclick="viewTDetails('${t.id}')">View Details</button>
@@ -742,17 +714,13 @@
         window.viewTDetails = async (id) => {
             try {
                 const t = (await getDoc(doc(db, "tournaments", id))).data();
-                
-                let btn = '';
-                let isFull = t.filledSlots >= t.maxSlots;
+                let btn = ''; let isFull = t.filledSlots >= t.maxSlots;
                 let formatStr = t.teamSize === 4 ? 'Squad' : (t.teamSize === 2 ? 'Duo' : 'Solo');
                 let feeText = t.teamSize > 1 ? `₹${t.entryFee} (Team Total)` : `₹${t.entryFee}`;
 
                 if(!appState.user) btn = `<button class="btn btn-primary w-100" style="width:100%" onclick="closeModal(); navigate('login')">Authenticate to Join</button>`;
                 else if(isFull) btn = `<button class="btn btn-outline w-100" style="width:100%; border-color:var(--danger); color:var(--danger);" disabled>Lobby at Capacity</button>`;
-                else {
-                    btn = `<button class="btn btn-primary w-100" style="width:100%" onclick="initJoin('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}', ${t.teamSize})">Deploy Entry - ${feeText}</button>`;
-                }
+                else { btn = `<button class="btn btn-primary w-100" style="width:100%" onclick="initJoin('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}', ${t.teamSize})">Deploy Entry - ${feeText}</button>`; }
 
                 UI.showModal(`
                     <div style="width:100%; height:180px; border-radius:12px; margin-bottom:24px; border:1px solid var(--border); background: url('${t.bannerUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80'}') center/cover;"></div>
@@ -764,12 +732,10 @@
                     <p style="color:var(--text-muted); margin-bottom:32px; display:flex; align-items:center; gap:8px; font-weight:500;">
                         <i class="ph-fill ph-seal-check" style="color:var(--primary); font-size:1.2rem;"></i> Hosted by <span style="color:white;">${UI.escapeHTML(t.hostName)}</span>
                     </p>
-                    
                     <div class="grid-cards" style="grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; margin-top:0;">
                         <div class="glass stat-box" style="padding:20px;"><div style="font-size:0.8rem; color:var(--accent); text-transform:uppercase; letter-spacing:1px; font-weight:800;">🔥 WIN UP TO</div><div style="font-weight:800; color:var(--success); font-size:1.8rem; line-height:1; margin-top:8px;">₹${t.prizePool}</div></div>
                         <div class="glass stat-box" style="padding:20px;"><div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600;">Format</div><div style="font-weight:800; color:white; font-size:1.8rem; font-family:var(--font-display); line-height:1; margin-top:8px;">${formatStr}</div></div>
                     </div>
-                    
                     <div style="margin-top:auto;">${btn}</div>
                     <div style="text-align:center; margin-top:20px; font-size:0.85rem; color:var(--text-muted); font-weight:500;"><i class="ph-fill ph-lock-key"></i> Participant roster is strictly hidden for privacy.</div>
                 `);
@@ -795,11 +761,9 @@
                     navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-clans"]`).click(), 100);
                     return;
                 }
-                
                 try {
                     const cDoc = await getDoc(doc(db, "clans", appState.userData.clanId));
                     const clan = cDoc.data();
-                    
                     if(clan.leaderId !== appState.user.uid) { UI.showToast("Only the Team Leader can register the squad.", "error"); return; }
                     if(clan.members.length < teamSize) { UI.showToast(`Your team needs at least ${teamSize} members to join.`, "error"); return; }
 
@@ -825,32 +789,24 @@
                         e.preventDefault();
                         const checked = document.querySelectorAll('input[name="team-sel"]:checked');
                         if(checked.length !== teamSize) return UI.showToast(`Select exactly ${teamSize} members.`, "error");
-                        
                         UI.setLoading('btn-sq-sub', true);
                         let selectedMembers = [];
                         checked.forEach(cb => selectedMembers.push({ uid: cb.value, name: cb.dataset.name }));
-
                         try {
                             await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
                             await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: clan.tag, isSquad: true, teamMembers: selectedMembers, joinedAt: new Date().toISOString() });
                             await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
-                            
-                            UI.showToast(`Squad Deployed!`); UI.closeModal();
-                            navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
+                            UI.showToast(`Squad Deployed!`); UI.closeModal(); navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
                         } catch(err) { UI.showToast("Deployment failed.", "error"); }
                     };
-
                 } catch(e) { UI.showToast("Error loading team.", "error"); }
-
             } else {
                 UI.showModal(`<div class="text-center" style="padding:60px 40px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:4.5rem; color:var(--primary);"></i><h3 class="mt-4" style="font-family:var(--font-display); font-size:1.8rem;">Securing Slot...</h3></div>`);
                 try {
                     await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
                     await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: appState.userData.clanTag || '', isSquad: false, joinedAt: new Date().toISOString() });
                     await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
-                    
-                    UI.showToast(`Deployed to ${title}!`); UI.closeModal();
-                    navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
+                    UI.showToast(`Deployed to ${title}!`); UI.closeModal(); navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
                 } catch (e) { UI.showToast("Deployment failed.", "error"); UI.closeModal(); }
             }
         };
@@ -860,7 +816,6 @@
             try {
                 const snap1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
                 let regs = []; snap1.forEach(d => regs.push(d.data())); 
-                
                 if(regs.length === 0) { container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); return; }
                 regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
                 let html = '';
@@ -1136,7 +1091,6 @@
             try { const r = doc(db, "tickets", tId); const d = await getDoc(r); const reps = d.data().replies || []; reps.push({ uid: appState.user.uid, name: appState.userData.username, role: appState.userData.role, text: txt, timestamp: Date.now() }); await updateDoc(r, { replies: reps }); vT(tId); } catch(e) {}
         };
 
-        // Initialize App on DOM Content Loaded to ensure skeleton loaders are replaced immediately
         window.addEventListener('DOMContentLoaded', () => navigate('landing'));
     </script>
 </body>
