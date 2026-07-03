@@ -34,7 +34,6 @@
             
             --font-display: 'Rajdhani', sans-serif;
             --font-body: 'Inter', sans-serif;
-            --font-mono: 'Courier New', Courier, monospace;
             
             --shadow-float: 0 20px 40px -10px rgba(0,0,0,0.8);
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -141,7 +140,6 @@
         
         .nav-actions { display: flex; gap: 16px; align-items: center; }
         
-        /* Mobile Hamburger & Drawer Styles */
         .mobile-menu-btn { 
             display: none; background: transparent; border: none; color: white; 
             font-size: 2.2rem; cursor: pointer; transition: var(--transition);
@@ -150,7 +148,7 @@
         
         .drawer-overlay { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 1999; visibility: hidden; opacity: 0; transition: all 0.4s ease; 
+            z-index: 1999; visibility: hidden; opacity: 0; transition: 0.4s ease; 
         }
         .drawer-overlay.active { visibility: visible; opacity: 1; }
 
@@ -253,7 +251,6 @@
         .stat-box:hover::before { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
         .stat-value { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: white; margin: 12px 0 0 0; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
 
-        /* Mobile specific fixes */
         @media (max-width: 900px) {
             .nav-actions { display: none; }
             .mobile-menu-btn { display: block; }
@@ -297,7 +294,6 @@
         <button class="mobile-menu-btn" onclick="window.openMenu()"><i class="ph-bold ph-list"></i></button>
     </nav>
 
-    <!-- Mobile Drawer Overlay -->
     <div class="drawer-overlay" id="drawer-overlay" onclick="closeMenu()"></div>
     <div class="mobile-drawer" id="mobile-drawer">
         <div class="drawer-header">
@@ -349,14 +345,17 @@
             <!-- FOMO Ticker -->
             <div class="ticker-wrap">
                 <div class="ticker-content">
-                    <span class="ticker-item"><i class="ph-fill ph-shield-check" style="color:var(--success);"></i> ESCROW SECURED PAYOUTS</span>
-                    <span class="ticker-item"><i class="ph-fill ph-warning-circle" style="color:var(--danger);"></i> STRICT ANTI-CHEAT ENFORCED</span>
-                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> INSTANT WITHDRAWAL PROCESSING</span>
-                    <span class="ticker-item"><i class="ph-fill ph-headset" style="color:var(--accent);"></i> 24/7 SUPPORT AVAILABLE</span>
-                    <span class="ticker-item"><i class="ph-fill ph-shield-check" style="color:var(--success);"></i> ESCROW SECURED PAYOUTS</span>
-                    <span class="ticker-item"><i class="ph-fill ph-warning-circle" style="color:var(--danger);"></i> STRICT ANTI-CHEAT ENFORCED</span>
-                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> INSTANT WITHDRAWAL PROCESSING</span>
-                    <span class="ticker-item"><i class="ph-fill ph-headset" style="color:var(--accent);"></i> 24/7 SUPPORT AVAILABLE</span>
+                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> RAZOR SECURED ₹5,000 (SQUADS)</span>
+                    <span class="ticker-item"><i class="ph-fill ph-fire" style="color:var(--danger);"></i> VIPER DEPLOYED & CLAIMED ₹1,200</span>
+                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> GHOST WON ₹10,000 IN FREE FIRE</span>
+                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> ALPHA TEAM SPLIT ₹8,500</span>
+                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> VENOM SECURED ₹3,500</span>
+                    <!-- Loop duplication -->
+                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> RAZOR SECURED ₹5,000 (SQUADS)</span>
+                    <span class="ticker-item"><i class="ph-fill ph-fire" style="color:var(--danger);"></i> VIPER DEPLOYED & CLAIMED ₹1,200</span>
+                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> GHOST WON ₹10,000 IN FREE FIRE</span>
+                    <span class="ticker-item"><i class="ph-fill ph-lightning" style="color:var(--primary);"></i> ALPHA TEAM SPLIT ₹8,500</span>
+                    <span class="ticker-item"><i class="ph-fill ph-trend-up" style="color:var(--success);"></i> VENOM SECURED ₹3,500</span>
                 </div>
             </div>
 
@@ -366,6 +365,7 @@
                     <span class="badge badge-live" style="background:transparent; border:1px solid var(--danger); box-shadow:none;"><i class="ph-bold ph-broadcast"></i> Live Updates</span>
                 </div>
                 <div class="grid-cards" id="landing-tournaments-list">
+                    <!-- Loaded dynamically via JS -->
                     <div class="glass card"><div class="skeleton" style="height:200px;"></div><div style="padding:24px;"><div class="skeleton" style="height:30px; margin-bottom:12px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
                 </div>
             </div>
@@ -448,6 +448,7 @@
         };
         window.closeModal = UI.closeModal; 
 
+        // Live Brand Syncing
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -466,10 +467,6 @@
                     document.getElementById('nav-logo-icon').style.display = 'block';
                     document.getElementById('nav-logo-img').style.display = 'none';
                 }
-                
-                // FIXED: Dynamically sync global platform fees instantly
-                if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseFloat(data.withdrawalFeePercent);
-                if(data.clanCost !== undefined) appState.clanCost = parseInt(data.clanCost);
             }
         });
 
@@ -631,7 +628,7 @@
 
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-                const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 } };
+                const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
                 if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
@@ -661,22 +658,50 @@
 
         const renderPlayerDashboard = () => {
             const container = document.getElementById('player-dash-content');
-            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { if(docSnap.exists() && appState.userData) { appState.userData = docSnap.data(); updateNav(); }});
+            
+            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { 
+                if(docSnap.exists() && appState.userData) { 
+                    appState.userData = docSnap.data(); 
+                    updateNav(); 
+                    
+                    if (appState.userData.isBanned) {
+                        const containerElement = document.getElementById('player-dash-content');
+                        if (containerElement) {
+                            containerElement.innerHTML = `
+                                <div class="glass" style="max-width:650px; margin: 40px auto; padding:60px 40px; text-align:center; border-color:var(--danger); box-shadow:0 0 60px rgba(255,42,95,0.15);">
+                                    <i class="ph-duotone ph-warning-octagon" style="font-size:7rem; color:var(--danger); margin-bottom:24px; filter:drop-shadow(0 0 20px rgba(255,42,95,0.4));"></i>
+                                    <h1 style="font-family:var(--font-display); font-size: 3rem; color:var(--danger); text-transform:uppercase; margin-bottom:16px;">Account Suspended</h1>
+                                    <p style="color:var(--text-muted); font-size:1.15rem; line-height:1.6; margin-bottom:32px;">Your access to the Nexus platform has been revoked due to policy violations or suspicious activity detected during an operation.</p>
+                                    <button class="btn btn-primary" style="background:var(--danger); color:white; box-shadow:0 0 15px rgba(255,42,95,0.4); padding:16px 32px; font-size:1.1rem;" onclick="window.logoutUser()"><i class="ph-bold ph-sign-out"></i> Acknowledge & Logout</button>
+                                </div>
+                            `;
+                        }
+                        const sidebar = document.querySelector('.sidebar');
+                        if(sidebar) sidebar.style.display = 'none';
+                        const drawerLinks = document.getElementById('drawer-dash-links');
+                        if(drawerLinks) drawerLinks.style.display = 'none';
+                        return; // Halt any further dashboard tab renders
+                    } else {
+                        const sidebar = document.querySelector('.sidebar');
+                        if(sidebar) sidebar.style.display = 'flex';
+                        const drawerLinks = document.getElementById('drawer-dash-links');
+                        if(drawerLinks) drawerLinks.style.display = 'flex';
+                    }
+                }
+            });
+
+            // Prevent tab execution if banned
+            if (appState.userData?.isBanned) return;
 
             setupSidebar('player', async (tab) => {
+                if (appState.userData?.isBanned) return;
+
                 if(tab === 'player-overview') {
                     let totalDeployments = 0;
                     try {
                         const snap = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
                         totalDeployments = snap.size;
                     } catch(e) {}
-                    
-                    // Dynamic Rank Logic
-                    let rank = "Rookie";
-                    let rankColor = "var(--text-muted)";
-                    if (totalDeployments >= 50) { rank = "Nexus Elite"; rankColor = "var(--primary)"; }
-                    else if (totalDeployments >= 10) { rank = "Vanguard"; rankColor = "var(--accent)"; }
-                    else if (totalDeployments >= 1) { rank = "Operative"; rankColor = "var(--success)"; }
 
                     container.innerHTML = `
                         <h2 style="font-family:var(--font-display); font-size: clamp(2rem, 5vw, 3rem); margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Player Identity</h2>
@@ -689,7 +714,7 @@
                             <h1 style="font-family:var(--font-display); font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom:12px; line-height:1; letter-spacing:2px; text-transform:uppercase;">
                                 ${appState.userData.clanTag ? `<span style="color:var(--accent);">[${appState.userData.clanTag}]</span> ` : ''}${UI.escapeHTML(appState.userData.username)}
                             </h1>
-                            <div class="badge mt-2" style="background:rgba(255,255,255,0.05); color:${rankColor}; border:1px solid ${rankColor}; font-size:0.9rem; padding:10px 20px; box-shadow:0 0 15px ${rankColor};"><i class="ph-fill ph-medal"></i> ${rank}</div>
+                            <div class="badge mt-2" style="background:linear-gradient(90deg, rgba(0,229,255,0.1), rgba(139,92,246,0.1)); color:white; border:1px solid var(--border); font-size:0.9rem; padding:10px 20px; box-shadow:0 10px 20px rgba(0,0,0,0.5);">Active Competitor</div>
                         </div>
 
                         <div class="grid-cards" style="margin-top:32px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
@@ -700,18 +725,6 @@
                             <div class="stat-box glass" style="animation-delay:0.2s;">
                                 <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; font-weight:700; letter-spacing:1.5px;">Total Deployments</div>
                                 <div class="stat-value" style="color:var(--primary); text-shadow:0 0 20px var(--primary-glow);">${totalDeployments}</div>
-                            </div>
-                        </div>
-                        
-                        <h3 style="font-family:var(--font-display); font-size:1.8rem; margin-top:40px; margin-bottom:24px; text-transform:uppercase; letter-spacing:1px;">Daily Bounties</h3>
-                        <div class="grid-cards" style="margin-top:0;">
-                            <div class="glass card" style="display:flex; flex-direction:row; align-items:center; gap:20px; padding:24px;">
-                                <div style="width:60px; height:60px; border-radius:50%; background:rgba(0,229,255,0.1); display:flex; align-items:center; justify-content:center; color:var(--primary); box-shadow:inset 0 0 10px rgba(0,229,255,0.3);"><i class="ph-fill ph-target" style="font-size:1.8rem;"></i></div>
-                                <div style="flex:1;">
-                                    <h4 style="margin:0; font-size:1.2rem; font-family:var(--font-display); text-transform:uppercase; letter-spacing:1px;">First Blood</h4>
-                                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Deploy in any operation today.</p>
-                                </div>
-                                <button class="btn btn-outline" style="padding:10px 16px; font-size:0.85rem;" ${totalDeployments > 0 ? 'disabled' : ''}>${totalDeployments > 0 ? 'Completed' : 'Pending'}</button>
                             </div>
                         </div>
                     `;
@@ -751,18 +764,6 @@
                                 <button class="btn btn-outline" style="border-color:var(--success); color:var(--success); padding:14px 32px;" onclick="withdrawWalletUI()"><i class="ph-bold ph-arrow-up-right"></i> Withdraw</button>
                             </div>
                         </div>
-                        
-                        <div class="glass" style="margin-top:32px; padding:32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px; background:linear-gradient(135deg, rgba(139,92,246,0.1) 0%, rgba(0,0,0,0.5) 100%); border:1px solid rgba(139,92,246,0.3);">
-                            <div>
-                                <h3 style="margin:0; font-family:var(--font-display); font-size:2rem; text-transform:uppercase; color:var(--accent); letter-spacing:1px;"><i class="ph-fill ph-users-three"></i> Refer & Earn</h3>
-                                <p style="margin:8px 0 0 0; color:var(--text-muted); font-size:1.05rem; max-width:400px;">Invite a squadmate using your secure code. You both receive ₹20 when they deploy in their first operation.</p>
-                            </div>
-                            <div style="display:flex; gap:12px; align-items:center; width:100%; max-width:350px;">
-                                <div style="flex:1; background:rgba(0,0,0,0.6); border:1px solid var(--accent); padding:16px 20px; border-radius:8px; font-family:var(--font-mono); font-weight:700; color:white; font-size:1.1rem; text-align:center; box-shadow:inset 0 0 15px rgba(139,92,246,0.2);">NEX-${appState.userData.username.substring(0,4).toUpperCase()}${appState.user.uid.substring(0,4).toUpperCase()}</div>
-                                <button class="btn btn-primary" style="padding:16px; background:var(--accent); box-shadow:0 0 15px rgba(139,92,246,0.4);" onclick="navigator.clipboard.writeText('NEX-${appState.userData.username.substring(0,4).toUpperCase()}${appState.user.uid.substring(0,4).toUpperCase()}'); UI.showToast('Referral Code Copied!');"><i class="ph-bold ph-copy" style="font-size:1.4rem;"></i></button>
-                            </div>
-                        </div>
-
                         <h3 class="mb-4" style="margin-top:48px; font-family:var(--font-display); font-size: clamp(1.8rem, 5vw, 2.2rem); text-transform:uppercase; letter-spacing:1px;">Transaction Ledger</h3>
                         <div id="wallet-history"><div class="skeleton" style="height:200px;"></div></div>
                     `;
@@ -973,11 +974,92 @@
             }
         };
 
+        window.uploadProofUI = (regId, tTitle) => {
+            UI.showModal(`
+                <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">Placement Proof</h3>
+                <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:24px;">Upload a screenshot of your match results for <strong style="color:white;">${tTitle}</strong>. Escrow requires this to verify kills/placement.</p>
+                
+                <div style="background:rgba(0,0,0,0.4); border:1px dashed var(--primary); border-radius:12px; padding:24px; text-align:center; margin-bottom:24px; position:relative;">
+                    <input type="file" id="proof-file" accept="image/*" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
+                    <div id="proof-placeholder">
+                        <i class="ph-duotone ph-upload-simple" style="font-size:3rem; color:var(--primary); margin-bottom:12px;"></i>
+                        <div style="font-weight:600; color:white; font-size:1.1rem;">Tap to Select Image</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:8px;">Auto-compressed. No storage limits.</div>
+                    </div>
+                    <div id="proof-preview" style="display:none; position:relative; z-index:5;"></div>
+                </div>
+
+                <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" id="btn-submit-proof" onclick="submitProof('${regId}')" disabled><i class="ph-bold ph-check-circle"></i> Submit Image Proof</button>
+            `);
+
+            window._currentProofDataUrl = null;
+
+            setTimeout(() => {
+                const fileInput = document.getElementById('proof-file');
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(!file) return;
+                    
+                    UI.setLoading('btn-submit-proof', true, 'Compressing...');
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 800; // Resize to max 800px width
+                            let scaleSize = 1;
+                            if(img.width > MAX_WIDTH) {
+                                scaleSize = MAX_WIDTH / img.width;
+                            }
+                            canvas.width = img.width * scaleSize;
+                            canvas.height = img.height * scaleSize;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            
+                            // High compression JPEG to bypass 1MB Firestore document limits
+                            const dataUrl = canvas.toDataURL('image/jpeg', 0.5); 
+                            window._currentProofDataUrl = dataUrl;
+                            
+                            document.getElementById('proof-placeholder').style.display = 'none';
+                            const preview = document.getElementById('proof-preview');
+                            preview.style.display = 'block';
+                            preview.innerHTML = `<img src="${dataUrl}" style="width:100%; max-height:250px; object-fit:contain; border-radius:8px; border:1px solid var(--border);">`;
+                            
+                            const btn = document.getElementById('btn-submit-proof');
+                            btn.innerHTML = `<i class="ph-bold ph-check-circle"></i> Submit Image Proof`;
+                            btn.disabled = false;
+                            btn.dataset.original = btn.innerHTML; // Reset original text memory for setLoading toggle
+                        }
+                        img.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }, 100);
+        };
+
+        window.submitProof = async (regId) => {
+            if(!window._currentProofDataUrl) return UI.showToast("Please select an image.", "error");
+            UI.setLoading('btn-submit-proof', true);
+            try {
+                await updateDoc(doc(db, "registrations", regId), {
+                    proofImage: window._currentProofDataUrl,
+                    proofSubmittedAt: new Date().toISOString()
+                });
+                UI.showToast("Match Proof Uploaded Successfully!");
+                UI.closeModal();
+                loadMyTournaments(); // Refresh list to show green check
+            } catch(e) {
+                UI.showToast("Upload failed. Try a smaller image.", "error");
+                UI.setLoading('btn-submit-proof', false);
+            }
+        };
+
         const loadMyTournaments = async () => {
             const container = document.getElementById('player-my-list');
             try {
                 const snap1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
-                let regs = []; snap1.forEach(d => regs.push(d.data())); 
+                let regs = []; snap1.forEach(d => regs.push({id: d.id, ...d.data()})); 
                 if(regs.length === 0) { container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); return; }
                 regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
                 let html = '';
@@ -1001,6 +1083,25 @@
                                 <div style="color:white; font-size:1.05rem; line-height:1.5;">${UI.escapeHTML(t.latestAnnouncement)}</div>
                             </div>` : '';
 
+                        let proofHtml = '';
+                        if (t.status === 'Live' || t.status === 'Completed' || t.status === 'Room Released') {
+                            if (rData.proofImage) {
+                                proofHtml = `
+                                    <div style="padding:16px 20px; background:rgba(0, 229, 255, 0.05); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; margin-bottom:24px; display:flex; align-items:center; gap:12px;">
+                                        <i class="ph-fill ph-check-circle" style="color:var(--primary); font-size:1.5rem;"></i>
+                                        <div>
+                                            <div style="color:white; font-weight:700; font-size:1rem;">Match Proof Uploaded</div>
+                                            <div style="color:var(--text-muted); font-size:0.85rem;">Escrow team will review.</div>
+                                        </div>
+                                    </div>`;
+                            } else {
+                                proofHtml = `
+                                    <div style="margin-bottom:24px;">
+                                        <button class="btn btn-outline" style="width:100%; border-color:var(--primary); color:var(--primary); padding:16px; font-size:1rem; box-shadow:0 10px 20px rgba(0,229,255,0.1);" onclick="uploadProofUI('${rData.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-upload-simple"></i> Upload Placement Proof (Optional)</button>
+                                    </div>`;
+                            }
+                        }
+
                         html += `
                             <div class="glass card" style="padding:32px;">
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -1010,6 +1111,7 @@
                                 <h3 style="font-family:var(--font-display); font-size:2rem; margin-bottom:24px; line-height:1.2;">${UI.escapeHTML(t.title)}</h3>
                                 ${announcementHtml}
                                 ${roomHtml}
+                                ${proofHtml}
                                 <div style="display:grid; grid-template-columns: 1fr; gap:16px; margin-top:auto;">
                                     <button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--primary); color:var(--primary);" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}')"><i class="ph-bold ph-chat-circle"></i> Secure Channel (Host)</button>
                                 </div>
@@ -1191,7 +1293,6 @@
 
         window.createTicketUI = () => { UI.showModal(`<h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Establish Support Line</h3><div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Subject</label><input type="text" id="t-sub" required style="padding:16px;"></div><div class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Message</label><textarea id="t-msg" rows="5" required style="background:rgba(0,0,0,0.5); padding:16px;"></textarea></div><button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="subT()"><i class="ph-bold ph-paper-plane-right"></i> Transmit to Support</button>`); };
         window.subT = async () => { const sub = document.getElementById('t-sub').value; const msg = document.getElementById('t-msg').value; if(!sub || !msg) return; try { await addDoc(collection(db, "tickets"), { userId: appState.user.uid, username: appState.userData.username, role: appState.userData.role, subject: sub, message: msg, status: 'Open', replies: [], createdAt: new Date().toISOString() }); UI.showToast("Line Established."); UI.closeModal(); loadSupportTickets(); } catch(e) {} };
-        
         const loadSupportTickets = async () => {
             const container = document.getElementById('support-list');
             try {
@@ -1203,7 +1304,6 @@
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        
         window.vT = async (tId) => {
             try {
                 const t = (await getDoc(doc(db, "tickets", tId))).data();
