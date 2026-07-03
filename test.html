@@ -47,10 +47,8 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Utility classes to prevent JS inline style collisions */
         .d-none { display: none !important; }
 
-        /* MOBILE PERFORMANCE FIX: Move fixed background to pseudo-element */
         body::before {
             content: '';
             position: fixed;
@@ -67,7 +65,6 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -140,147 +137,87 @@
             text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 6px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .badge-live { background: rgba(255, 42, 95, 0.15);
-            color: var(--danger); border: 1px solid rgba(255, 42, 95, 0.3); }
-        .badge-upcoming { background: rgba(0, 229, 255, 0.15);
-            color: var(--primary); border: 1px solid rgba(0, 229, 255, 0.3); }
-        .badge-game { background: rgba(139, 92, 246, 0.15);
-            color: var(--accent); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-live { background: rgba(255, 42, 95, 0.15); color: var(--danger); border: 1px solid rgba(255, 42, 95, 0.3); }
+        .badge-upcoming { background: rgba(0, 229, 255, 0.15); color: var(--primary); border: 1px solid rgba(0, 229, 255, 0.3); }
+        .badge-game { background: rgba(139, 92, 246, 0.15); color: var(--accent); border: 1px solid rgba(139, 92, 246, 0.3); }
 
         nav {
-            position: fixed;
-            top: 0; width: 100%; z-index: 1000; padding: 16px 5%;
+            position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 5%;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
-            background: rgba(3, 3, 5, 0.85);
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
         }
-        .logo-container { display: flex;
-            align-items: center; gap: 12px; cursor: pointer; max-width: 60%; }
-        .logo-img { height: 36px;
-            width: 36px; object-fit: cover; border-radius: 8px; display: none; }
-        .logo-text { font-family: var(--font-display);
-            font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; color: white; letter-spacing: 1.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-transform: uppercase;}
+        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; max-width: 60%; }
+        .logo-img { height: 36px; width: 36px; object-fit: cover; border-radius: 8px; display: none; }
+        .logo-text { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; color: white; letter-spacing: 1.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase;}
         
         .nav-actions { display: flex; gap: 16px; align-items: center; }
-        
-        .mobile-menu-btn { 
-            display: none;
-            background: transparent; border: none; color: white; 
-            font-size: 2.2rem; cursor: pointer; transition: var(--transition);
-        }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: white; font-size: 2.2rem; cursor: pointer; transition: var(--transition); }
         .mobile-menu-btn:hover { color: var(--primary); transform: scale(1.1); }
         
-        .drawer-overlay { 
-            position: fixed;
-            inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 1999; visibility: hidden; opacity: 0; transition: 0.4s ease;
-        }
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1999; visibility: hidden; opacity: 0; transition: 0.4s ease; }
         .drawer-overlay.active { visibility: visible; opacity: 1; }
 
         .mobile-drawer { 
-            position: fixed;
-            top: 0; right: -100%; width: 300px; height: 100vh; 
+            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; 
             background: linear-gradient(180deg, rgba(15,15,20,0.95) 0%, rgba(5,5,8,0.98) 100%); 
             backdrop-filter: blur(30px); border-left: 1px solid var(--border);
             z-index: 2000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
             display: flex; flex-direction: column; padding: 32px 24px; box-shadow: -20px 0 50px rgba(0,0,0,0.8);
         }
         .mobile-drawer.active { right: 0; }
-        
-        .drawer-header { display: flex;
-            justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;}
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px;}
         .drawer-close { font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
         .drawer-close:hover { color: var(--danger); transform: rotate(90deg); }
 
-        #app-content { margin-top: 90px; padding: 20px 5%; min-height: calc(100vh - 90px);
-            padding-bottom: 80px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        #app-content { margin-top: 90px; padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 80px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        .hero { display: flex; align-items: center; justify-content: space-between; min-height: calc(100vh - 180px);
-            gap: 60px; padding: 40px 0; }
+        .hero { display: flex; align-items: center; justify-content: space-between; min-height: calc(100vh - 180px); gap: 60px; padding: 40px 0; }
         .hero-text { flex: 1; max-width: 650px; }
-        .hero-text h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 6rem); line-height: 1.1;
-            margin-bottom: 24px; text-transform: uppercase; font-weight: 800; }
-        .hero-text h1 span { color: var(--primary);
-            text-shadow: 0 0 30px var(--primary-glow); }
-        .hero-text p { font-size: 1.15rem; color: var(--text-muted);
-            margin-bottom: 40px; line-height: 1.7; max-width: 550px;}
+        .hero-text h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 6rem); line-height: 1.1; margin-bottom: 24px; text-transform: uppercase; font-weight: 800; }
+        .hero-text h1 span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
+        .hero-text p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 40px; line-height: 1.7; max-width: 550px;}
 
-        .trust-badges { display: flex; gap: 24px;
-            margin-top: 40px; flex-wrap: wrap; }
-        .trust-badge { display: flex; align-items: center; gap: 10px;
-            color: var(--text-main); font-size: 0.95rem; font-weight: 500;}
-        .trust-badge i { color: var(--primary); font-size: 1.4rem;
-            text-shadow: 0 0 10px var(--primary-glow); }
+        .trust-badges { display: flex; gap: 24px; margin-top: 40px; flex-wrap: wrap; }
+        .trust-badge { display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 0.95rem; font-weight: 500;}
+        .trust-badge i { color: var(--primary); font-size: 1.4rem; text-shadow: 0 0 10px var(--primary-glow); }
 
-        .hero-visual { flex: 1; display: flex;
-            justify-content: center; align-items: center; position: relative; }
-        .hero-image-wrapper { position: relative; width: 100%;
-            max-width: 500px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 60px rgba(0, 229, 255, 0.15);
-        }
+        .hero-visual { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        .hero-image-wrapper { position: relative; width: 100%; max-width: 500px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 60px rgba(0, 229, 255, 0.15); }
         .hero-img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-image-wrapper::after { content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, var(--bg-base) 0%, transparent 50%); }
+        .hero-image-wrapper::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-base) 0%, transparent 50%); }
 
-        .ticker-wrap {
-            margin-top: 0;
-            overflow: hidden; white-space: nowrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); 
-            padding: 14px 0; background: rgba(0, 229, 255, 0.02);
-            width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
-        }
-        .ticker-content { display: inline-block;
-            animation: marquee 30s linear infinite; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--text-muted); letter-spacing: 1px; will-change: transform;
-        }
+        .ticker-wrap { margin-top: 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 14px 0; background: rgba(0, 229, 255, 0.02); width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+        .ticker-content { display: inline-block; animation: marquee 30s linear infinite; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--text-muted); letter-spacing: 1px; will-change: transform; }
         .ticker-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
 
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 24px; }
-        .card { padding: 0; transition: var(--transition); display: flex; flex-direction: column; overflow: hidden;
-            position: relative; }
-        .card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9), 0 0 30px rgba(0,229,255,0.15);
-        }
+        .card { padding: 0; transition: var(--transition); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.15); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9), 0 0 30px rgba(0,229,255,0.15); }
         .card-banner { height: 180px; width: 100%; background-position: center; background-size: cover; position: relative; }
-        .card-banner-overlay { position: absolute; inset: 0;
-            background: linear-gradient(to top, var(--surface) 0%, transparent 100%); }
-        .card-content { padding: 24px;
-            display: flex; flex-direction: column; gap: 12px; flex: 1; }
-        .card-title { font-family: var(--font-display);
-            font-size: 1.8rem; font-weight: 700; line-height: 1.1; margin-bottom: 4px; }
+        .card-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--surface) 0%, transparent 100%); }
+        .card-content { padding: 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .card-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; line-height: 1.1; margin-bottom: 4px; }
         
-        .progress-bar-bg { width: 100%;
-            height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 8px;
-        }
+        .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 8px; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); border-radius: 4px; transition: 0.5s; }
 
-        .auth-wrapper { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 160px);
-            width: 100%; }
+        .auth-wrapper { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 160px); width: 100%; }
         .auth-container { width: 100%; max-width: 480px; padding: 48px; text-align: center; }
         
-        .role-toggle { display: flex;
-            background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 6px; margin-bottom: 24px;
-        }
-        .role-btn { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer;
-            font-weight: 600; font-family: var(--font-display); font-size: 1.2rem; transition: var(--transition); color: var(--text-muted);
-        }
+        .role-toggle { display: flex; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 6px; margin-bottom: 24px; }
+        .role-btn { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: var(--font-display); font-size: 1.2rem; transition: var(--transition); color: var(--text-muted); }
         .role-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
 
         .dashboard-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; align-items: start; }
         .dashboard-content { min-width: 0; width: 100%; }
         
-        .sidebar { padding: 24px;
-            display: flex; flex-direction: column; gap: 8px; position: sticky; top: 110px; height: max-content;
-        }
-        .sidebar-item { padding: 16px 20px; border-radius: 12px; cursor: pointer; transition: var(--transition);
-            display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 600;
-            font-size: 1.1rem;}
-        .sidebar-item:hover { background: rgba(255,255,255,0.03); color: white;
-            transform: translateX(5px);}
-        .sidebar-item.active { background: linear-gradient(90deg, rgba(0, 229, 255, 0.15) 0%, transparent 100%);
-            color: var(--primary); border-left: 4px solid var(--primary); }
+        .sidebar { padding: 24px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 110px; height: max-content; }
+        .sidebar-item { padding: 16px 20px; border-radius: 12px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 600; font-size: 1.1rem;}
+        .sidebar-item:hover { background: rgba(255,255,255,0.03); color: white; transform: translateX(5px);}
+        .sidebar-item.active { background: linear-gradient(90deg, rgba(0, 229, 255, 0.15) 0%, transparent 100%); color: var(--primary); border-left: 4px solid var(--primary); }
 
         .skeleton { 
             background: var(--surface-hover);
@@ -288,72 +225,42 @@
             background-repeat: no-repeat; background-size: 1000px 100%;
             animation: shimmer 2s infinite linear; border-radius: 8px; 
         }
-        .empty-state { text-align: center;
-            padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted);
-        }
-        .empty-state i { font-size: 5rem; color: rgba(255,255,255,0.05);
-            filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.2));}
+        .empty-state { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
+        .empty-state i { font-size: 5rem; color: rgba(255,255,255,0.05); filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.2));}
         
-        .table-responsive { width: 100%;
-            overflow-x: auto; margin-top: 15px; border-radius: 16px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); -webkit-overflow-scrolling: touch;
-        }
+        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 16px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th, td { padding: 20px 24px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
-            letter-spacing: 1.5px;}
+        th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;}
         tr:hover { background: rgba(255,255,255,0.02); }
 
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex;
-            flex-direction: column; gap: 12px; pointer-events: none; }
-        .toast { pointer-events: auto;
-            padding: 18px 24px; border-radius: 12px; color: white; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-float);
-            animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); min-width: 320px;
-            font-weight: 600; font-size: 1.05rem;}
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+        .toast { pointer-events: auto; padding: 18px 24px; border-radius: 12px; color: white; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-float); animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1); background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); min-width: 320px; font-weight: 600; font-size: 1.05rem;}
         .toast.success { border-left: 4px solid var(--success); }
         .toast.success i { color: var(--success); font-size: 1.8rem; }
         .toast.error { border-left: 4px solid var(--danger); }
         .toast.error i { color: var(--danger); font-size: 1.8rem; }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
-        .modal-overlay { position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 3000; display: none;
-            align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;}
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 3000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;}
         .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content { width: 95%; max-width: 650px; padding: 48px; position: relative;
-            max-height: 90vh; overflow-y: auto; background: linear-gradient(180deg, rgba(20,20,25,1) 0%, rgba(10,10,15,1) 100%); border: 1px solid var(--border); border-radius: 24px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .modal-content { width: 95%; max-width: 650px; padding: 48px; position: relative; max-height: 90vh; overflow-y: auto; background: linear-gradient(180deg, rgba(20,20,25,1) 0%, rgba(10,10,15,1) 100%); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
-        .close-modal { position: absolute; top: 24px; right: 24px; cursor: pointer; color: var(--text-muted);
-            font-size: 1.8rem; transition: var(--transition); background: rgba(255,255,255,0.05); border-radius: 50%; padding: 8px; display: flex;
-            z-index: 10;}
+        .close-modal { position: absolute; top: 24px; right: 24px; cursor: pointer; color: var(--text-muted); font-size: 1.8rem; transition: var(--transition); background: rgba(255,255,255,0.05); border-radius: 50%; padding: 8px; display: flex; z-index: 10;}
         .close-modal:hover { color: var(--danger); background: rgba(255,42,95,0.1); transform: rotate(90deg); }
         
-        .stat-box { text-align: center;
-            padding: 32px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border); transition: var(--transition); position: relative;
-            overflow: hidden;}
-        .stat-box::before { content: ''; position: absolute; top: 0; left: 0;
-            width: 100%; height: 4px; background: var(--border); transition: var(--transition); }
-        .stat-box:hover { background: rgba(255,255,255,0.04);
-            transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0,0,0,0.5);}
-        .stat-box:hover::before { background: var(--primary);
-            box-shadow: 0 0 15px var(--primary); }
-        .stat-value { font-family: var(--font-display); font-size: 3.5rem;
-            font-weight: 800; color: white; margin: 12px 0 0 0; line-height: 1;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
+        .stat-box { text-align: center; padding: 32px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border); transition: var(--transition); position: relative; overflow: hidden;}
+        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--border); transition: var(--transition); }
+        .stat-box:hover { background: rgba(255,255,255,0.04); transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0,0,0,0.5);}
+        .stat-box:hover::before { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .stat-value { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: white; margin: 12px 0 0 0; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
 
-        /* MOBILE OPTIMIZATION QUERIES */
         @media (max-width: 900px) {
-            .glass {
-                backdrop-filter: blur(8px);
-                -webkit-backdrop-filter: blur(8px);
-            }
+            .glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
             .nav-actions { display: none; }
             .mobile-menu-btn { display: block; }
             
-            .hero { flex-direction: column;
-                text-align: center; padding: 20px 0 40px 0; gap: 30px; justify-content: center;
-            }
+            .hero { flex-direction: column; text-align: center; padding: 20px 0 40px 0; gap: 30px; justify-content: center; }
             .hero-text { display: flex; flex-direction: column; align-items: center; }
             .hero-text h1 { font-size: clamp(2.5rem, 8vw, 4.5rem) !important; }
             .hero-visual { display: none; }
@@ -361,13 +268,10 @@
             
             .dashboard-layout { grid-template-columns: 1fr; gap: 20px; }
             
-            /* FORCE SIDEBAR HIDDEN ON MOBILE TO PREVENT UI OVERLAPS */
             .sidebar { display: none !important; }
             
             .auth-container { padding: 32px 20px; max-width: 100%; margin: 0; }
-            
             input, select, textarea { font-size: 16px !important; }
-            
             .modal-content { width: 100%; margin: 10px; padding: 24px 16px !important; }
             .glass.text-center { padding: 40px 16px !important; }
             
@@ -376,7 +280,6 @@
             
             .table-responsive { border-radius: 8px; margin-top: 10px; }
             th, td { padding: 12px 10px; font-size: 0.9rem; }
-            
             .card-content { padding: 20px !important; }
             .stat-value { font-size: 2.5rem !important; }
         }
@@ -400,9 +303,7 @@
             <span class="logo-text brand-name" style="font-size:1.8rem;">NEXUS</span>
             <button class="drawer-close" onclick="closeMenu()" style="background:transparent; border:none;"><i class="ph-bold ph-x"></i></button>
         </div>
-        
         <div id="drawer-auth-state" style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);"></div>
-        
         <div id="drawer-dash-links" style="display:none; flex-direction:column; gap:8px;">
             <div class="sidebar-item active" data-tab="player-overview"><i class="ph-fill ph-user-focus"></i> Player Profile</div>
             <div class="sidebar-item" data-tab="player-browse"><i class="ph-fill ph-sword"></i> Live Arena</div>
@@ -554,20 +455,14 @@
                     appState.brandLogo = data.brandLogo;
                     document.getElementById('nav-logo-icon').style.display = 'none';
                     const img = document.getElementById('nav-logo-img');
-                    img.src = data.brandLogo;
-                    img.style.display = 'block';
+                    img.src = data.brandLogo; img.style.display = 'block';
                 } else {
                     appState.brandLogo = "";
                     document.getElementById('nav-logo-icon').style.display = 'block';
                     document.getElementById('nav-logo-img').style.display = 'none';
                 }
-                
-                if(data.withdrawalFeePercent !== undefined) {
-                    appState.withdrawalFeePercent = parseFloat(data.withdrawalFeePercent);
-                }
-                if(data.clanCost !== undefined) {
-                    appState.clanCost = parseInt(data.clanCost);
-                }
+                if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseFloat(data.withdrawalFeePercent);
+                if(data.clanCost !== undefined) appState.clanCost = parseInt(data.clanCost);
             }
         });
 
@@ -604,10 +499,7 @@
             }
         };
 
-        window.navigateToRegister = (role) => {
-            navigate('register');
-            setTimeout(() => { window.selectRole(role); }, 100);
-        };
+        window.navigateToRegister = (role) => { navigate('register'); setTimeout(() => { window.selectRole(role); }, 100); };
 
         const updateNav = () => {
             const deskNav = document.getElementById('nav-auth-container-desktop');
@@ -643,11 +535,7 @@
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if(appState.currentView === 'landing') {
-                loadTournamentsList('landing-tournaments-list');
-            }
-        });
+        document.addEventListener('DOMContentLoaded', () => { if(appState.currentView === 'landing') loadTournamentsList('landing-tournaments-list'); });
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -655,13 +543,11 @@
                 try {
                     let docSnap = await getDoc(doc(db, "users", user.uid));
                     if (!docSnap.exists()) { await new Promise(r => setTimeout(r, 1500)); docSnap = await getDoc(doc(db, "users", user.uid)); }
-                    
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
                         if (role === 'admin') { window.location.href = 'admin.html'; return; } 
                         else if (role === 'host') { window.location.href = 'host.html'; return; }
-                        
                         updateNav();
                         if(['login', 'register', 'landing'].includes(appState.currentView)) { navigate('player-dash'); }
                     } else { signOut(auth); }
@@ -950,8 +836,10 @@
                 const t = (await getDoc(doc(db, "tournaments", id))).data();
                 let btn = ''; let isFull = t.filledSlots >= t.maxSlots;
                 let formatStr = t.teamSize === 4 ? 'Squad' : (t.teamSize === 2 ? 'Duo' : 'Solo');
-                let feeText = t.teamSize > 1 ? `₹${t.entryFee} (Team Total)` : `₹${t.entryFee}`;
                 
+                let feeSplitText = t.teamSize > 1 ? `<span style="font-size:0.8rem; display:block; text-transform:none; margin-top:2px; font-weight:normal;">₹${t.entryFee/t.teamSize} deducted per player</span>` : '';
+                let feeText = `₹${t.entryFee}`;
+
                 let startTimeFormatted = "TBA";
                 if(t.startTime) { 
                     const d = new Date(t.startTime); 
@@ -960,7 +848,7 @@
 
                 if(!appState.user) btn = `<button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem;" onclick="closeModal(); navigate('login')"><i class="ph-bold ph-sign-in"></i> Authenticate to Join</button>`;
                 else if(isFull) btn = `<button class="btn btn-outline w-100" style="width:100%; border-color:var(--danger); color:var(--danger); padding:18px; font-size:1.1rem;" disabled><i class="ph-bold ph-warning-circle"></i> Lobby at Capacity</button>`;
-                else { btn = `<button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(0,229,255,0.4);" onclick="initJoin('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}', ${t.teamSize})"><i class="ph-bold ph-crosshair"></i> Deploy Entry - ${feeText}</button>`; }
+                else { btn = `<button class="btn btn-primary w-100" style="width:100%; padding:14px; font-size:1.1rem; box-shadow:0 15px 30px rgba(0,229,255,0.4); flex-direction:column; gap:2px;" onclick="initJoin('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}', ${t.teamSize})"><div><i class="ph-bold ph-crosshair"></i> Deploy Entry - ${feeText}</div>${feeSplitText}</button>`; }
 
                 UI.showModal(`
                     <div style="width:100%; height:220px; border-radius:16px; margin-bottom:24px; border:1px solid var(--border); background: url('${t.bannerUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80'}') center/cover; position:relative; overflow:hidden;">
@@ -1006,8 +894,7 @@
         };
 
         window.initJoin = async (tId, fee, title, teamSize) => {
-            const balance = appState.userData.wallet.coins || 0;
-            if(balance < fee) { UI.showToast("Insufficient Funds. Please deposit.", "error"); UI.closeModal(); return; }
+            const splitFee = fee / teamSize;
 
             const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
             let joined = false;
@@ -1041,10 +928,10 @@
 
                     UI.showModal(`
                         <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">Deploy Team <span style="color:var(--primary)">[${UI.escapeHTML(clan.tag)}]</span></h3>
-                        <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:32px;">Select exactly ${teamSize} members for this operation. Total fee: <strong style="color:white; font-size:1.2rem;">₹${fee}</strong></p>
+                        <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:32px;">Select exactly ${teamSize} members for this operation. <strong style="color:white;">₹${splitFee}</strong> will be deducted from each selected player.</p>
                         <form id="squad-join-form">
                             <div style="max-height:300px; overflow-y:auto; margin-bottom:32px; padding-right:12px;">${checkboxHtml}</div>
-                            <button type="submit" class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(0,229,255,0.3);" id="btn-sq-sub"><i class="ph-bold ph-rocket-launch"></i> Confirm & Pay ₹${fee}</button>
+                            <button type="submit" class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(0,229,255,0.3);" id="btn-sq-sub"><i class="ph-bold ph-rocket-launch"></i> Confirm Roster</button>
                         </form>
                     `);
 
@@ -1052,18 +939,42 @@
                         e.preventDefault();
                         const checked = document.querySelectorAll('input[name="team-sel"]:checked');
                         if(checked.length !== teamSize) return UI.showToast(`Select exactly ${teamSize} members.`, "error");
+                        
                         UI.setLoading('btn-sq-sub', true);
                         let selectedMembers = [];
-                        checked.forEach(cb => selectedMembers.push({ uid: cb.value, name: cb.dataset.name }));
+                        let canAfford = true;
+
+                        for(let cb of checked) {
+                            let uDoc = await getDoc(doc(db, "users", cb.value));
+                            if(uDoc.exists()) {
+                                let uData = uDoc.data();
+                                if((uData.wallet?.coins || 0) < splitFee) {
+                                    UI.showToast(`${uData.username} has insufficient funds (Needs ₹${splitFee}).`, "error");
+                                    canAfford = false;
+                                    break;
+                                }
+                                selectedMembers.push({ uid: cb.value, name: cb.dataset.name });
+                            }
+                        }
+
+                        if(!canAfford) { UI.setLoading('btn-sq-sub', false); return; }
+
                         try {
-                            await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
+                            for(let member of selectedMembers) {
+                                await updateDoc(doc(db, "users", member.uid), { "wallet.coins": increment(-splitFee) });
+                            }
                             await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: clan.tag, isSquad: true, teamMembers: selectedMembers, joinedAt: new Date().toISOString() });
                             await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
-                            UI.showToast(`Squad Deployed!`); UI.closeModal(); navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
+                            
+                            UI.showToast(`Squad Deployed! ₹${splitFee} deducted per member.`); 
+                            UI.closeModal(); navigate('player-dash'); 
+                            setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
                         } catch(err) { UI.showToast("Deployment failed.", "error"); }
+                        finally { UI.setLoading('btn-sq-sub', false); }
                     };
                 } catch(e) { UI.showToast("Error loading team.", "error"); }
             } else {
+                if((appState.userData.wallet?.coins || 0) < fee) return UI.showToast("Insufficient Funds. Please deposit.", "error");
                 UI.showModal(`<div class="text-center" style="padding:80px 40px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:6rem; color:var(--primary); filter:drop-shadow(0 0 20px var(--primary-glow));"></i><h3 class="mt-4" style="font-family:var(--font-display); font-size:2.2rem; margin-top:20px;">Securing Slot...</h3></div>`);
                 try {
                     await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
@@ -1102,6 +1013,13 @@
                                 <div style="color:white; font-size:1.05rem; line-height:1.5;">${UI.escapeHTML(t.latestAnnouncement)}</div>
                             </div>` : '';
 
+                        let btnAction = '';
+                        if(t.status === 'Completed') {
+                            btnAction = `<button class="btn btn-primary" style="padding:14px; font-size:1rem; border-color:var(--success); background:var(--success); color:#000;" onclick="viewResults('${tDoc.id}')"><i class="ph-bold ph-trophy"></i> View Results</button>`;
+                        } else {
+                            btnAction = `<button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--primary); color:var(--primary);" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}', '${tDoc.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-chat-circle"></i> Secure Channel (Host)</button>`;
+                        }
+
                         html += `
                             <div class="glass card" style="padding:32px;">
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -1112,13 +1030,79 @@
                                 ${announcementHtml}
                                 ${roomHtml}
                                 <div style="display:grid; grid-template-columns: 1fr; gap:16px; margin-top:auto;">
-                                    <button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--primary); color:var(--primary);" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}')"><i class="ph-bold ph-chat-circle"></i> Secure Channel (Host)</button>
+                                    ${btnAction}
                                 </div>
                             </div>`;
                     }
                 }
                 container.innerHTML = html;
             } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+        };
+
+        window.viewResults = async (tId) => {
+            try {
+                const t = (await getDoc(doc(db, "tournaments", tId))).data();
+                let winnerHtml = `<div class="empty-state" style="padding:20px;"><i class="ph-duotone ph-clock"></i><p>Results are being verified and will be posted shortly.</p></div>`;
+                
+                if(t.winners && t.winners.length > 0) {
+                    winnerHtml = t.winners.map(w => `
+                        <div class="glass" style="padding:16px 20px; margin-bottom:12px; border-left: 4px solid var(--success); display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="font-size:1.1rem; color:white;">${UI.escapeHTML(w.name)}</strong>
+                                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Score / Kills: ${w.score || 'N/A'}</div>
+                            </div>
+                            <div style="font-family:var(--font-display); font-weight:800; color:var(--success); font-size:1.5rem;">₹${w.prize || 0}</div>
+                        </div>
+                    `).join('');
+                }
+
+                UI.showModal(`
+                    <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; text-transform:uppercase; color:var(--success);"><i class="ph-fill ph-trophy"></i> Operation Results</h3>
+                    <div style="max-height: 400px; overflow-y:auto; margin-bottom: 24px; padding-right:8px;">
+                        ${winnerHtml}
+                    </div>
+                    <div style="padding-top:24px; border-top:1px solid var(--border);">
+                        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:16px;">Notice a discrepancy in the results or stats? You can raise a formal objection for the admins to review.</p>
+                        <button class="btn btn-danger" style="width:100%;" onclick="raiseObjectionUI('${tId}')"><i class="ph-bold ph-warning"></i> Raise Objection</button>
+                    </div>
+                `);
+            } catch(e) {}
+        };
+
+        window.raiseObjectionUI = (tId) => {
+            UI.showModal(`
+                <h3 style="font-family:var(--font-display); font-size: 2rem; margin-bottom:20px; color:var(--danger); text-transform:uppercase;">File Objection</h3>
+                <p style="color:var(--text-muted); font-size:1rem; margin-bottom:24px;">Please provide your active WhatsApp number so our moderation team can contact you for proof (screenshots/recordings).</p>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">WhatsApp Number</label>
+                    <input type="tel" id="obj-wa" placeholder="+91..." required style="padding:16px;">
+                </div>
+                <div class="form-group" style="margin-bottom:32px;">
+                    <label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Reason for Objection</label>
+                    <textarea id="obj-desc" rows="4" placeholder="Describe the discrepancy..." required style="padding:16px;"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background:var(--danger); box-shadow: 0 0 20px rgba(255, 42, 95, 0.4); width:100%; padding:18px;" onclick="submitObjection('${tId}')"><i class="ph-bold ph-paper-plane-right"></i> Submit to Moderation</button>
+            `);
+        };
+
+        window.submitObjection = async (tId) => {
+            const wa = document.getElementById('obj-wa').value.trim();
+            const desc = document.getElementById('obj-desc').value.trim();
+            if(!wa || !desc) return UI.showToast("All fields are required.", "error");
+            
+            try {
+                await addDoc(collection(db, "objections"), {
+                    tournamentId: tId,
+                    userId: appState.user.uid,
+                    username: appState.userData.username,
+                    whatsapp: wa,
+                    details: desc,
+                    status: 'Pending',
+                    createdAt: new Date().toISOString()
+                });
+                UI.showToast("Objection filed securely. Our team will contact you.");
+                UI.closeModal();
+            } catch(e) { UI.showToast("Failed to file objection.", "error"); }
         };
 
         const loadClanSystem = async () => {
@@ -1128,7 +1112,33 @@
                     const cDoc = await getDoc(doc(db, "clans", appState.userData.clanId));
                     if(cDoc.exists()) {
                         const clan = cDoc.data();
-                        let mHtml = ''; clan.memberNames.forEach(m => mHtml += `<div style="padding:16px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.01);"><i class="ph-fill ph-user" style="color:var(--primary); font-size:1.4rem;"></i> <span style="color:white; font-weight:600; font-size:1.15rem;">${UI.escapeHTML(m)}</span></div>`);
+                        const isLeader = appState.user.uid === clan.leaderId;
+                        
+                        let mHtml = ''; 
+                        clan.members.forEach((uid, index) => {
+                            let mName = clan.memberNames[index];
+                            let isMe = uid === appState.user.uid;
+                            let isMemberLeader = uid === clan.leaderId;
+                            
+                            let actionHtml = '';
+                            if (isLeader && !isMemberLeader) {
+                                actionHtml = `<button class="btn btn-danger" style="padding:8px 16px; font-size:0.85rem;" onclick="kickClanMember('${uid}', '${cDoc.id}')">Kick</button>`;
+                            } else if (isMe && !isMemberLeader) {
+                                actionHtml = `<button class="btn btn-outline" style="padding:8px 16px; font-size:0.85rem;" onclick="leaveClan('${cDoc.id}')">Leave Team</button>`;
+                            } else if (isMe && isMemberLeader && clan.members.length === 1) {
+                                actionHtml = `<button class="btn btn-danger" style="padding:8px 16px; font-size:0.85rem;" onclick="disbandClan('${cDoc.id}')">Disband</button>`;
+                            }
+
+                            mHtml += `
+                            <div style="padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.01);">
+                                <div style="display:flex; align-items:center; gap:16px;">
+                                    <i class="ph-fill ph-user" style="color:var(--primary); font-size:1.4rem;"></i> 
+                                    <span style="color:white; font-weight:600; font-size:1.15rem;">${UI.escapeHTML(mName)} ${isMemberLeader ? '<span style="color:var(--accent); font-size:0.85rem; margin-left:8px; text-transform:uppercase; letter-spacing:1px;">(Leader)</span>' : ''}</span>
+                                </div>
+                                <div>${actionHtml}</div>
+                            </div>`;
+                        });
+
                         container.innerHTML = `
                             <div class="glass" style="padding:60px 20px; text-align:center; position:relative; overflow:hidden; border-radius:24px;">
                                 <div style="position:absolute; bottom:-50px; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--accent); opacity:0.15; filter:blur(60px); pointer-events:none;"></div>
@@ -1161,9 +1171,54 @@
             }
         };
 
+        window.kickClanMember = async (uid, clanId) => {
+            if(!confirm("Are you sure you want to kick this player from the squad?")) return;
+            try {
+                const cDoc = await getDoc(doc(db, "clans", clanId));
+                let clan = cDoc.data();
+                let idx = clan.members.indexOf(uid);
+                if(idx > -1) {
+                    clan.members.splice(idx, 1);
+                    clan.memberNames.splice(idx, 1);
+                    await updateDoc(doc(db, "clans", clanId), { members: clan.members, memberNames: clan.memberNames });
+                    await updateDoc(doc(db, "users", uid), { clanId: null, clanTag: null });
+                    UI.showToast("Operator kicked from squad.");
+                    loadClanSystem();
+                }
+            } catch(e) { UI.showToast("Failed to remove member.", "error"); }
+        };
+
+        window.leaveClan = async (clanId) => {
+            if(!confirm("Are you sure you want to leave this squad?")) return;
+            try {
+                const cDoc = await getDoc(doc(db, "clans", clanId));
+                let clan = cDoc.data();
+                let idx = clan.members.indexOf(appState.user.uid);
+                if(idx > -1) {
+                    clan.members.splice(idx, 1);
+                    clan.memberNames.splice(idx, 1);
+                    await updateDoc(doc(db, "clans", clanId), { members: clan.members, memberNames: clan.memberNames });
+                    await updateDoc(doc(db, "users", appState.user.uid), { clanId: null, clanTag: null });
+                    appState.userData.clanId = null; appState.userData.clanTag = null;
+                    UI.showToast("Left squad successfully.");
+                    loadClanSystem();
+                }
+            } catch(e) { UI.showToast("Failed to leave.", "error"); }
+        };
+
+        window.disbandClan = async (clanId) => {
+            if(!confirm("Disband this squad permanently?")) return;
+            try {
+                await updateDoc(doc(db, "users", appState.user.uid), { clanId: null, clanTag: null });
+                appState.userData.clanId = null; appState.userData.clanTag = null;
+                UI.showToast("Squad disbanded.");
+                loadClanSystem();
+            } catch(e) { UI.showToast("Failed to disband.", "error"); }
+        };
+
         window.createClanUI = () => { UI.showModal(`<h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; text-transform:uppercase; letter-spacing:1px;">Establish Team</h3><div class="form-group" style="margin-bottom:24px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Full Team Name</label><input type="text" id="cl-name" required style="padding:16px;"></div><div class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Unique Tag (2-4 Chars)</label><input type="text" id="cl-tag" maxlength="4" required style="padding:16px; font-family:var(--font-mono); font-size:1.2rem; text-transform:uppercase;"></div><button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="submitClan()"><i class="ph-bold ph-rocket-launch"></i> Pay ₹${appState.clanCost} & Establish</button>`); };
         window.submitClan = async () => {
-            const name = document.getElementById('cl-name').value; const tag = document.getElementById('cl-tag').value.toUpperCase();
+            const name = document.getElementById('cl-name').value.trim(); const tag = document.getElementById('cl-tag').value.toUpperCase().trim();
             if(!name || tag.length < 2) return;
             if((appState.userData.wallet.coins || 0) < appState.clanCost) return UI.showToast("Insufficient Balance. Please Deposit.", "error");
             try {
@@ -1178,7 +1233,7 @@
 
         window.joinClanUI = () => { UI.showModal(`<h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; text-transform:uppercase; letter-spacing:1px;">Join Existing Team</h3><div class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Enter Team Tag</label><input type="text" id="j-cl-tag" maxlength="4" required style="padding:16px; font-family:var(--font-mono); font-size:1.2rem; text-transform:uppercase;"></div><button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="submitJoinClan()"><i class="ph-bold ph-link"></i> Request Entry</button>`); };
         window.submitJoinClan = async () => {
-            const tag = document.getElementById('j-cl-tag').value.toUpperCase(); if(!tag) return;
+            const tag = document.getElementById('j-cl-tag').value.toUpperCase().trim(); if(!tag) return;
             try {
                 const snap = await getDocs(query(collection(db, "clans"), where("tag", "==", tag)));
                 if(snap.empty) return UI.showToast("Team not found.", "error");
@@ -1192,15 +1247,15 @@
             } catch(e) {}
         };
 
-        window.openDM = (targetUid, targetName) => {
-            const chatId = [appState.user.uid, targetUid].sort().join('_');
+        window.openDM = (targetUid, targetName, tourneyId, tourneyTitle) => {
+            const chatId = tourneyId + '_' + [appState.user.uid, targetUid].sort().join('_');
             UI.showModal(`
                 <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); flex-shrink: 0;">
-                    <h3 style="margin:0; font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.2rem); display:flex; align-items:center; gap:16px;">
-                        <i class="ph-fill ph-lock-key" style="color:var(--primary); font-size:1.8rem; filter:drop-shadow(0 0 10px var(--primary-glow));"></i> 
-                        <span style="color:var(--text-muted); font-size:1.1rem; font-family:var(--font-body); font-weight:700; text-transform:uppercase; letter-spacing:2px;">SECURE COMMS:</span> 
-                        <span style="color:white; letter-spacing:1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${UI.escapeHTML(targetName).toUpperCase()}</span>
+                    <h3 style="margin:0; font-family:var(--font-display); font-size: clamp(1.5rem, 5vw, 2rem); display:flex; align-items:center; gap:12px; color:white;">
+                        <i class="ph-fill ph-lock-key" style="color:var(--primary); filter:drop-shadow(0 0 10px var(--primary-glow));"></i> 
+                        ${UI.escapeHTML(tourneyTitle)}
                     </h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:8px; text-transform:uppercase; letter-spacing:1px;">Host Comms: <span style="color:white; font-weight:bold;">${UI.escapeHTML(targetName)}</span></p>
                 </div>
                 <div id="dm-box" style="display:flex; flex-direction:column; gap:16px; height:450px; max-height: 50vh; overflow-y:auto; padding-right:12px; margin-bottom:24px; -webkit-overflow-scrolling: touch;"></div>
                 <form id="dm-form" style="display:flex; gap:16px; flex-shrink: 0;">
@@ -1212,7 +1267,7 @@
             if(window.chatUnsub) window.chatUnsub(); 
             window.chatUnsub = onSnapshot(query(collection(db, "direct_messages"), where("chatId", "==", chatId)), (snap) => {
                 let msgs = []; snap.forEach(d => msgs.push(d.data())); msgs.sort((a,b) => a.timestamp - b.timestamp);
-                if(msgs.length === 0) { msgBox.innerHTML = `<div class="empty-state" style="padding:60px 20px;"><i class="ph-duotone ph-chat-teardrop" style="font-size:4rem;"></i><h3 style="font-family:var(--font-display); font-size:2rem; margin-top:10px;">Link Established</h3><p style="font-size:1.1rem;">Awaiting transmission.</p></div>`; } 
+                if(msgs.length === 0) { msgBox.innerHTML = `<div class="empty-state" style="padding:60px 20px;"><i class="ph-duotone ph-chat-teardrop" style="font-size:4rem;"></i><h3 style="font-family:var(--font-display); font-size:2rem; margin-top:10px;">Link Established</h3><p style="font-size:1.1rem;">Awaiting transmission for this specific operation.</p></div>`; } 
                 else { 
                     let html = ''; 
                     msgs.forEach(m => { 
