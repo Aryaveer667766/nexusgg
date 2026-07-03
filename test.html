@@ -53,7 +53,7 @@
             background-attachment: fixed;
         }
 
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
@@ -133,13 +133,32 @@
         .logo-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: white; letter-spacing: 1px; }
         .nav-actions { display: flex; gap: 16px; align-items: center; }
 
-        #app-content { margin-top: 85px; padding: 20px 5%; min-height: calc(100vh - 85px); padding-bottom: 100px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        /* Mobile Hamburger & Drawer Elements */
+        .mobile-menu-btn { display: none; font-size: 2rem; color: white; cursor: pointer; z-index: 1002; transition: var(--transition); }
+        .mobile-menu-btn:hover { color: var(--primary); }
+        
+        .mobile-drawer {
+            position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+            background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-left: 1px solid var(--border); z-index: 1001; transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 80px 24px 24px; display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .mobile-drawer.open { right: 0; }
+        .close-drawer-btn { position: absolute; top: 20px; right: 24px; font-size: 1.8rem; color: var(--text-muted); cursor: pointer; }
+        
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.6);
+            z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(3px);
+        }
+        .drawer-overlay.active { display: block; opacity: 1; }
+
+        #app-content { margin-top: 85px; padding: 20px 5%; min-height: calc(100vh - 85px); padding-bottom: 80px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         .hero { display: flex; align-items: center; justify-content: space-between; min-height: calc(100vh - 120px); gap: 60px; padding: 40px 0; }
         .hero-text { flex: 1; max-width: 650px; }
-        .hero-text h1 { font-family: var(--font-display); font-size: clamp(3.5rem, 6vw, 6rem); line-height: 1; margin-bottom: 24px; text-transform: uppercase; font-weight: 800; }
+        .hero-text h1 { font-family: var(--font-display); font-size: clamp(3.5rem, 6vw, 6rem); line-height: 1.05; margin-bottom: 24px; text-transform: uppercase; font-weight: 800; }
         .hero-text h1 span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
         .hero-text p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 40px; line-height: 1.7; max-width: 550px;}
 
@@ -148,7 +167,7 @@
         .trust-badge i { color: var(--primary); font-size: 1.4rem; text-shadow: 0 0 10px var(--primary-glow); }
 
         .hero-visual { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
-        .hero-image-wrapper { position: relative; width: 100%; max-width: 500px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 60px rgba(0, 229, 255, 0.15); }
+        .hero-image-wrapper { position: relative; width: 100%; max-width: 450px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 60px rgba(0, 229, 255, 0.15); }
         .hero-img { width: 100%; height: 100%; object-fit: cover; }
         .hero-image-wrapper::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-base) 0%, transparent 50%); }
 
@@ -168,33 +187,39 @@
         .sidebar-item { padding: 14px 20px; border-radius: 8px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 500; font-size: 1.05rem;}
         .sidebar-item:hover { background: rgba(255,255,255,0.03); color: white; }
         .sidebar-item.active { background: rgba(0, 229, 255, 0.1); color: var(--primary); box-shadow: inset 3px 0 0 var(--primary); }
-        
-        .bottom-nav { display: none; }
 
         @media (max-width: 900px) {
-            .hero { flex-direction: column; text-align: center; padding: 20px 0 60px 0; gap: 40px; justify-content: center; }
+            .mobile-menu-btn { display: block; }
+            .nav-actions { display: none; } /* Hide standard nav on mobile */
+            
+            .hero { flex-direction: column; text-align: center; padding: 20px 0 40px 0; gap: 40px; justify-content: center; }
             .hero-text { display: flex; flex-direction: column; align-items: center; }
             .hero-visual { display: none; }
             .trust-badges { justify-content: center; }
             
             .dashboard-layout { grid-template-columns: 1fr; gap: 20px; }
-            .sidebar { display: none; }
-            
-            .bottom-nav {
-                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 999;
-                background: rgba(5, 5, 8, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border);
-                padding: 12px 5px; padding-bottom: env(safe-area-inset-bottom, 15px); justify-content: space-around;
-            }
-            .b-nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: 0.2s; width: 65px;}
-            .b-nav-item i { font-size: 1.6rem; }
-            .b-nav-item.active { color: var(--primary); transform: translateY(-4px); }
+            .sidebar { display: none; } /* Dashboard sidebar hidden, uses drawer instead */
             
             .auth-container { padding: 32px 20px; margin: 20px; }
-            #app-content { padding-bottom: 120px; }
+            #app-content { padding-bottom: 40px; }
+            
+            .stat-box { padding: 20px; }
+            .stat-value { font-size: 2.2rem; }
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+
+        .pulse-text { animation: pulse-color 2s infinite; }
+        @keyframes pulse-color { 0% { color: var(--danger); text-shadow: 0 0 5px rgba(255,42,95,0.5); } 50% { color: var(--text-main); text-shadow: none; } 100% { color: var(--danger); text-shadow: 0 0 5px rgba(255,42,95,0.5); } }
+        
+        .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.3s; }
+        
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--primary); } }
+        .typewriter-text { border-right: 3px solid var(--primary); animation: blink-caret .75s step-end infinite; color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
+        
+        @keyframes heartbeat { 0% { transform: scale(1); } 14% { transform: scale(1.05); } 28% { transform: scale(1); } 42% { transform: scale(1.05); } 70% { transform: scale(1); } }
 
         .skeleton { 
             background: var(--surface-hover); 
@@ -202,7 +227,7 @@
             background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear; border-radius: 8px; 
         }
         
-        .empty-state { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
+        .empty-state { text-align: center; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
         .empty-state i { font-size: 4.5rem; color: rgba(255,255,255,0.1); }
 
         .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); }
@@ -239,8 +264,21 @@
             <i id="nav-logo-icon" class="ph-fill ph-crosshair" style="font-size: 32px; color: var(--primary); text-shadow: 0 0 10px var(--primary-glow);"></i>
             <span class="logo-text brand-name">NEXUS</span>
         </div>
-        <div class="nav-actions" id="nav-auth-container"></div>
+        
+        <!-- Desktop Nav -->
+        <div class="nav-actions" id="nav-auth-container-desktop"></div>
+        
+        <!-- Mobile Nav Toggle -->
+        <i class="ph-bold ph-list mobile-menu-btn" onclick="toggleMobileMenu()"></i>
     </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <i class="ph-bold ph-x close-drawer-btn" onclick="toggleMobileMenu()"></i>
+        <div id="nav-auth-container-mobile" style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);"></div>
+        <div id="mobile-drawer-links" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
 
     <div id="toast-container"></div>
     <div id="modal-container" class="modal-overlay">
@@ -253,11 +291,10 @@
         <section id="view-landing" class="view-section active">
             <div class="hero">
                 <div class="hero-text">
-                    <h1>The Standard for <br><span>Competitive</span> Play</h1>
-                    <p>Enter premium lobbies across BGMI, Free Fire, and Valorant. Play securely with 100% Escrow Guaranteed payouts and professional anti-cheat protocols.</p>
+                    <h1>The Arena for <br><span id="typewriter" class="typewriter-text"></span></h1>
+                    <p>Thousands of players are already claiming their share of massive daily payouts. Don't let someone else take your trophy. Deploy now before slots fill up.</p>
                     <div style="display:flex; gap:16px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="navigate('register')">Start Your Legacy <i class="ph-bold ph-arrow-right"></i></button>
-                        <button class="btn btn-outline" onclick="navigate('login')">Host a Tournament</button>
+                        <button class="btn btn-primary" onclick="navigate('register')" style="animation: heartbeat 2.5s infinite; box-shadow: 0 0 25px var(--primary-glow);">Claim Your Spot Now <i class="ph-bold ph-lightning"></i></button>
                     </div>
                     <div class="trust-badges">
                         <div class="trust-badge"><i class="ph-fill ph-shield-check"></i> Escrow Secured</div>
@@ -279,7 +316,7 @@
                 </div>
                 <div class="grid-cards" id="landing-tournaments-list">
                     <div class="glass card"><div class="skeleton" style="height:180px;"></div><div style="padding:24px;"><div class="skeleton" style="height:30px; margin-bottom:12px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
-                    <div class="glass card hide-on-mobile"><div class="skeleton" style="height:180px;"></div><div style="padding:24px;"><div class="skeleton" style="height:30px; margin-bottom:12px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
+                    <div class="glass card"><div class="skeleton" style="height:180px;"></div><div style="padding:24px;"><div class="skeleton" style="height:30px; margin-bottom:12px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
                 </div>
             </div>
         </section>
@@ -302,13 +339,7 @@
                     <div class="sidebar-item" data-tab="player-wallet"><i class="ph-fill ph-wallet"></i> Wallet</div>
                     <div class="sidebar-item" data-tab="player-support"><i class="ph-fill ph-lifebuoy"></i> Support Desk</div>
                 </div>
-                <div class="bottom-nav" id="bnav-player">
-                    <div class="b-nav-item active" data-tab="player-overview"><i class="ph-fill ph-squares-four"></i>Home</div>
-                    <div class="b-nav-item" data-tab="player-browse"><i class="ph-fill ph-magnifying-glass"></i>Play</div>
-                    <div class="b-nav-item" data-tab="player-my-tournaments"><i class="ph-fill ph-trophy"></i>Matches</div>
-                    <div class="b-nav-item" data-tab="player-clans"><i class="ph-fill ph-shield-star"></i>Team</div>
-                    <div class="b-nav-item" data-tab="player-wallet"><i class="ph-fill ph-wallet"></i>Wallet</div>
-                </div>
+                
                 <div class="dashboard-content" id="player-dash-content"></div>
             </div>
         </section>
@@ -333,6 +364,43 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        const typewriterPhrases = ["Real Cash Prizes", "Competitive Glory", "Instant Payouts", "Elite Squads"];
+        let twCurrentPhrase = 0;
+        let twIsDeleting = false;
+        let twCharIndex = 0;
+
+        function runTypewriter() {
+            const twElement = document.getElementById('typewriter');
+            if(!twElement) {
+                setTimeout(runTypewriter, 100);
+                return;
+            }
+            
+            const currentStr = typewriterPhrases[twCurrentPhrase];
+            
+            if (twIsDeleting) {
+                twElement.innerText = currentStr.substring(0, twCharIndex - 1);
+                twCharIndex--;
+            } else {
+                twElement.innerText = currentStr.substring(0, twCharIndex + 1);
+                twCharIndex++;
+            }
+
+            let typeSpeed = twIsDeleting ? 40 : 80;
+
+            if (!twIsDeleting && twCharIndex === currentStr.length) {
+                typeSpeed = 2500; // Pause at end of word
+                twIsDeleting = true;
+            } else if (twIsDeleting && twCharIndex === 0) {
+                twIsDeleting = false;
+                twCurrentPhrase = (twCurrentPhrase + 1) % typewriterPhrases.length;
+                typeSpeed = 500; // Pause before typing new word
+            }
+
+            setTimeout(runTypewriter, typeSpeed);
+        }
+        runTypewriter();
 
         // Core Platform State
         let appState = {
@@ -371,6 +439,12 @@
             });
         };
 
+        // Mobile Menu Toggle
+        window.toggleMobileMenu = () => {
+            document.getElementById('mobile-drawer').classList.toggle('open');
+            document.getElementById('drawer-overlay').classList.toggle('active');
+        };
+
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -380,7 +454,6 @@
                 }
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
                 
-                // Dynamic Logo
                 if(data.brandLogo) {
                     appState.brandLogo = data.brandLogo;
                     document.getElementById('nav-logo-icon').style.display = 'none';
@@ -402,28 +475,56 @@
             const target = document.getElementById(`view-${viewName}`);
             if(target) {
                 target.classList.add('active'); appState.currentView = viewName;
-                if(viewName === 'landing') setTimeout(() => loadTournamentsList('landing-tournaments-list'), 0);
+                if(viewName === 'landing') setTimeout(() => loadTournamentsList('landing-tournaments-list'), 50);
                 if(viewName === 'player-dash') renderPlayerDashboard();
             }
         };
 
         const updateNav = () => {
-            const nav = document.getElementById('nav-auth-container');
+            const desktopNav = document.getElementById('nav-auth-container-desktop');
+            const mobileAuthNav = document.getElementById('nav-auth-container-mobile');
+            const mobileLinks = document.getElementById('mobile-drawer-links');
+            
             if (appState.user && appState.userData) {
-                nav.innerHTML = `
-                    <div style="text-align:right; display:none; @media(min-width:600px){display:block;}">
+                // Desktop
+                desktopNav.innerHTML = `
+                    <div style="text-align:right;">
                         <span style="color:white; font-weight:600;">${UI.escapeHTML(appState.userData.username)}</span>
                         <span class="badge badge-upcoming" style="margin-left:8px;">PLAYER</span>
                     </div>
                     <button class="btn btn-outline" onclick="navigate('player-dash')" style="padding: 8px 16px; font-size: 0.9rem;">Dashboard</button>
                     <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding: 8px; font-size: 0.9rem;" onclick="window.logoutUser()"><i class="ph-bold ph-sign-out"></i></button>
                 `;
+                
+                // Mobile
+                mobileAuthNav.innerHTML = `
+                    <div style="margin-bottom: 8px;">
+                        <span style="color:white; font-weight:700; font-size:1.3rem;">${UI.escapeHTML(appState.userData.username)}</span><br>
+                        <span class="badge badge-upcoming mt-2">PLAYER</span>
+                    </div>
+                `;
+                mobileLinks.innerHTML = `
+                    <div class="sidebar-item" onclick="navigate('landing'); toggleMobileMenu()"><i class="ph-fill ph-house"></i> Home Arena</div>
+                    <div class="sidebar-item" onclick="navigate('player-dash'); toggleMobileMenu(); setTimeout(()=>document.querySelector('[data-tab=\\'player-overview\\']').click(), 100)"><i class="ph-fill ph-squares-four"></i> Dashboard Overview</div>
+                    <div class="sidebar-item" onclick="navigate('player-dash'); toggleMobileMenu(); setTimeout(()=>document.querySelector('[data-tab=\\'player-browse\\']').click(), 100)"><i class="ph-fill ph-magnifying-glass"></i> Live Operations</div>
+                    <div class="sidebar-item" onclick="navigate('player-dash'); toggleMobileMenu(); setTimeout(()=>document.querySelector('[data-tab=\\'player-my-tournaments\\']').click(), 100)"><i class="ph-fill ph-trophy"></i> My Deployments</div>
+                    <div class="sidebar-item" onclick="navigate('player-dash'); toggleMobileMenu(); setTimeout(()=>document.querySelector('[data-tab=\\'player-clans\\']').click(), 100)"><i class="ph-fill ph-shield-star"></i> Squad Management</div>
+                    <div class="sidebar-item" onclick="navigate('player-dash'); toggleMobileMenu(); setTimeout(()=>document.querySelector('[data-tab=\\'player-wallet\\']').click(), 100)"><i class="ph-fill ph-wallet"></i> Nexus Wallet</div>
+                    <div class="sidebar-item" onclick="navigate('player-dash'); toggleMobileMenu(); setTimeout(()=>document.querySelector('[data-tab=\\'player-support\\']').click(), 100)"><i class="ph-fill ph-lifebuoy"></i> Support Desk</div>
+                    <div class="sidebar-item" style="color: var(--danger); margin-top: 20px;" onclick="window.logoutUser()"><i class="ph-bold ph-sign-out"></i> Secure Logout</div>
+                `;
             } else {
-                nav.innerHTML = `<button class="btn btn-outline" onclick="navigate('login')">Log In</button><button class="btn btn-primary" onclick="navigate('register')">Sign Up</button>`;
+                desktopNav.innerHTML = `<button class="btn btn-outline" onclick="navigate('login')">Log In</button><button class="btn btn-primary" onclick="navigate('register')">Sign Up</button>`;
+                
+                mobileAuthNav.innerHTML = `<h3 style="color:white; font-family:var(--font-display); font-size:2rem; letter-spacing:1px;">NEXUS SYSTEM</h3>`;
+                mobileLinks.innerHTML = `
+                    <div class="sidebar-item" onclick="navigate('landing'); toggleMobileMenu()"><i class="ph-fill ph-house"></i> Home Arena</div>
+                    <div class="sidebar-item" onclick="navigate('login'); toggleMobileMenu()"><i class="ph-fill ph-sign-in"></i> Secure Log In</div>
+                    <div class="sidebar-item" onclick="navigate('register'); toggleMobileMenu()"><i class="ph-fill ph-user-plus"></i> New Enlistment</div>
+                `;
             }
         };
 
-        // CORE AUTH LOGIC: Redirecting Admin/Host to separate panels immediately
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 appState.user = user;
@@ -435,19 +536,11 @@
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
                         
-                        // Strict Redirection Layer for Hosts and Admins
-                        if (role === 'admin') {
-                            window.location.href = 'admin.html';
-                            return;
-                        } else if (role === 'host') {
-                            window.location.href = 'host.html';
-                            return;
-                        }
+                        if (role === 'admin') { window.location.href = 'admin.html'; return; } 
+                        else if (role === 'host') { window.location.href = 'host.html'; return; }
                         
                         updateNav();
-                        if(['login', 'register', 'landing'].includes(appState.currentView)) {
-                            navigate('player-dash');
-                        }
+                        if(['login', 'register'].includes(appState.currentView)) navigate('player-dash');
                     } else { signOut(auth); }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
             } else {
@@ -475,13 +568,6 @@
                     <h2 style="font-family:var(--font-display); font-size:2.8rem; margin-bottom:8px; line-height:1;">Join ${appState.brandName}</h2>
                     <p style="color:var(--text-muted); margin-bottom:32px;">Establish your identity on the platform.</p>
                     <form id="reg-form">
-                        <div class="form-group" style="margin-bottom: 16px;">
-                            <select id="r-role" required>
-                                <option value="" disabled selected>Select Designation</option>
-                                <option value="player">Player (Compete & Earn)</option>
-                                <option value="host">Host (Organize & Earn)</option>
-                            </select>
-                        </div>
                         <div class="form-group" style="margin-bottom: 16px;"><input type="text" id="r-username" placeholder="Username" required></div>
                         <div class="form-group" style="margin-bottom: 16px;"><input type="email" id="r-email" placeholder="Email Address" required></div>
                         <div class="form-group" style="margin-bottom: 24px;"><input type="password" id="r-pass" placeholder="Password (min 6 chars)" required minlength="6"></div>
@@ -510,41 +596,31 @@
         const handleRegister = async (e) => {
             e.preventDefault(); UI.setLoading('btn-reg-submit', true);
             const email = document.getElementById('r-email').value; const pass = document.getElementById('r-pass').value;
-            const username = document.getElementById('r-username').value; const role = document.getElementById('r-role').value;
+            const username = document.getElementById('r-username').value; const role = 'player'; // Enforced for this panel
 
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
                 const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 } };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
-                appState.userData = newData; 
-                
-                if (role === 'host') window.location.href = 'host.html';
-                else navigate('player-dash');
-                
+                appState.userData = newData; navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
 
         const setupSidebar = (role, callback) => {
             const sideItems = document.querySelectorAll(`#view-${role}-dash .sidebar-item`);
-            const botItems = document.querySelectorAll(`#bnav-${role} .b-nav-item`);
-            
             const attach = (items) => {
                 items.forEach(item => {
                     const newEl = item.cloneNode(true); item.parentNode.replaceChild(newEl, item);
                     newEl.addEventListener('click', (e) => {
                         sideItems.forEach(el => el.classList.remove('active'));
-                        if(botItems) botItems.forEach(el => el.classList.remove('active'));
-                        
                         const tab = e.currentTarget.dataset.tab;
                         document.querySelector(`#view-${role}-dash .sidebar-item[data-tab="${tab}"]`)?.classList.add('active');
-                        document.querySelector(`#bnav-${role} .b-nav-item[data-tab="${tab}"]`)?.classList.add('active');
-                        
                         callback(tab);
                     });
                 });
             };
-            attach(sideItems); if(botItems) attach(botItems);
+            attach(sideItems);
             
             const activeTab = document.querySelector(`#view-${role}-dash .sidebar-item.active`);
             if(activeTab) callback(activeTab.dataset.tab);
@@ -559,7 +635,7 @@
                     container.innerHTML = `
                         <div class="glass" style="padding:50px 30px; text-align:center; position:relative; overflow:hidden;">
                             <div style="position:absolute; top:-50px; right:-50px; width:150px; height:150px; background:var(--primary); opacity:0.1; filter:blur(40px); border-radius:50%;"></div>
-                            <h1 style="font-family:var(--font-display); font-size:3.5rem; margin-bottom:10px; line-height:1;">
+                            <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem, 5vw, 3.5rem); margin-bottom:10px; line-height:1;">
                                 ${appState.userData.clanTag ? `<span style="color:var(--accent);">[${appState.userData.clanTag}]</span> ` : ''}${UI.escapeHTML(appState.userData.username)}
                             </h1>
                             <div class="badge mt-2" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid var(--border);">Active Competitor</div>
@@ -582,12 +658,14 @@
                     loadClanSystem();
                 } else if(tab === 'player-wallet') {
                     container.innerHTML = `
-                        <div class="flex-between mb-4"><h2 style="font-family:var(--font-display); font-size:2.5rem;">Financial Core</h2></div>
+                        <div class="flex-between mb-4" style="flex-wrap:wrap; gap:16px;">
+                            <h2 style="font-family:var(--font-display); font-size:2.5rem;">Financial Core</h2>
+                        </div>
                         <div class="glass text-center" style="padding:60px 20px; position:relative; overflow:hidden;">
                             <div style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:200px; height:100px; background:var(--success); opacity:0.1; filter:blur(60px);"></div>
                             <p style="color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; font-size:0.85rem; font-weight:600;">Available Funds</p>
                             <h1 style="font-size:5rem; margin:10px 0 20px 0; color:white; font-family:var(--font-display); line-height:1;">₹${appState.userData.wallet.coins || 0}</h1>
-                            <div style="display:flex; gap:16px; justify-content:center;">
+                            <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
                                 <button class="btn btn-primary" onclick="rechargeWalletUI()"><i class="ph-bold ph-plus"></i> Deposit</button>
                                 <button class="btn btn-outline" onclick="withdrawWalletUI()"><i class="ph-bold ph-arrow-up-right"></i> Withdraw</button>
                             </div>
@@ -597,14 +675,11 @@
                     `;
                     loadWalletHistory();
                 } else if(tab === 'player-support') {
-                    container.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;"><h2 style="font-family:var(--font-display); font-size:2.5rem;">Support Desk</h2><button class="btn btn-primary" style="padding:10px 20px; font-size:0.9rem;" onclick="createTicketUI()">Open Line</button></div><div id="support-list"><div class="skeleton" style="height:200px;"></div></div>`;
+                    container.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; flex-wrap:wrap; gap:12px;"><h2 style="font-family:var(--font-display); font-size:2.5rem;">Support Desk</h2><button class="btn btn-primary" style="padding:10px 20px; font-size:0.9rem;" onclick="createTicketUI()">Open Line</button></div><div id="support-list"><div class="skeleton" style="height:200px;"></div></div>`;
                     loadSupportTickets();
                 }
             });
         };
-
-        // --- PLAYER FUNCTIONS --- 
-        // Re-used existing logic but improved HTML outputs to match deep-night styling
 
         const loadTournamentsList = async (containerId) => {
             const container = document.getElementById(containerId);
@@ -617,6 +692,9 @@
                 docs.forEach(t => {
                     if(t.status === 'Upcoming' || t.status === 'Registration Open') {
                         let formatStr = t.teamSize === 4 ? 'Squad' : (t.teamSize === 2 ? 'Duo' : 'Solo');
+                        let percentFull = Math.min(100, Math.round((t.filledSlots / t.maxSlots) * 100));
+                        let urgencyBadge = percentFull >= 75 ? `<div style="color:var(--danger); font-size:0.75rem; font-weight:800; margin-top:6px; animation: pulse-color 1s infinite;"><i class="ph-fill ph-fire"></i> ALMOST FULL!</div>` : '';
+                        
                         html += `
                             <div class="glass card">
                                 <div class="card-banner" style="background-image: url('${t.bannerUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80'}');">
@@ -626,13 +704,19 @@
                                 </div>
                                 <div class="card-content">
                                     <div class="card-title">${UI.escapeHTML(t.title)}</div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; margin-top:8px;">
-                                        <div style="font-size:0.9rem; color:var(--text-muted); font-weight:500;"><i class="ph-bold ph-users" style="color:var(--primary)"></i> Format: ${formatStr}</div>
-                                        <div style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">Slots: <span style="color:white;">${t.filledSlots}/${t.maxSlots}</span></div>
+                                    
+                                    <div style="font-size:0.9rem; color:var(--text-muted); font-weight:500; margin-top:8px; margin-bottom:12px;">
+                                        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size: 0.85rem;">
+                                            <span><i class="ph-bold ph-users" style="color:var(--primary)"></i> Format: ${formatStr}</span>
+                                            <span style="color:white; font-weight:700;">${t.filledSlots}/${t.maxSlots} Slots</span>
+                                        </div>
+                                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${percentFull}%"></div></div>
+                                        ${urgencyBadge}
                                     </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; border-top:1px solid var(--border); padding-top:20px;">
-                                        <div><span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600;">Prize Pool</span><br><strong style="color:var(--success); font-size:1.4rem; line-height:1;">₹${t.prizePool}</strong></div>
-                                        <button class="btn btn-primary" style="padding:10px 24px; font-size:0.9rem;" onclick="viewTDetails('${t.id}')">View Details</button>
+
+                                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:auto; border-top:1px solid var(--border); padding-top:16px;">
+                                        <div><span class="pulse-text" style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; font-weight:800;">🔥 WIN UP TO</span><br><strong style="color:var(--success); font-size:1.6rem; line-height:1; text-shadow: 0 0 15px rgba(0,255,157,0.3);">₹${t.prizePool}</strong></div>
+                                        <button class="btn btn-primary" style="padding:10px 20px; font-size:0.9rem; font-weight:800; transform: translateY(-2px);" onclick="viewTDetails('${t.id}')">JOIN NOW</button>
                                     </div>
                                 </div>
                             </div>
@@ -640,7 +724,7 @@
                     }
                 });
                 container.innerHTML = html || UI.emptyState('ph-radar', 'No Active Events', 'The arena is currently silent. Check back later.');
-            } catch(e) { container.innerHTML = `<p>Error loading signals.</p>`; }
+            } catch(e) { container.innerHTML = `<p>Error loading signals.</p>`; console.error(e); }
         };
 
         window.viewTDetails = async (id) => {
@@ -670,12 +754,15 @@
                     </p>
                     
                     <div class="grid-cards" style="grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; margin-top:0;">
-                        <div class="glass stat-box" style="padding:20px;"><div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600;">Prize Pool</div><div style="font-weight:800; color:var(--success); font-size:1.8rem; line-height:1; margin-top:8px;">₹${t.prizePool}</div></div>
-                        <div class="glass stat-box" style="padding:20px;"><div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600;">Format</div><div style="font-weight:800; color:white; font-size:1.8rem; font-family:var(--font-display); line-height:1; margin-top:8px;">${formatStr}</div></div>
+                        <div class="glass stat-box" style="padding:20px; border-color:var(--success); background:rgba(0,255,157,0.05);">
+                            <div class="pulse-text" style="font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; font-weight:800;">🔥 WIN UP TO</div>
+                            <div style="font-weight:900; color:var(--success); font-size:2.2rem; line-height:1; margin-top:8px; text-shadow: 0 0 20px rgba(0,255,157,0.4);">₹${t.prizePool}</div>
+                        </div>
+                        <div class="glass stat-box" style="padding:20px;"><div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600;">Format</div><div style="font-weight:800; color:white; font-size:2.2rem; font-family:var(--font-display); line-height:1; margin-top:8px;">${formatStr}</div></div>
                     </div>
                     
                     <div style="margin-top:auto;">${btn}</div>
-                    <div style="text-align:center; margin-top:20px; font-size:0.85rem; color:var(--text-muted); font-weight:500;"><i class="ph-fill ph-lock-key"></i> Participant roster is strictly hidden for privacy.</div>
+                    <div style="text-align:center; margin-top:20px; font-size:0.85rem; color:var(--danger); font-weight:600; animation: pulse-color 2s infinite;"><i class="ph-fill ph-clock"></i> Secure your spot before it's gone!</div>
                 `);
             } catch(e) {}
         };
@@ -1045,6 +1132,11 @@
             const txt = document.getElementById('tr-txt').value; if(!txt) return;
             try { const r = doc(db, "tickets", tId); const d = await getDoc(r); const reps = d.data().replies || []; reps.push({ uid: appState.user.uid, name: appState.userData.username, role: appState.userData.role, text: txt, timestamp: Date.now() }); await updateDoc(r, { replies: reps }); vT(tId); } catch(e) {}
         };
+
+        // Bootstrap App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            navigate('landing');
+        });
     </script>
 </body>
 </html>
