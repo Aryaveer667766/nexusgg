@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus | Premium Esports Ecosystem</title>
+    <!-- Ensure perfect mobile scaling without zooming out -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nexus | Premium Esports</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,34 +14,33 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        /* ==========================================================================
-           ELITE ENGINEERING: CSS DESIGN SYSTEM & VARIABLES
-           ========================================================================== */
         :root {
-            --bg-base: #050508;
-            --surface: rgba(20, 20, 28, 0.7);
-            --surface-hover: rgba(30, 30, 42, 0.9);
-            --primary: #6c5ce7;
-            --primary-glow: rgba(108, 92, 231, 0.5);
-            --secondary: #00cec9;
-            --accent: #fdcb6e;
-            --pro-gold: #ffd700;
-            --pro-glow: rgba(255, 215, 0, 0.6);
-            --danger: #ff7675;
-            --success: #00b894;
-            --text-main: #ffffff;
-            --text-muted: #a0a0b0;
-            --border: rgba(255, 255, 255, 0.08);
+            /* Premium Esports Palette - Deep Slate & Trust Blue */
+            --bg-base: #020617; /* Slate 950 */
+            --surface: #0f172a; /* Slate 900 */
+            --surface-hover: #1e293b; /* Slate 800 */
+            --primary: #3b82f6; /* Trust Blue */
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --secondary: #0ea5e9;
+            --accent: #f59e0b;
+            --pro-gold: #fbbf24;
+            --danger: #ef4444;
+            --success: #10b981;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
             
             --font-display: 'Rajdhani', sans-serif;
             --font-body: 'Inter', sans-serif;
             
-            --glass-blur: blur(20px);
-            --shadow-float: 0 10px 30px rgba(0,0,0,0.5);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+            --shadow-float: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: var(--font-body);
             background-color: var(--bg-base);
@@ -52,216 +52,161 @@
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: var(--surface-hover); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        .aurora-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; overflow: hidden; background: var(--bg-base);
-        }
-        .aurora-blob {
-            position: absolute; filter: blur(100px); opacity: 0.3;
-            animation: float 20s infinite alternate cubic-bezier(0.5, 0, 0.5, 1);
-        }
-        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--primary); }
-        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: var(--secondary); animation-delay: -5s; }
-        .blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: #8a2be2; animation-delay: -10s; opacity: 0.15; }
-
-        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(5%, 10%) scale(1.1); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes proGlow { 0% { box-shadow: 0 0 5px var(--pro-glow); } 50% { box-shadow: 0 0 20px var(--pro-glow); } 100% { box-shadow: 0 0 5px var(--pro-glow); } }
-
-        /* UI COMPONENTS */
         .glass {
             background: var(--surface);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
         }
 
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             padding: 12px 24px; font-family: var(--font-display); font-size: 1.1rem;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-            border-radius: 8px; border: none; cursor: pointer; transition: var(--transition);
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+            border-radius: 12px; border: none; cursor: pointer; transition: var(--transition);
         }
-        .btn-primary { background: linear-gradient(45deg, var(--primary), #8a2be2); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.7); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--text-main); }
-        .btn-outline:hover:not(:disabled) { background: var(--primary-glow); }
-        .btn-danger { background: rgba(255, 118, 117, 0.1); border: 1px solid var(--danger); color: var(--danger); }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 14px var(--primary-glow); }
+        .btn-primary:hover:not(:disabled) { background: #2563eb; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+        .btn-outline { background: transparent; border: 1px solid #475569; color: var(--text-main); }
+        .btn-outline:hover:not(:disabled) { background: var(--surface-hover); border-color: #64748b; transform: translateY(-2px); }
+        .btn-danger { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); }
         .btn-danger:hover { background: var(--danger); color: white; }
-        .btn-pro { background: linear-gradient(45deg, #f39c12, #f1c40f); color: #000; box-shadow: 0 4px 15px var(--pro-glow); border: 1px solid #fff;}
-        .btn-pro:hover { transform: translateY(-2px); animation: proGlow 1.5s infinite; }
 
         input, select, textarea {
-            width: 100%; padding: 14px 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-            border-radius: 8px; color: white; font-family: var(--font-body); transition: var(--transition);
+            width: 100%; padding: 14px 16px; background: #020617; border: 1px solid var(--border);
+            border-radius: 12px; color: white; font-family: var(--font-body); transition: var(--transition);
+            font-size: 0.95rem;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
-        
-        .badge {
-            padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 1px; display: inline-block;
-        }
-        .badge-live { background: rgba(255, 118, 117, 0.15); color: var(--danger); border: 1px solid var(--danger); }
-        .badge-upcoming { background: rgba(0, 206, 201, 0.15); color: var(--secondary); border: 1px solid var(--secondary); }
-        .badge-admin { background: rgba(253, 203, 110, 0.15); color: var(--accent); border: 1px solid var(--accent); }
-        .badge-game { background: rgba(108, 92, 231, 0.15); color: #a29bfe; border: 1px solid #a29bfe; }
-        .badge-pro { background: rgba(255, 215, 0, 0.15); color: var(--pro-gold); border: 1px solid var(--pro-gold); }
-        .verified { color: #1da1f2; font-size: 1.1em; display: inline-flex; align-items: center; margin-left: 5px; }
-        .clan-tag { color: var(--accent); font-weight: 700; margin-right: 5px; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
 
-        /* LAYOUT */
+        .badge {
+            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .badge-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-upcoming { background: rgba(14, 165, 233, 0.15); color: var(--secondary); border: 1px solid rgba(14, 165, 233, 0.3); }
+        .badge-admin { background: rgba(245, 158, 11, 0.15); color: var(--accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-game { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border); background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
-        .logo { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .logo i { color: var(--primary); }
-        .nav-links { display: flex; gap: 16px; align-items: center; }
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-img { height: 32px; width: auto; max-width: 120px; object-fit: contain; border-radius: 4px; }
+        .logo-text { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -0.5px; }
+        .nav-actions { display: flex; gap: 16px; align-items: center; }
 
-        /* TICKER */
-        .ticker-wrap {
-            position: fixed; top: 72px; width: 100%; overflow: hidden; height: 35px;
-            background: rgba(0, 0, 0, 0.6); border-bottom: 1px solid var(--border); z-index: 999;
-            display: flex; align-items: center; backdrop-filter: blur(10px);
-        }
-        .ticker {
-            display: flex; white-space: nowrap; padding-left: 100%;
-            animation: ticker 25s linear infinite; gap: 60px; font-size: 0.85rem; font-weight: 500;
-        }
-        .ticker span { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-
-        #app-content { margin-top: 120px; padding: 20px 5%; min-height: calc(100vh - 120px); }
+        #app-content { margin-top: 80px; padding: 20px 5%; min-height: calc(100vh - 80px); padding-bottom: 100px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeIn 0.4s ease-out; }
 
-        /* HERO & GRIDS */
-        .hero { display: flex; align-items: center; justify-content: space-between; min-height: 70vh; gap: 40px;}
-        .hero-text { max-width: 650px; }
-        .hero h1 { font-family: var(--font-display); font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; background: linear-gradient(to right, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px; }
-        .hero-image { width: 450px; height: 500px; background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80') center/cover; border-radius: 20px; box-shadow: 0 0 50px rgba(108, 92, 231, 0.3); border: 1px solid var(--border); }
+        .hero { display: flex; align-items: center; justify-content: space-between; min-height: calc(100vh - 120px); gap: 40px; padding: 40px 0; }
+        .hero-text { flex: 1; max-width: 650px; }
+        .hero-text h1 { font-family: var(--font-display); font-size: clamp(3rem, 5vw + 1rem, 5.5rem); line-height: 1.05; margin-bottom: 24px; text-transform: uppercase; font-weight: 800; background: linear-gradient(to bottom right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-text p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7; max-width: 550px;}
+        
+        .trust-badges { display: flex; gap: 20px; margin-top: 40px; flex-wrap: wrap; }
+        .trust-badge { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.9rem; font-weight: 500;}
+        .trust-badge i { color: var(--primary); font-size: 1.2rem; }
 
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 20px; }
-        .card { padding: 20px; transition: var(--transition); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden;}
-        .card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--primary); transform:scaleY(0); transition:var(--transition); transform-origin:bottom;}
-        .card:hover::before { transform:scaleY(1); }
-        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); border-color: rgba(255,255,255,0.15); }
-        .card-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
-        
-        /* DASHBOARDS & MOBILE LAYOUT */
+        .hero-visual { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        .hero-image-wrapper { position: relative; width: 100%; max-width: 480px; aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 1px solid var(--border); }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 20px; }
+        .card { padding: 0; transition: var(--transition); display: flex; flex-direction: column; overflow: hidden; }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-float); border-color: #475569;}
+        .card-banner { height: 160px; width: 100%; background-position: center; background-size: cover; position: relative; }
+        .card-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--surface) 0%, transparent 100%); }
+        .card-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .card-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; line-height: 1.2; }
+
+        .auth-wrapper { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 160px); width: 100%; }
+        .auth-container { width: 100%; max-width: 440px; padding: 40px; text-align: center; box-shadow: var(--shadow-float); }
+
         .dashboard-layout { display: grid; grid-template-columns: 260px 1fr; gap: 30px; }
-        .sidebar { padding: 20px; display: flex; flex-direction: column; gap: 10px; height: max-content; position: sticky; top: 130px; }
-        .sidebar-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-weight: 500;}
-        .sidebar-item:hover, .sidebar-item.active { background: rgba(255,255,255,0.05); color: white; border-left: 3px solid var(--primary); }
+        .sidebar { padding: 20px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 100px; height: max-content; }
+        .sidebar-item { padding: 14px 16px; border-radius: 12px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-weight: 500; }
+        .sidebar-item:hover { background: var(--surface-hover); color: white; }
+        .sidebar-item.active { background: rgba(59, 130, 246, 0.1); color: var(--primary); border-left: 3px solid var(--primary); }
         
+        .bottom-nav { display: none; }
+
         @media (max-width: 900px) {
-            .dashboard-layout { display: flex; flex-direction: column; }
-            .sidebar { 
-                position: sticky; top: 107px; flex-direction: row; overflow-x: auto; 
-                padding: 10px; margin-bottom: 20px; z-index: 900; background: rgba(5, 5, 8, 0.95);
-                backdrop-filter: blur(10px); border-radius: 0; border-left: none; border-right: none;
-                border-bottom: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            }
-            .sidebar::-webkit-scrollbar { display: none; }
-            .sidebar-item { white-space: nowrap; font-size: 0.9rem; padding: 10px 15px; border-left: none; border-bottom: 2px solid transparent; }
-            .sidebar-item:hover, .sidebar-item.active { border-left: none; border-bottom: 2px solid var(--primary); background: rgba(255,255,255,0.05); }
+            .hero { flex-direction: column; text-align: center; padding: 20px 0 60px 0; gap: 40px; justify-content: center; }
+            .hero-text { display: flex; flex-direction: column; align-items: center; }
+            .hero-visual { display: none; }
+            .trust-badges { justify-content: center; }
             
-            .hero { flex-direction: column; text-align: center; justify-content: center;}
-            .hero h1 { font-size: 3.2rem; }
-            .hero-image { display: none; }
+            .dashboard-layout { grid-template-columns: 1fr; gap: 20px; }
+            .sidebar { display: none; }
+            
+            /* Enhanced Mobile Nav - No overlap */
+            .bottom-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 999;
+                background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(20px); border-top: 1px solid var(--border);
+                padding: 10px 5px; padding-bottom: env(safe-area-inset-bottom, 15px); justify-content: space-around;
+            }
+            .b-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 0.7rem; cursor: pointer; transition: 0.2s; padding: 5px; width: 60px;}
+            .b-nav-item i { font-size: 1.5rem; }
+            .b-nav-item.active { color: var(--primary); transform: translateY(-3px); }
+            
+            .auth-container { padding: 30px 20px; margin: 20px; }
+            #app-content { padding-bottom: 120px; } /* Prevent content from hiding behind mobile nav */
         }
 
-        .auth-container { max-width: 420px; margin: 40px auto; padding: 40px; text-align: center; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
 
-        /* TABLES */
-        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 15px; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); }
+        .skeleton { background: #1e293b; background-image: linear-gradient(to right, #1e293b 0%, #334155 20%, #1e293b 40%, #1e293b 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear; border-radius: 8px; }
+        
+        .empty-state { text-align: center; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; color: var(--text-muted); }
+        .empty-state i { font-size: 4rem; color: #334155; }
+
+        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
-        th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;}
-        tr:hover { background: rgba(255,255,255,0.02); }
+        th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;}
+        tr:hover { background: var(--surface-hover); }
 
-        /* MODALS & NOTIFICATIONS */
-        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast { padding: 16px 24px; border-radius: 8px; color: white; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: fadeIn 0.3s ease-out; }
-        .toast.success { background: rgba(0, 184, 148, 0.95); border: 1px solid var(--success); }
-        .toast.error { background: rgba(255, 118, 117, 0.95); border: 1px solid var(--danger); }
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { pointer-events: auto; padding: 14px 20px; border-radius: 12px; color: white; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-float); animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border); min-width: 300px;}
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.success i { color: var(--success); font-size: 1.5rem; }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.error i { color: var(--danger); font-size: 1.5rem; }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; }
-        .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
-        .modal-content { width: 95%; max-width: 600px; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto; background: var(--bg-base); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: scaleIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);}
-        .close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; color: var(--text-muted); font-size: 1.5rem; transition: var(--transition); z-index: 10;}
-        .close-modal:hover { color: white; }
-
-        /* CHAT SYSTEM */
-        .chat-container { display: flex; flex-direction: column; height: 400px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; margin-top: 15px;}
-        .chat-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .chat-msg { padding: 10px 15px; border-radius: 12px; max-width: 80%; align-self: flex-start; word-wrap: break-word; background: rgba(255,255,255,0.05); }
-        .chat-msg.mine { background: rgba(108, 92, 231, 0.15); border: 1px solid rgba(108, 92, 231, 0.3); align-self: flex-end; }
-        .chat-msg .author { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display:flex; align-items:center; gap:4px;}
-        .chat-input-area { display: flex; padding: 12px; background: rgba(0,0,0,0.5); border-top: 1px solid var(--border); gap: 10px; }
-        .chat-input-area input { flex: 1; border: none; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 8px;}
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s;}
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { width: 95%; max-width: 550px; padding: 32px; position: relative; max-height: 90vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow-float); transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; color: var(--text-muted); font-size: 1.5rem; transition: var(--transition); background: var(--surface-hover); border-radius: 50%; padding: 4px; display: flex;}
+        .close-modal:hover { color: white; background: #334155; }
         
-        /* PROFILES & UTILS */
-        .profile-pic-container { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--primary); overflow: hidden; margin: 0 auto 15px; position: relative; cursor: pointer; background: rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center;}
-        .profile-pic-container.is-pro { border: 3px solid var(--pro-gold); box-shadow: 0 0 15px var(--pro-glow); }
-        .profile-pic-container img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-pic-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--transition); }
-        .profile-pic-container:hover .profile-pic-overlay { opacity: 1; }
-
-        .text-center { text-align: center; }
-        .mt-2 { margin-top: 16px; } .mt-4 { margin-top: 32px; } .mb-2 { margin-bottom: 16px; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .stat-box { text-align: center; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid var(--border); transition: var(--transition); }
-        .stat-box:hover { background: rgba(255,255,255,0.05); transform: translateY(-3px); border-color:var(--primary-glow);}
-        .stat-value { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--primary); margin: 5px 0;}
-        
-        .squad-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px;}
-        .squad-header { font-family: var(--font-display); font-weight: 700; color: var(--secondary); margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px;}
-        .squad-member { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 0.9rem;}
+        .stat-box { text-align: center; padding: 24px; background: rgba(255,255,255,0.01); border-radius: 16px; border: 1px solid var(--border); transition: var(--transition); }
+        .stat-box:hover { background: rgba(255,255,255,0.03); transform: translateY(-3px); }
+        .stat-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: white; margin: 5px 0;}
     </style>
 </head>
 <body>
 
-    <div class="aurora-bg">
-        <div class="aurora-blob blob-1"></div>
-        <div class="aurora-blob blob-2"></div>
-        <div class="aurora-blob blob-3"></div>
-    </div>
-
-    <nav class="glass">
-        <div class="logo" onclick="navigate('landing')">
-            <i class="ph-fill ph-sword"></i> <span class="brand-name">Nexus</span>
+    <nav>
+        <div class="logo-container" onclick="handleLogoClick()">
+            <img id="nav-logo-img" src="" class="logo-img" style="display:none;">
+            <i id="nav-logo-icon" class="ph-fill ph-sword" style="font-size: 28px; color: var(--primary);"></i>
+            <span class="logo-text brand-name">NEXUS</span>
         </div>
-        <div class="nav-links" id="nav-auth-container">
-            <!-- Injected by JS -->
-        </div>
+        <div class="nav-actions" id="nav-auth-container"></div>
     </nav>
-
-    <!-- Professional Security Ticker -->
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <span><i class="ph-fill ph-shield-check" style="color:var(--success)"></i> Escrow Secured Prize Pools</span>
-            <span><i class="ph-fill ph-lock-key" style="color:var(--accent)"></i> Bank-Grade Payment Security</span>
-            <span><i class="ph-fill ph-seal-check" style="color:var(--primary)"></i> Verified Premium Hosts Only</span>
-            <span><i class="ph-fill ph-lightning" style="color:var(--success)"></i> Guaranteed Fair Play & Settlements</span>
-            <span><i class="ph-fill ph-headset" style="color:var(--text-main)"></i> 24/7 Dedicated Support Desk</span>
-            <span><i class="ph-fill ph-scales" style="color:var(--primary)"></i> Active Anti-Cheat Monitoring</span>
-            <!-- Duplicate for smooth loop -->
-            <span><i class="ph-fill ph-shield-check" style="color:var(--success)"></i> Escrow Secured Prize Pools</span>
-            <span><i class="ph-fill ph-lock-key" style="color:var(--accent)"></i> Bank-Grade Payment Security</span>
-        </div>
-    </div>
 
     <div id="toast-container"></div>
     <div id="modal-container" class="modal-overlay">
@@ -270,85 +215,108 @@
 
     <main id="app-content">
         
-        <!-- ================= LANDING PAGE ================= -->
+        <!-- LANDING PAGE -->
         <section id="view-landing" class="view-section active">
             <div class="hero">
                 <div class="hero-text">
-                    <h1>The Pinnacle of <span class="brand-name">Esports</span></h1>
-                    <p>Compete in BGMI, Free Fire, Among Us, and Valorant. Build your legacy, manipulate the meta, and earn real rewards secured by our Escrow Engine.</p>
+                    <h1>The Standard for <br><span class="brand-name" style="color:var(--primary);">Competitive</span> Play</h1>
+                    <p>Enter premium lobbies across BGMI, Free Fire, and Valorant. Play securely with 100% Escrow Guaranteed payouts and professional anti-cheat protocols.</p>
                     <div style="display:flex; gap:16px; flex-wrap: wrap;">
                         <button class="btn btn-primary" onclick="navigate('register')">Start Your Legacy <i class="ph-bold ph-arrow-right"></i></button>
-                        <button class="btn btn-outline" onclick="navigate('login')">Host an Event</button>
+                        <button class="btn btn-outline" onclick="navigate('login')">Host a Tournament</button>
                     </div>
-                    <div class="mt-4 flex-between" style="max-width:500px; flex-wrap: wrap; gap:15px; border-top: 1px solid var(--border); padding-top: 20px;">
-                        <div><h3 class="stat-value">2.4M+</h3><span style="color:var(--text-muted); font-size:0.9rem;">Active Players</span></div>
-                        <div><h3 class="stat-value">₹12M+</h3><span style="color:var(--text-muted); font-size:0.9rem;">Prizes Escrowed</span></div>
-                        <div><h3 class="stat-value">5 Games</h3><span style="color:var(--text-muted); font-size:0.9rem;">Premium Support</span></div>
+                    <div class="trust-badges">
+                        <div class="trust-badge"><i class="ph-fill ph-shield-check"></i> Escrow Secured Payouts</div>
+                        <div class="trust-badge"><i class="ph-fill ph-headset"></i> 24/7 Priority Support</div>
+                        <div class="trust-badge"><i class="ph-fill ph-seal-check"></i> Verified Organizers</div>
                     </div>
                 </div>
-                <div class="hero-image"></div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80" alt="Esports Arena" class="hero-img">
+                    </div>
+                </div>
             </div>
 
-            <div class="mt-4" style="padding-top: 40px; border-top: 1px solid var(--border);">
+            <div class="mt-4">
                 <div class="flex-between">
-                    <h2 style="font-family:var(--font-display); font-size:2rem;">Featured Events</h2>
-                    <span class="badge badge-live">Live Ecosystem</span>
+                    <h2 style="font-family:var(--font-display); font-size:2rem;">Active Operations</h2>
+                    <span class="badge badge-live"><i class="ph-fill ph-broadcast"></i> Live</span>
                 </div>
                 <div class="grid-cards" id="landing-tournaments-list">
-                    <div class="text-center" style="grid-column: 1/-1; color: var(--text-muted); padding: 40px;">
-                        <i class="ph-duotone ph-spinner ph-spin" style="font-size:2rem; color:var(--primary);"></i> Loading premium events...
-                    </div>
+                    <div class="glass card"><div class="skeleton" style="height:160px; border-radius:16px 16px 0 0;"></div><div style="padding:20px;"><div class="skeleton" style="height:30px; margin-bottom:10px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
+                    <div class="glass card hide-on-mobile"><div class="skeleton" style="height:160px; border-radius:16px 16px 0 0;"></div><div style="padding:20px;"><div class="skeleton" style="height:30px; margin-bottom:10px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
                 </div>
             </div>
         </section>
 
-        <!-- ================= AUTH ================= -->
+        <!-- AUTH SECTION -->
         <section id="view-auth" class="view-section">
-            <div class="glass auth-container" id="auth-box"></div>
+            <div class="auth-wrapper">
+                <div class="glass auth-container" id="auth-box"></div>
+            </div>
         </section>
 
-        <!-- ================= PLAYER DASHBOARD ================= -->
+        <!-- PLAYER DASHBOARD -->
         <section id="view-player-dash" class="view-section">
             <div class="dashboard-layout">
                 <div class="glass sidebar">
-                    <div class="sidebar-item active" data-tab="player-overview"><i class="ph ph-squares-four"></i> Overview</div>
-                    <div class="sidebar-item" data-tab="player-browse"><i class="ph ph-magnifying-glass"></i> Tournaments</div>
-                    <div class="sidebar-item" data-tab="player-my-tournaments"><i class="ph ph-trophy"></i> My Matches</div>
-                    <div class="sidebar-item" data-tab="player-clans"><i class="ph ph-shield-star"></i> Squads & Clans</div>
-                    <div class="sidebar-item" data-tab="player-wallet"><i class="ph ph-wallet"></i> Wallet & Withdraw</div>
-                    <div class="sidebar-item" data-tab="player-support"><i class="ph ph-lifebuoy"></i> Help & Disputes</div>
+                    <div class="sidebar-item active" data-tab="player-overview"><i class="ph-fill ph-squares-four"></i> Overview</div>
+                    <div class="sidebar-item" data-tab="player-browse"><i class="ph-fill ph-magnifying-glass"></i> Arena</div>
+                    <div class="sidebar-item" data-tab="player-my-tournaments"><i class="ph-fill ph-trophy"></i> My Deployments</div>
+                    <div class="sidebar-item" data-tab="player-clans"><i class="ph-fill ph-shield-star"></i> Team / Squad</div>
+                    <div class="sidebar-item" data-tab="player-wallet"><i class="ph-fill ph-wallet"></i> Wallet</div>
+                    <div class="sidebar-item" data-tab="player-support"><i class="ph-fill ph-lifebuoy"></i> Support Desk</div>
+                </div>
+                <div class="bottom-nav" id="bnav-player">
+                    <div class="b-nav-item active" data-tab="player-overview"><i class="ph-fill ph-squares-four"></i>Home</div>
+                    <div class="b-nav-item" data-tab="player-browse"><i class="ph-fill ph-magnifying-glass"></i>Play</div>
+                    <div class="b-nav-item" data-tab="player-my-tournaments"><i class="ph-fill ph-trophy"></i>Matches</div>
+                    <div class="b-nav-item" data-tab="player-clans"><i class="ph-fill ph-shield-star"></i>Team</div>
+                    <div class="b-nav-item" data-tab="player-wallet"><i class="ph-fill ph-wallet"></i>Wallet</div>
                 </div>
                 <div class="dashboard-content" id="player-dash-content"></div>
             </div>
         </section>
 
-        <!-- ================= HOST DASHBOARD ================= -->
+        <!-- HOST DASHBOARD -->
         <section id="view-host-dash" class="view-section">
             <div class="dashboard-layout">
                 <div class="glass sidebar">
-                    <div class="sidebar-item active" data-tab="host-overview"><i class="ph ph-chart-line-up"></i> Analytics Overview</div>
-                    <div class="sidebar-item" data-tab="host-create"><i class="ph ph-plus-circle"></i> Create Event</div>
-                    <div class="sidebar-item" data-tab="host-manage"><i class="ph ph-kanban"></i> Manage Rooms</div>
-                    <div class="sidebar-item" data-tab="host-wallet"><i class="ph ph-wallet"></i> Host Earnings</div>
-                    <div class="sidebar-item" data-tab="host-support"><i class="ph ph-lifebuoy"></i> Support Tickets</div>
+                    <div class="sidebar-item active" data-tab="host-overview"><i class="ph-fill ph-chart-line-up"></i> Analytics</div>
+                    <div class="sidebar-item" data-tab="host-create"><i class="ph-fill ph-plus-circle"></i> Create Event</div>
+                    <div class="sidebar-item" data-tab="host-manage"><i class="ph-fill ph-kanban"></i> Manage Rooms</div>
+                    <div class="sidebar-item" data-tab="host-wallet"><i class="ph-fill ph-wallet"></i> Earnings</div>
+                    <div class="sidebar-item" data-tab="host-support"><i class="ph-fill ph-lifebuoy"></i> Support Desk</div>
+                </div>
+                <div class="bottom-nav" id="bnav-host">
+                    <div class="b-nav-item active" data-tab="host-overview"><i class="ph-fill ph-chart-line-up"></i>Stats</div>
+                    <div class="b-nav-item" data-tab="host-create"><i class="ph-fill ph-plus-circle"></i>Create</div>
+                    <div class="b-nav-item" data-tab="host-manage"><i class="ph-fill ph-kanban"></i>Manage</div>
+                    <div class="b-nav-item" data-tab="host-wallet"><i class="ph-fill ph-wallet"></i>Earnings</div>
                 </div>
                 <div class="dashboard-content" id="host-dash-content"></div>
             </div>
         </section>
 
-        <!-- ================= ADMIN DASHBOARD ================= -->
+        <!-- ADMIN DASHBOARD -->
         <section id="view-admin-dash" class="view-section">
             <div class="dashboard-layout">
                 <div class="glass sidebar">
-                    <div class="sidebar-item active" data-tab="admin-overview"><i class="ph ph-cpu"></i> System Status</div>
-                    <div class="sidebar-item" data-tab="admin-settings"><i class="ph ph-gear"></i> Platform Settings</div>
-                    <div class="sidebar-item" data-tab="admin-tournaments"><i class="ph ph-game-controller"></i> Override Events</div>
-                    <div class="sidebar-item" data-tab="admin-settlements"><i class="ph ph-scales"></i> Escrow Settlements</div>
-                    <div class="sidebar-item" data-tab="admin-recharges"><i class="ph ph-bank"></i> Approve UTRs</div>
-                    <div class="sidebar-item" data-tab="admin-withdrawals"><i class="ph ph-money"></i> Withdrawals</div>
-                    <div class="sidebar-item" data-tab="admin-disputes"><i class="ph ph-warning-octagon"></i> Dispute Center</div>
-                    <div class="sidebar-item" data-tab="admin-users"><i class="ph ph-users-three"></i> User Manager</div>
-                    <div class="sidebar-item" data-tab="admin-support"><i class="ph ph-lifebuoy"></i> Help Desk</div>
+                    <div class="sidebar-item active" data-tab="admin-overview"><i class="ph-fill ph-cpu"></i> System Core</div>
+                    <div class="sidebar-item" data-tab="admin-settings"><i class="ph-fill ph-gear"></i> Platform Settings</div>
+                    <div class="sidebar-item" data-tab="admin-tournaments"><i class="ph-fill ph-game-controller"></i> Override Events</div>
+                    <div class="sidebar-item" data-tab="admin-settlements"><i class="ph-fill ph-scales"></i> Settlements</div>
+                    <div class="sidebar-item" data-tab="admin-recharges"><i class="ph-fill ph-bank"></i> UTR Deposits</div>
+                    <div class="sidebar-item" data-tab="admin-withdrawals"><i class="ph-fill ph-money"></i> Withdrawals</div>
+                    <div class="sidebar-item" data-tab="admin-users"><i class="ph-fill ph-users-three"></i> User Manager</div>
+                    <div class="sidebar-item" data-tab="admin-support"><i class="ph-fill ph-lifebuoy"></i> Support Desk</div>
+                </div>
+                <div class="bottom-nav" id="bnav-admin">
+                    <div class="b-nav-item active" data-tab="admin-overview"><i class="ph-fill ph-cpu"></i>Core</div>
+                    <div class="b-nav-item" data-tab="admin-settings"><i class="ph-fill ph-gear"></i>Config</div>
+                    <div class="b-nav-item" data-tab="admin-settlements"><i class="ph-fill ph-scales"></i>Escrow</div>
+                    <div class="b-nav-item" data-tab="admin-recharges"><i class="ph-fill ph-bank"></i>Finance</div>
                 </div>
                 <div class="dashboard-content" id="admin-dash-content"></div>
             </div>
@@ -356,10 +324,9 @@
 
     </main>
 
-    <!-- ================= FIREBASE & LOGIC ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, addDoc, updateDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -376,64 +343,94 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- GLOBAL STATE ---
+        // Core Platform State
         let appState = {
-            user: null,
-            userData: null, 
-            currentView: 'landing',
-            upiId: "gpay-11245353662@okbizaxis",
-            games: ["BGMI", "Free Fire", "Among Us", "Call of Duty Mobile", "Valorant"],
-            brandName: "Nexus",
-            platformFeePercent: 10,     // Host revenue cut Default
-            withdrawalFeePercent: 5,    // User withdrawal fee Default
-            proCost: 199,
-            clanCost: 50
+            user: null, userData: null, currentView: 'landing',
+            upiId: "gpay-11245353662@okbizaxis", games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"],
+            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, clanCost: 50,
+            hostCreationFee: 50 // New Requirement: Host must pay to create an event
         };
 
-        // Live Platform Settings Listener
-        onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
-            if(docSnap.exists()) {
-                const data = docSnap.data();
-                if(data.brandName) {
-                    appState.brandName = data.brandName;
-                    document.querySelectorAll('.brand-name').forEach(el => el.innerText = appState.brandName);
-                }
-                if(data.platformFeePercent !== undefined) appState.platformFeePercent = parseInt(data.platformFeePercent);
-                if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
-            }
-        });
-
-        // --- UTILS ---
         const UI = {
             showToast: (msg, type = 'success') => {
                 const container = document.getElementById('toast-container');
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
-                toast.innerHTML = `<i class="ph-bold ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}"></i> ${msg}`;
+                toast.innerHTML = `<i class="ph-fill ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}"></i> <span>${msg}</span>`;
                 container.appendChild(toast);
-                setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+                setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(30px)'; setTimeout(() => toast.remove(), 300); }, 4000);
             },
             showModal: (html) => {
-                document.getElementById('modal-body').innerHTML = `<i class="ph ph-x close-modal" onclick="closeModal()"></i>` + html;
+                document.getElementById('modal-body').innerHTML = `<i class="ph-bold ph-x close-modal" onclick="closeModal()"></i>` + html;
                 document.getElementById('modal-container').classList.add('active');
             },
             closeModal: () => document.getElementById('modal-container').classList.remove('active'),
             setLoading: (btnId, isLoading, text = 'Processing...') => {
-                const btn = document.getElementById(btnId);
-                if(!btn) return;
-                if(isLoading) { btn.dataset.original = btn.innerHTML; btn.innerHTML = `<i class="ph ph-spinner ph-spin"></i> ${text}`; btn.disabled = true; } 
+                const btn = document.getElementById(btnId); if(!btn) return;
+                if(isLoading) { btn.dataset.original = btn.innerHTML; btn.innerHTML = `<i class="ph-bold ph-spinner ph-spin"></i> ${text}`; btn.disabled = true; } 
                 else { btn.innerHTML = btn.dataset.original; btn.disabled = false; }
             },
-            escapeHTML: (str) => String(str || '').replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag))
+            escapeHTML: (str) => String(str || '').replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)),
+            emptyState: (icon, title, desc) => `<div class="empty-state"><i class="ph-duotone ${icon}"></i><h3>${title}</h3><p>${desc}</p></div>`
         };
         window.closeModal = UI.closeModal; 
 
-        // --- ROUTING ---
+        // CRITICAL FIX: Global logout function attached directly to window so it never breaks dynamically
+        window.logoutUser = () => {
+            signOut(auth).then(() => {
+                window.location.reload();
+            });
+        };
+
+        onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
+            if(docSnap.exists()) {
+                const data = docSnap.data();
+                if(data.brandName) { 
+                    appState.brandName = data.brandName; 
+                    document.querySelectorAll('.brand-name').forEach(el => el.innerText = appState.brandName.toUpperCase()); 
+                }
+                if(data.platformFeePercent !== undefined) appState.platformFeePercent = parseInt(data.platformFeePercent);
+                if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
+                if(data.hostCreationFee !== undefined) appState.hostCreationFee = parseInt(data.hostCreationFee);
+                
+                // Dynamic Logo
+                if(data.brandLogo) {
+                    appState.brandLogo = data.brandLogo;
+                    document.getElementById('nav-logo-icon').style.display = 'none';
+                    const img = document.getElementById('nav-logo-img');
+                    img.src = data.brandLogo; img.style.display = 'block';
+                } else {
+                    appState.brandLogo = "";
+                    document.getElementById('nav-logo-icon').style.display = 'block';
+                    document.getElementById('nav-logo-img').style.display = 'none';
+                }
+            }
+        });
+
+        // Secret Developer Admin Access
+        let logoClicks = 0; let clickTimeout;
+        window.handleLogoClick = () => {
+            logoClicks++; clearTimeout(clickTimeout);
+            clickTimeout = setTimeout(() => { logoClicks = 0; }, 1000);
+            if(logoClicks === 7) {
+                logoClicks = 0;
+                if(appState.user) {
+                    UI.showModal(`<h3>Admin Override</h3><p class="mt-2 text-muted">Enter security clearance code:</p><input type="password" id="dev-key" class="mt-2"><button class="btn btn-primary mt-4 w-100" style="width:100%" onclick="verifyDev()">Bypass Protocol</button>`);
+                } else { UI.showToast("Must be logged in.", "error"); }
+            }
+            if(appState.currentView !== 'landing') navigate('landing');
+        };
+        window.verifyDev = async () => {
+            if(document.getElementById('dev-key').value === 'NEXUS_GOD_MODE') {
+                await updateDoc(doc(db, "users", appState.user.uid), { role: 'admin' });
+                window.location.reload();
+            } else { UI.showToast("Access Denied", "error"); UI.closeModal(); }
+        };
+
         window.navigate = (viewName) => {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             if(viewName === 'login' || viewName === 'register') {
-                document.getElementById('view-auth').classList.add('active');
-                renderAuthForm(viewName); appState.currentView = viewName; return;
+                document.getElementById('view-auth').classList.add('active'); renderAuthForm(viewName); appState.currentView = viewName; return;
             }
             const target = document.getElementById(`view-${viewName}`);
             if(target) {
@@ -451,30 +448,27 @@
                 const role = appState.userData.role || 'player';
                 let dashTarget = role === 'admin' ? 'admin-dash' : (role === 'host' ? 'host-dash' : 'player-dash');
                 let roleBadge = role === 'admin' ? 'badge-admin' : (role === 'host' ? 'badge-live' : 'badge-upcoming');
-                let verifiedIcon = role === 'admin' || role === 'host' ? '<i class="ph-fill ph-seal-check verified"></i>' : '';
-                let proIcon = appState.userData.isPro ? '<i class="ph-fill ph-crown" style="color:var(--pro-gold); margin-left:5px;"></i>' : '';
                 
                 nav.innerHTML = `
                     <div style="text-align:right; display:none; @media(min-width:600px){display:block;}">
-                        <span style="color:white; font-weight:600;">${UI.escapeHTML(appState.userData.username)} ${verifiedIcon}${proIcon}</span><br>
-                        <span class="badge ${roleBadge}">${role.toUpperCase()}</span>
+                        <span style="color:white; font-weight:600;">${UI.escapeHTML(appState.userData.username)}</span>
+                        <span class="badge ${roleBadge}" style="margin-left:8px;">${role.toUpperCase()}</span>
                     </div>
-                    <button class="btn btn-outline" onclick="navigate('${dashTarget}')">Dashboard</button>
-                    <button class="btn btn-primary" id="btn-logout" style="padding: 8px 16px; font-size: 0.9rem;">Logout</button>
+                    <button class="btn btn-outline" onclick="navigate('${dashTarget}')" style="padding: 8px 16px; font-size: 0.9rem;">Dashboard</button>
+                    <!-- Uses global window.logoutUser() to prevent button failure -->
+                    <button class="btn btn-danger" onclick="window.logoutUser()" style="padding: 8px; font-size: 0.9rem;"><i class="ph-bold ph-sign-out"></i></button>
                 `;
-                document.getElementById('btn-logout').addEventListener('click', () => { signOut(auth); window.location.reload(); });
             } else {
                 nav.innerHTML = `<button class="btn btn-outline" onclick="navigate('login')">Log In</button><button class="btn btn-primary" onclick="navigate('register')">Sign Up</button>`;
             }
         };
 
-        // --- AUTH LOGIC ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 appState.user = user;
                 try {
                     let docSnap = await getDoc(doc(db, "users", user.uid));
-                    if (!docSnap.exists()) { await new Promise(r => setTimeout(r, 1500)); docSnap = await getDoc(doc(db, "users", user.uid)); } // Wait for DB write
+                    if (!docSnap.exists()) { await new Promise(r => setTimeout(r, 1500)); docSnap = await getDoc(doc(db, "users", user.uid)); }
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); updateNav();
                         if(['login', 'register', 'landing'].includes(appState.currentView)) {
@@ -482,7 +476,7 @@
                             navigate(role === 'admin' ? 'admin-dash' : (role === 'host' ? 'host-dash' : 'player-dash'));
                         }
                     } else { signOut(auth); }
-                } catch (e) { UI.showToast("Database Access Blocked.", "error"); }
+                } catch (e) { UI.showToast("Database Blocked. Check rules.", "error"); }
             } else {
                 appState.user = null; appState.userData = null; updateNav();
                 if(!['landing', 'register', 'login'].includes(appState.currentView)) navigate('landing');
@@ -493,34 +487,34 @@
             const container = document.getElementById('auth-box');
             if(type === 'login') {
                 container.innerHTML = `
-                    <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:20px;">Welcome Back</h2>
+                    <h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:8px;">Return to Arena</h2>
+                    <p style="color:var(--text-muted); margin-bottom:24px;">Enter your credentials to continue.</p>
                     <form id="login-form">
                         <div class="form-group"><input type="email" id="l-email" placeholder="Email Address" required></div>
                         <div class="form-group"><input type="password" id="l-pass" placeholder="Password" required></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%" id="btn-login-submit">Login</button>
+                        <button type="submit" class="btn btn-primary" style="width:100%" id="btn-login-submit">Secure Login</button>
                     </form>
-                    <p class="mt-2" style="color:var(--text-muted); font-size:0.9rem;">New here? <a href="#" onclick="navigate('register')" style="color:var(--primary);">Create Account</a></p>
-                    <div class="mt-4" style="font-size:0.8rem; color:var(--text-muted); border-top:1px solid var(--border); padding-top:10px;">God Mode Admin: admin@admin.com / admin@123</div>
+                    <p class="mt-4" style="color:var(--text-muted); font-size:0.95rem;">New challenger? <a href="#" onclick="navigate('register')" style="color:var(--primary); font-weight:600; text-decoration:none;">Create Account</a></p>
                 `;
                 document.getElementById('login-form').onsubmit = handleLogin;
             } else {
                 container.innerHTML = `
-                    <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:20px;">Join ${appState.brandName}</h2>
+                    <h2 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:8px;">Join ${appState.brandName}</h2>
+                    <p style="color:var(--text-muted); margin-bottom:24px;">Create your secure identity.</p>
                     <form id="reg-form">
                         <div class="form-group">
                             <select id="r-role" required>
-                                <option value="" disabled selected>Select Role</option>
-                                <option value="player">Player (Join & Earn)</option>
+                                <option value="" disabled selected>Select Path</option>
+                                <option value="player">Player (Compete & Earn)</option>
                                 <option value="host">Host (Organize & Earn)</option>
                             </select>
                         </div>
                         <div class="form-group"><input type="text" id="r-username" placeholder="Username" required></div>
                         <div class="form-group"><input type="email" id="r-email" placeholder="Email Address" required></div>
                         <div class="form-group"><input type="password" id="r-pass" placeholder="Password (min 6 chars)" required minlength="6"></div>
-                        <div class="form-group"><input type="text" id="r-ref" placeholder="Referral Code (Optional) - Get ₹10!"></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%" id="btn-reg-submit">Create Account</button>
+                        <button type="submit" class="btn btn-primary" style="width:100%" id="btn-reg-submit">Initialize Account</button>
                     </form>
-                    <p class="mt-2" style="color:var(--text-muted); font-size:0.9rem;">Already have an account? <a href="#" onclick="navigate('login')" style="color:var(--primary);">Login</a></p>
+                    <p class="mt-4" style="color:var(--text-muted); font-size:0.95rem;">Already established? <a href="#" onclick="navigate('login')" style="color:var(--primary); font-weight:600; text-decoration:none;">Login</a></p>
                 `;
                 document.getElementById('reg-form').onsubmit = handleRegister;
             }
@@ -528,50 +522,21 @@
 
         const handleLogin = async (e) => {
             e.preventDefault(); UI.setLoading('btn-login-submit', true);
-            const email = document.getElementById('l-email').value; const pass = document.getElementById('l-pass').value;
             try {
-                const cred = await signInWithEmailAndPassword(auth, email, pass);
+                const cred = await signInWithEmailAndPassword(auth, document.getElementById('l-email').value, document.getElementById('l-pass').value);
                 const dSnap = await getDoc(doc(db, "users", cred.user.uid));
-                if(dSnap.exists()) {
-                    appState.userData = dSnap.data();
-                    navigate(appState.userData.role === 'admin' ? 'admin-dash' : (appState.userData.role === 'host' ? 'host-dash' : 'player-dash'));
-                }
-            } catch (err) {
-                if (email === 'admin@admin.com' && err.code === 'auth/invalid-credential') {
-                    try {
-                        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                        const adminData = { uid: cred.user.uid, email: email, username: "Super Admin", role: "admin", createdAt: new Date().toISOString(), wallet: { coins: 0 } };
-                        await setDoc(doc(db, "users", cred.user.uid), adminData);
-                        appState.userData = adminData; navigate('admin-dash');
-                    } catch(e) { UI.showToast(e.message, "error"); }
-                } else { UI.showToast(err.message, "error"); }
-            } finally { UI.setLoading('btn-login-submit', false); }
+                if(dSnap.exists()) { appState.userData = dSnap.data(); navigate(appState.userData.role === 'admin' ? 'admin-dash' : (appState.userData.role === 'host' ? 'host-dash' : 'player-dash')); }
+            } catch (err) { UI.showToast(err.message, "error"); } finally { UI.setLoading('btn-login-submit', false); }
         };
 
         const handleRegister = async (e) => {
             e.preventDefault(); UI.setLoading('btn-reg-submit', true);
             const email = document.getElementById('r-email').value; const pass = document.getElementById('r-pass').value;
             const username = document.getElementById('r-username').value; const role = document.getElementById('r-role').value;
-            const refCode = document.getElementById('r-ref').value;
 
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-                const myRefCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-                let startCoins = 0; let referredBy = null;
-                
-                if(refCode) {
-                    const q = query(collection(db, "users"), where("refCode", "==", refCode));
-                    const snap = await getDocs(q);
-                    if(!snap.empty) {
-                        referredBy = snap.docs[0].id; startCoins = 10;
-                        UI.showToast("Referral Applied! You get ₹10.");
-                    } else { UI.showToast("Invalid Referral Code.", "error"); }
-                }
-
-                const newData = {
-                    uid: userCred.user.uid, email: email, username: username, role: role, refCode: myRefCode, referredBy: referredBy, profilePic: '', clanId: null, isPro: false,
-                    createdAt: new Date().toISOString(), wallet: { coins: startCoins }
-                };
+                const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 } };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; navigate(role === 'host' ? 'host-dash' : 'player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
@@ -579,333 +544,270 @@
         };
 
         const setupSidebar = (role, callback) => {
-            const items = document.querySelectorAll(`#view-${role}-dash .sidebar-item`);
-            items.forEach(item => {
-                const newEl = item.cloneNode(true); item.parentNode.replaceChild(newEl, item);
-                newEl.addEventListener('click', (e) => {
-                    document.querySelectorAll(`#view-${role}-dash .sidebar-item`).forEach(el => el.classList.remove('active'));
-                    e.currentTarget.classList.add('active'); callback(e.currentTarget.dataset.tab);
+            const sideItems = document.querySelectorAll(`#view-${role}-dash .sidebar-item`);
+            const botItems = document.querySelectorAll(`#bnav-${role} .b-nav-item`);
+            
+            const attach = (items) => {
+                items.forEach(item => {
+                    const newEl = item.cloneNode(true); item.parentNode.replaceChild(newEl, item);
+                    newEl.addEventListener('click', (e) => {
+                        sideItems.forEach(el => el.classList.remove('active'));
+                        if(botItems) botItems.forEach(el => el.classList.remove('active'));
+                        
+                        const tab = e.currentTarget.dataset.tab;
+                        document.querySelector(`#view-${role}-dash .sidebar-item[data-tab="${tab}"]`)?.classList.add('active');
+                        document.querySelector(`#bnav-${role} .b-nav-item[data-tab="${tab}"]`)?.classList.add('active');
+                        
+                        callback(tab);
+                    });
                 });
-            });
+            };
+            attach(sideItems); if(botItems) attach(botItems);
+            
             const activeTab = document.querySelector(`#view-${role}-dash .sidebar-item.active`);
             if(activeTab) callback(activeTab.dataset.tab);
         };
 
-        // --- PLAYER DASHBOARD ---
         const renderPlayerDashboard = () => {
             const container = document.getElementById('player-dash-content');
             onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { if(docSnap.exists() && appState.userData) { appState.userData = docSnap.data(); updateNav(); }});
 
             setupSidebar('player', (tab) => {
                 if(tab === 'player-overview') {
-                    const pic = appState.userData.profilePic || 'https://via.placeholder.com/150/6c5ce7/ffffff?text=Avatar';
-                    const isPro = appState.userData.isPro;
                     container.innerHTML = `
-                        <div class="glass" style="padding:30px; text-align:center; position:relative;">
-                            ${isPro ? '<div style="position:absolute; top:15px; right:15px;" class="badge badge-pro"><i class="ph-fill ph-crown"></i> PRO</div>' : ''}
-                            <div class="profile-pic-container ${isPro ? 'is-pro' : ''}" onclick="document.getElementById('upload-pic').click()">
-                                <img src="${pic}" id="display-pic">
-                                <div class="profile-pic-overlay"><i class="ph-bold ph-camera" style="font-size:1.5rem; color:white;"></i></div>
-                            </div>
-                            <input type="file" id="upload-pic" accept="image/*" style="display:none;" onchange="handleProfileUpload(event)">
-                            <h2 style="margin-bottom:5px;">${appState.userData.clanTag ? `<span class="clan-tag">[${appState.userData.clanTag}]</span>` : ''}${UI.escapeHTML(appState.userData.username)}</h2>
-                            <p style="color:var(--text-muted); font-size:0.9rem;">Referral Code: <strong style="color:var(--accent); cursor:pointer;" onclick="navigator.clipboard.writeText('${appState.userData.refCode}'); UI.showToast('Copied!');">${appState.userData.refCode} <i class="ph ph-copy"></i></strong></p>
-                            <p style="color:var(--success); font-size:0.8rem; margin-top:5px;">Earn ₹20 when friends play their first match!</p>
+                        <div class="glass" style="padding:40px 30px; text-align:center; position:relative; overflow:hidden;">
+                            <h1 style="font-family:var(--font-display); font-size:3rem; margin-bottom:5px;">${appState.userData.clanTag ? `<span style="color:var(--primary);">[${appState.userData.clanTag}]</span> ` : ''}${UI.escapeHTML(appState.userData.username)}</h1>
+                            <div class="badge mt-2" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid var(--border);">Active Competitor</div>
                         </div>
-                        <div class="grid-cards" style="margin-top:20px;">
-                            <div class="glass stat-box">
-                                <div style="color:var(--text-muted)">Wallet Balance</div>
-                                <div class="stat-value">₹${appState.userData.wallet.coins || 0}</div>
-                                <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-                                    <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="rechargeWalletUI()">Deposit</button>
-                                    <button class="btn btn-primary" style="padding:6px 12px; font-size:0.8rem;" onclick="withdrawWalletUI()">Withdraw</button>
-                                </div>
-                            </div>
-                            <div class="glass stat-box ${!isPro ? 'pro-promo' : ''}" style="${!isPro ? 'border-color:var(--pro-gold); background:rgba(255,215,0,0.05);' : ''}">
-                                ${!isPro ? `
-                                    <h3 style="color:var(--pro-gold);"><i class="ph-fill ph-crown"></i> Nexus PRO</h3>
-                                    <p style="font-size:0.8rem; color:var(--text-muted); margin:10px 0;">0% Withdrawal Fees, Premium Badge, Priority Support.</p>
-                                    <button class="btn btn-pro" style="padding:6px 12px; font-size:0.8rem;" onclick="upgradeProUI()">Upgrade ₹${appState.proCost}/mo</button>
-                                ` : `
-                                    <h3 style="color:var(--pro-gold);"><i class="ph-fill ph-crown"></i> PRO Active</h3>
-                                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:10px;">Enjoy 0% platform fees and premium matchmaking.</p>
-                                `}
+                        <div class="grid-cards" style="margin-top:24px;">
+                            <div class="stat-box">
+                                <div style="color:var(--text-muted); font-size:0.9rem; text-transform:uppercase;">Nexus Balance</div>
+                                <div class="stat-value" style="color:var(--success);">₹${appState.userData.wallet.coins || 0}</div>
                             </div>
                         </div>
                     `;
                 } else if(tab === 'player-browse') {
-                    container.innerHTML = `<h2>Premium Tournaments</h2><div id="player-browse-list" class="grid-cards">Loading...</div>`;
+                    container.innerHTML = `<h2>Live Arena</h2><div id="player-browse-list" class="grid-cards"><div class="skeleton" style="height:200px;"></div></div>`;
                     loadTournamentsList('player-browse-list');
                 } else if(tab === 'player-my-tournaments') {
-                    container.innerHTML = `<h2>My Matches</h2><div id="player-my-list" class="grid-cards">Loading...</div>`;
+                    container.innerHTML = `<h2>My Deployments</h2><div id="player-my-list" class="grid-cards"><div class="skeleton" style="height:200px;"></div></div>`;
                     loadMyTournaments();
                 } else if(tab === 'player-clans') {
-                    container.innerHTML = `<h2>Squads & Clans</h2><div id="clan-content">Loading...</div>`;
+                    container.innerHTML = `<h2>Team Management</h2><div id="clan-content"><div class="skeleton" style="height:200px;"></div></div>`;
                     loadClanSystem();
                 } else if(tab === 'player-wallet') {
                     container.innerHTML = `
-                        <div class="flex-between mb-2"><h2>Nexus Wallet</h2></div>
-                        <div class="glass text-center" style="padding:40px; position:relative;">
-                            ${appState.userData.isPro ? '<div class="badge badge-pro" style="position:absolute; top:15px; left:15px;">PRO: 0% FEE</div>' : ''}
-                            <h1 style="font-size:3.5rem; margin:0; color:var(--accent);">₹${appState.userData.wallet.coins || 0}</h1>
-                            <p style="color:var(--text-muted)">Available Balance</p>
+                        <div class="flex-between mb-2"><h2>Financial Core</h2></div>
+                        <div class="glass text-center" style="padding:50px 20px;">
+                            <p style="color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-size:0.8rem;">Available Funds</p>
+                            <h1 style="font-size:4.5rem; margin:10px 0; color:white; font-family:var(--font-display);">₹${appState.userData.wallet.coins || 0}</h1>
+                            <div style="display:flex; gap:16px; justify-content:center; margin-top:20px;">
+                                <button class="btn btn-primary" onclick="rechargeWalletUI()"><i class="ph-bold ph-plus"></i> Deposit</button>
+                                <button class="btn btn-outline" onclick="withdrawWalletUI()"><i class="ph-bold ph-arrow-up-right"></i> Withdraw</button>
+                            </div>
                         </div>
-                        <h3 class="mt-4 mb-2">Financial History</h3>
-                        <div id="wallet-history">Loading...</div>
+                        <h3 class="mt-4 mb-2">Transaction Ledger</h3>
+                        <div id="wallet-history"><div class="skeleton" style="height:150px;"></div></div>
                     `;
                     loadWalletHistory();
                 } else if(tab === 'player-support') {
-                    container.innerHTML = `<div class="flex-between mb-2"><h2>Help & Disputes</h2><button class="btn btn-primary" onclick="createTicketUI()">New Ticket</button></div><div id="support-list">Loading...</div>`;
+                    container.innerHTML = `<div class="flex-between mb-2"><h2>Support Desk</h2><button class="btn btn-primary" style="padding:8px 16px; font-size:0.9rem;" onclick="createTicketUI()">Open Ticket</button></div><div id="support-list"><div class="skeleton" style="height:200px;"></div></div>`;
                     loadSupportTickets();
                 }
             });
         };
 
-        // --- HOST DASHBOARD ---
-        const renderHostDashboard = () => {
-            const container = document.getElementById('host-dash-content');
-            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { if(docSnap.exists() && appState.userData) { appState.userData = docSnap.data(); updateNav(); }});
-            
-            setupSidebar('host', (tab) => {
-                if(tab === 'host-overview') {
-                    container.innerHTML = `<h2>Analytics Overview</h2><div id="host-analytics">Loading...</div>`;
-                    loadHostAnalytics();
-                } else if(tab === 'host-create') {
-                    let gameOpts = appState.games.map(g => `<option value="${g}">${g}</option>`).join('');
-                    container.innerHTML = `
-                        <div class="glass" style="padding: 30px;">
-                            <h2>Create Escrow Match</h2>
-                            <form id="form-create-t" class="mt-4">
-                                <div class="grid-cards" style="grid-template-columns: 1fr 1fr; margin-top:0;">
-                                    <div class="form-group"><label>Match Title</label><input type="text" id="c-title" required></div>
-                                    <div class="form-group"><label>Game</label><select id="c-game" required>${gameOpts}</select></div>
-                                    <div class="form-group"><label>Format</label><input type="text" id="c-mode" placeholder="e.g. Squads, Solos" required></div>
-                                    <div class="form-group"><label>Start Time</label><input type="datetime-local" id="c-time" required></div>
-                                    <div class="form-group"><label>Entry Fee (₹)</label><input type="number" id="c-fee" value="50" required></div>
-                                    <div class="form-group"><label>Prize Pool (₹)</label><input type="number" id="c-prize" value="1000" required></div>
-                                    <div class="form-group"><label>Slots</label><input type="number" id="c-slots" value="48" required></div>
-                                </div>
-                                <div class="form-group"><label>Rules & Details</label><textarea id="c-desc" rows="3" required></textarea></div>
-                                <button type="submit" class="btn btn-primary" id="btn-c-sub" style="width:100%;">Publish</button>
-                            </form>
-                        </div>
-                    `;
-                    document.getElementById('form-create-t').onsubmit = async (e) => {
-                        e.preventDefault(); UI.setLoading('btn-c-sub', true);
-                        try {
-                            await addDoc(collection(db, "tournaments"), {
-                                hostId: appState.user.uid, hostName: appState.userData.username, title: document.getElementById('c-title').value, game: document.getElementById('c-game').value,
-                                mode: document.getElementById('c-mode').value, startTime: document.getElementById('c-time').value, entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value),
-                                maxSlots: parseInt(document.getElementById('c-slots').value), filledSlots: 0, views: 0, description: document.getElementById('c-desc').value, status: 'Registration Open', createdAt: new Date().toISOString()
-                            });
-                            UI.showToast("Published!"); document.querySelector('[data-tab="host-manage"]').click();
-                        } catch(err) { UI.showToast(err.message, "error"); } finally { UI.setLoading('btn-c-sub', false); }
-                    };
-                } else if (tab === 'host-manage') {
-                    container.innerHTML = `<h2>Manage Rooms</h2><div id="host-manage-list" class="grid-cards">Loading...</div>`;
-                    loadHostTournaments();
-                } else if (tab === 'host-wallet') {
-                    container.innerHTML = `<div class="flex-between mb-2"><h2>Host Earnings</h2><button class="btn btn-primary" onclick="withdrawWalletUI()">Withdraw</button></div>
-                        <div class="glass p-4 text-center" style="padding:30px;"><h1 style="font-size:3rem; margin:0; color:var(--success);">₹${appState.userData.wallet?.coins || 0}</h1></div>
-                        <h3 class="mt-4">Withdrawal History</h3><div id="wallet-history">Loading...</div>`;
-                    loadWalletHistory();
-                } else if(tab === 'host-support') {
-                    container.innerHTML = `<div class="flex-between mb-2"><h2>Host Support Desk</h2><button class="btn btn-primary" onclick="createTicketUI()">New Ticket</button></div><div id="support-list">Loading...</div>`;
-                    loadSupportTickets();
-                }
-            });
-        };
-
-        // --- SHARED FEATURES & UPLOADS ---
-        window.handleProfileUpload = (e) => {
-            const file = e.target.files[0]; if(!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = new Image();
-                img.onload = async () => {
-                    const canvas = document.createElement('canvas'); const MAX = 300; let w = img.width; let h = img.height;
-                    if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } else { if (h > MAX) { w *= MAX / h; h = MAX; } }
-                    canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
-                    const b64 = canvas.toDataURL('image/jpeg', 0.6); 
-                    try { await updateDoc(doc(db, "users", appState.user.uid), { profilePic: b64 }); document.getElementById('display-pic').src = b64; UI.showToast("Profile Updated!"); } catch(err) { UI.showToast("Error saving image.", "error"); }
-                }; img.src = event.target.result;
-            }; reader.readAsDataURL(file);
-        };
-
-        window.upgradeProUI = () => {
-            UI.showModal(`
-                <h3 style="color:var(--pro-gold); text-align:center;"><i class="ph-fill ph-crown"></i> Nexus PRO</h3>
-                <p style="text-align:center; color:var(--text-muted); margin-bottom:20px;">Cost: ₹${appState.proCost} / month</p>
-                <ul style="color:white; line-height:2; margin-bottom:20px; padding-left:20px;">
-                    <li>0% Platform fees on withdrawals</li>
-                    <li>Exclusive Gold Profile Frame</li>
-                    <li>Priority Dispute Resolution</li>
-                </ul>
-                <button class="btn btn-pro" style="width:100%;" onclick="processProUpgrade()">Pay ₹${appState.proCost} from Wallet</button>
-            `);
-        };
-        window.processProUpgrade = async () => {
-            if((appState.userData.wallet.coins || 0) < appState.proCost) return UI.showToast("Insufficient Balance", "error");
-            try { await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-appState.proCost), isPro: true }); UI.showToast("Welcome to Nexus PRO!"); UI.closeModal(); } catch(e) { UI.showToast("Error", "error"); }
-        };
-
-        // --- CLAN ECONOMY ---
-        const loadClanSystem = async () => {
-            const container = document.getElementById('clan-content');
-            if(appState.userData.clanId) {
-                try {
-                    const cDoc = await getDoc(doc(db, "clans", appState.userData.clanId));
-                    if(cDoc.exists()) {
-                        const clan = cDoc.data();
-                        let mHtml = ''; clan.memberNames.forEach(m => mHtml += `<div class="squad-member"><i class="ph-fill ph-user"></i> ${UI.escapeHTML(m)}</div>`);
-                        container.innerHTML = `
-                            <div class="glass" style="padding:30px; text-align:center;">
-                                <h2 style="color:var(--accent); font-family:var(--font-display); font-size:2.5rem;">[${UI.escapeHTML(clan.tag)}] ${UI.escapeHTML(clan.name)}</h2>
-                                <p style="color:var(--text-muted)">Leader: ${UI.escapeHTML(clan.leaderName)}</p>
-                            </div>
-                            <div class="glass mt-4" style="padding:20px;"><h3>Roster</h3><div style="margin-top:10px;">${mHtml}</div></div>
-                        `;
-                    }
-                } catch(e) {}
-            } else {
-                container.innerHTML = `
-                    <div class="glass text-center" style="padding:40px;">
-                        <i class="ph-duotone ph-shield-star" style="font-size:4rem; color:var(--accent);"></i>
-                        <h3 class="mt-2">Form a Squad</h3>
-                        <p style="color:var(--text-muted); margin-bottom:20px;">Create a clan to get a custom tag and play squad tournaments.</p>
-                        <button class="btn btn-outline" style="border-color:var(--accent); color:var(--accent);" onclick="createClanUI()">Create Clan (₹${appState.clanCost})</button>
-                    </div>
-                `;
-            }
-        };
-
-        window.createClanUI = () => { UI.showModal(`<h3>Establish Clan</h3><div class="form-group mt-4"><label>Clan Name</label><input type="text" id="cl-name" required></div><div class="form-group"><label>Clan Tag (2-4 Chars)</label><input type="text" id="cl-tag" maxlength="4" required></div><button class="btn btn-primary" style="width:100%" onclick="submitClan()">Pay ₹${appState.clanCost} & Create</button>`); };
-        window.submitClan = async () => {
-            const name = document.getElementById('cl-name').value; const tag = document.getElementById('cl-tag').value.toUpperCase();
-            if(!name || tag.length < 2) return;
-            if((appState.userData.wallet.coins || 0) < appState.clanCost) return UI.showToast("Insufficient Balance", "error");
-            try {
-                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-appState.clanCost) });
-                const clanRef = await addDoc(collection(db, "clans"), { name: name, tag: tag, leaderId: appState.user.uid, leaderName: appState.userData.username, members: [appState.user.uid], memberNames: [appState.userData.username], createdAt: Date.now() });
-                await updateDoc(doc(db, "users", appState.user.uid), { clanId: clanRef.id, clanTag: tag });
-                UI.showToast("Clan Established!"); UI.closeModal(); loadClanSystem();
-            } catch(e) {}
-        };
-
-        // --- TOURNAMENTS & JOINING ---
         const loadTournamentsList = async (containerId) => {
             const container = document.getElementById(containerId);
             try {
                 const snap = await getDocs(collection(db, "tournaments"));
-                let docs = []; snap.forEach(d => docs.push({id: d.id, ...d.data()})); docs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                let docs = []; snap.forEach(d => docs.push({id: d.id, ...d.data()})); 
+                docs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
                 let html = '';
                 docs.forEach(t => {
                     if(t.status === 'Upcoming' || t.status === 'Registration Open') {
+                        // Replaced 1v1/2v2 terminology
+                        let formatStr = t.teamSize === 4 ? 'Squad' : (t.teamSize === 2 ? 'Duo' : 'Solo');
                         html += `
                             <div class="glass card">
-                                <div class="flex-between mb-2"><span class="badge badge-game">${t.game}</span><span class="badge badge-live">${t.status}</span></div>
-                                <div class="card-title">${UI.escapeHTML(t.title)}</div>
-                                <div style="display:flex; justify-content:space-between; margin-top:10px; border-top:1px solid var(--border); padding-top:10px;">
-                                    <div><span style="font-size:0.8rem; color:var(--text-muted)">Prize Pool</span><br><strong style="color:var(--accent)">₹${t.prizePool}</strong></div>
-                                    <button class="btn btn-primary" style="padding:8px 16px; font-size:0.9rem;" onclick="viewTDetails('${t.id}')">View Details</button>
+                                <div class="card-banner" style="background-image: url('${t.bannerUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80'}');">
+                                    <div class="card-banner-overlay"></div>
+                                    <div style="position:absolute; top:12px; left:12px;" class="badge badge-game">${t.game}</div>
+                                    <div style="position:absolute; top:12px; right:12px;" class="badge badge-live">Live Join</div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-title">${UI.escapeHTML(t.title)}</div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                        <div style="font-size:0.85rem; color:var(--text-muted);"><i class="ph-bold ph-users"></i> Format: ${formatStr}</div>
+                                        <div style="font-size:0.85rem; color:var(--text-muted);">Slots: ${t.filledSlots}/${t.maxSlots}</div>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; margin-top:auto; border-top:1px solid var(--border); padding-top:16px;">
+                                        <div><span style="font-size:0.8rem; color:var(--text-muted)">Prize Pool</span><br><strong style="color:var(--success); font-size:1.2rem;">₹${t.prizePool}</strong></div>
+                                        <button class="btn btn-primary" style="padding:8px 16px; font-size:0.9rem;" onclick="viewTDetails('${t.id}')">View</button>
+                                    </div>
                                 </div>
                             </div>
                         `;
                     }
                 });
-                container.innerHTML = html || `<p>No active events.</p>`;
-            } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+                container.innerHTML = html || UI.emptyState('ph-radar', 'No Active Events', 'The arena is currently silent.');
+            } catch(e) { container.innerHTML = `<p>Error loading signals.</p>`; }
         };
 
         window.viewTDetails = async (id) => {
             try {
-                await updateDoc(doc(db, "tournaments", id), { views: increment(1) });
                 const t = (await getDoc(doc(db, "tournaments", id))).data();
                 
                 let btn = '';
-                if(!appState.user) btn = `<button class="btn btn-primary" onclick="closeModal(); navigate('login')">Login to Join</button>`;
-                else if(appState.userData.role === 'host') btn = `<div class="badge badge-live">Hosts cannot join</div>`;
-                else if(appState.userData.role === 'admin') btn = `<div class="badge badge-admin">Admins observe</div>`;
-                else if(t.filledSlots >= t.maxSlots) btn = `<button class="btn btn-outline" disabled>Tournament Full</button>`;
-                else btn = `<button class="btn btn-primary" onclick="initJoin('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}')">Pay ₹${t.entryFee} from Wallet</button>`;
+                let isFull = t.filledSlots >= t.maxSlots;
+                let formatStr = t.teamSize === 4 ? 'Squad' : (t.teamSize === 2 ? 'Duo' : 'Solo');
+                let feeText = t.teamSize > 1 ? `₹${t.entryFee} (Team Total)` : `₹${t.entryFee}`;
+
+                if(!appState.user) btn = `<button class="btn btn-primary w-100" style="width:100%" onclick="closeModal(); navigate('login')">Authenticate to Join</button>`;
+                else if(appState.userData.role === 'host') btn = `<div class="badge badge-live w-100" style="width:100%; justify-content:center; padding:12px;">Hosts cannot deploy</div>`;
+                else if(appState.userData.role === 'admin') btn = `<div class="badge badge-admin w-100" style="width:100%; justify-content:center; padding:12px;">Admin Observer Mode</div>`;
+                else if(isFull) btn = `<button class="btn btn-outline w-100" style="width:100%" disabled>Lobby at Capacity</button>`;
+                else {
+                    btn = `<button class="btn btn-primary w-100" style="width:100%" onclick="initJoin('${id}', ${t.entryFee}, '${UI.escapeHTML(t.title)}', ${t.teamSize})">Deploy - ${feeText}</button>`;
+                }
 
                 UI.showModal(`
-                    <div class="flex-between"><span class="badge badge-game">${t.game}</span><span><i class="ph ph-users"></i> ${t.filledSlots}/${t.maxSlots} Slots</span></div>
-                    <h2 class="mt-2" style="font-family:var(--font-display); font-size:2rem;">${UI.escapeHTML(t.title)}</h2>
-                    <p style="color:var(--text-muted); margin-bottom:20px;">Hosted by: <i class="ph-fill ph-seal-check verified"></i> ${UI.escapeHTML(t.hostName)}</p>
-                    <div class="grid-cards" style="grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px; margin-top:0;">
-                        <div class="glass stat-box" style="padding:15px;"><div style="font-size:0.8rem; color:var(--text-muted)">Prize Pool</div><div style="font-weight:700; color:var(--accent); font-size:1.5rem;">₹${t.prizePool}</div></div>
-                        <div class="glass stat-box" style="padding:15px;"><div style="font-size:0.8rem; color:var(--text-muted)">Mode / Format</div><div style="font-weight:600; font-size:1.2rem;">${t.mode}</div></div>
+                    <div style="width:100%; height:160px; border-radius:12px; margin-bottom:20px; background: url('${t.bannerUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80'}') center/cover;"></div>
+                    <div class="flex-between mb-2">
+                        <span class="badge badge-game">${t.game}</span>
+                        <span class="badge badge-upcoming"><i class="ph-bold ph-users"></i> ${t.filledSlots}/${t.maxSlots} Slots</span>
                     </div>
-                    <div class="mb-4"><button class="btn btn-outline" style="width:100%; padding:8px; font-size:0.9rem;" onclick="viewLobby('${id}')"><i class="ph ph-users-three"></i> View Live Squads</button></div>
-                    <div class="text-center">${btn}</div>
+                    <h2 style="font-family:var(--font-display); font-size:2.2rem; line-height:1.1; margin-bottom:10px;">${UI.escapeHTML(t.title)}</h2>
+                    <p style="color:var(--text-muted); margin-bottom:24px; display:flex; align-items:center; gap:6px;">
+                        <i class="ph-fill ph-seal-check" style="color:var(--primary);"></i> Hosted by ${UI.escapeHTML(t.hostName)}
+                    </p>
+                    
+                    <div class="grid-cards" style="grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; margin-top:0;">
+                        <div class="glass stat-box" style="padding:16px;"><div style="font-size:0.8rem; color:var(--text-muted)">Prize Pool</div><div style="font-weight:800; color:var(--success); font-size:1.5rem;">₹${t.prizePool}</div></div>
+                        <div class="glass stat-box" style="padding:16px;"><div style="font-size:0.8rem; color:var(--text-muted)">Format</div><div style="font-weight:700; font-size:1.2rem; color:white;">${formatStr}</div></div>
+                    </div>
+                    
+                    <div style="margin-top:auto;">${btn}</div>
+                    <div style="text-align:center; margin-top:15px; font-size:0.85rem; color:var(--text-muted);"><i class="ph-fill ph-lock-key"></i> Participant list is strictly hidden for privacy.</div>
                 `);
             } catch(e) {}
         };
 
-        window.initJoin = async (tId, fee, title) => {
+        window.initJoin = async (tId, fee, title, teamSize) => {
             const balance = appState.userData.wallet.coins || 0;
+            
+            if(balance < fee) { UI.showToast("Insufficient Funds.", "error"); UI.closeModal(); return; }
+
             const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
-            let joined = false; snap.forEach(d => { if(d.data().userId === appState.user.uid) joined = true; });
-            if(joined) return UI.showToast("Already registered.", "error");
-            if(balance < fee) { UI.showToast("Insufficient Balance", "error"); UI.closeModal(); return; }
+            let joined = false;
+            snap.forEach(d => {
+                const data = d.data();
+                if(data.userId === appState.user.uid) joined = true; 
+                if(data.teamMembers) { data.teamMembers.forEach(m => { if(m.uid === appState.user.uid) joined = true; }); }
+            });
+            if(joined) return UI.showToast("Already deployed in this event.", "error");
 
-            UI.showModal(`<div class="text-center" style="padding:30px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:4rem; color:var(--primary);"></i><h3 class="mt-4">Processing Secure Join...</h3></div>`);
-            try {
-                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
-                await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: appState.userData.clanTag || '', joinedAt: new Date().toISOString() });
-                await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
+            if (teamSize > 1) {
+                if(!appState.userData.clanId) {
+                    UI.showToast("You must join or create a Team to play this format.", "error"); UI.closeModal();
+                    navigate('player-dash'); setTimeout(() => document.querySelector('[data-tab="player-clans"]').click(), 100);
+                    return;
+                }
                 
-                if(appState.userData.referredBy) {
-                    const regCount = (await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)))).size;
-                    if(regCount === 1) await updateDoc(doc(db, "users", appState.userData.referredBy), { "wallet.coins": increment(20) });
-                }
+                try {
+                    const cDoc = await getDoc(doc(db, "clans", appState.userData.clanId));
+                    const clan = cDoc.data();
+                    
+                    if(clan.leaderId !== appState.user.uid) { UI.showToast("Only the Team Leader can register the squad.", "error"); return; }
+                    if(clan.members.length < teamSize) { UI.showToast(`Your team needs at least ${teamSize} members to join.`, "error"); return; }
 
-                UI.showToast(`Joined ${title}!`); UI.closeModal();
-                if(appState.currentView === 'landing') navigate('player-dash'); setTimeout(() => document.querySelector('[data-tab="player-my-tournaments"]').click(), 100);
-            } catch (e) { UI.showToast("Transaction failed.", "error"); UI.closeModal(); }
-        };
+                    let checkboxHtml = '';
+                    clan.members.forEach((uid, index) => {
+                        let name = clan.memberNames[index];
+                        checkboxHtml += `<div style="display:flex; align-items:center; gap:10px; padding:10px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px;">
+                            <input type="checkbox" name="team-sel" value="${uid}" data-name="${UI.escapeHTML(name)}" style="width:20px;"> 
+                            <span style="color:white;">${UI.escapeHTML(name)}</span>
+                        </div>`;
+                    });
 
-        window.viewLobby = async (tId) => {
-            UI.showModal(`<h3>Lobby Visualizer</h3><div id="lobby-vis" class="mt-4"><i class="ph-duotone ph-spinner ph-spin"></i> Loading...</div>`);
-            try {
-                const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
-                if(snap.empty) { document.getElementById('lobby-vis').innerHTML = '<p>Lobby is empty.</p>'; return; }
-                let players = []; snap.forEach(d => players.push(d.data()));
-                let html = ''; let squadNum = 1;
-                for(let i=0; i<players.length; i+=4) {
-                    html += `<div class="squad-box"><div class="squad-header">Squad ${squadNum}</div>`;
-                    let chunk = players.slice(i, i+4);
-                    chunk.forEach(p => { html += `<div class="squad-member">${p.clanTag ? `<span class="clan-tag">[${p.clanTag}]</span>` : ''} ${UI.escapeHTML(p.username)}</div>`; });
-                    html += `</div>`; squadNum++;
-                }
-                document.getElementById('lobby-vis').innerHTML = html;
-            } catch(e) {}
+                    UI.showModal(`
+                        <h3>Deploy Team [${UI.escapeHTML(clan.tag)}]</h3>
+                        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Select exactly ${teamSize} members for this operation. Total fee: ₹${fee}</p>
+                        <form id="squad-join-form">
+                            <div style="max-height:200px; overflow-y:auto; margin-bottom:15px;">${checkboxHtml}</div>
+                            <button type="submit" class="btn btn-primary w-100" style="width:100%" id="btn-sq-sub">Confirm & Pay ₹${fee}</button>
+                        </form>
+                    `);
+
+                    document.getElementById('squad-join-form').onsubmit = async (e) => {
+                        e.preventDefault();
+                        const checked = document.querySelectorAll('input[name="team-sel"]:checked');
+                        if(checked.length !== teamSize) return UI.showToast(`Select exactly ${teamSize} members.`, "error");
+                        
+                        UI.setLoading('btn-sq-sub', true);
+                        let selectedMembers = [];
+                        checked.forEach(cb => selectedMembers.push({ uid: cb.value, name: cb.dataset.name }));
+
+                        try {
+                            await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
+                            await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: clan.tag, isSquad: true, teamMembers: selectedMembers, joinedAt: new Date().toISOString() });
+                            await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
+                            
+                            UI.showToast(`Squad Deployed!`); UI.closeModal();
+                            if(appState.currentView === 'landing') navigate('player-dash'); setTimeout(() => document.querySelector('[data-tab="player-my-tournaments"]').click(), 100);
+                        } catch(err) { UI.showToast("Deployment failed.", "error"); }
+                    };
+
+                } catch(e) { UI.showToast("Error loading team.", "error"); }
+
+            } else {
+                UI.showModal(`<div class="text-center" style="padding:40px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:4rem; color:var(--primary);"></i><h3 class="mt-4">Securing Slot...</h3></div>`);
+                try {
+                    await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
+                    await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: appState.userData.clanTag || '', isSquad: false, joinedAt: new Date().toISOString() });
+                    await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
+                    
+                    UI.showToast(`Deployed to ${title}!`); UI.closeModal();
+                    if(appState.currentView === 'landing') navigate('player-dash'); setTimeout(() => document.querySelector('[data-tab="player-my-tournaments"]').click(), 100);
+                } catch (e) { UI.showToast("Deployment failed.", "error"); UI.closeModal(); }
+            }
         };
 
         const loadMyTournaments = async () => {
             const container = document.getElementById('player-my-list');
             try {
-                const snap = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
-                if(snap.empty) { container.innerHTML = `<p style="color:var(--text-muted)">No active matches.</p>`; return; }
+                const snap1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
+                let regs = []; snap1.forEach(d => regs.push(d.data())); 
+                
+                if(regs.length === 0) { container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); return; }
+                regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
                 let html = '';
-                let regs = []; snap.forEach(d => regs.push(d.data())); regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
+                
                 for(let rData of regs) {
                     const tDoc = await getDoc(doc(db, "tournaments", rData.tournamentId));
                     if(tDoc.exists()) {
                         const t = tDoc.data();
-                        let roomHtml = t.roomDetails && (t.status === 'Live' || t.status === 'Room Released') ? `<div style="padding:10px; background:rgba(0,184,148,0.1); border:1px solid var(--success); border-radius:8px; margin-bottom:10px;"><div style="color:var(--success); font-weight:bold;">Room Released!</div><div><strong>ID:</strong> ${t.roomDetails.id} <strong>Pass:</strong> ${t.roomDetails.pass}</div></div>` : '';
-                        html += `
-                            <div class="glass card">
-                                <div class="flex-between"><span class="badge badge-game">${t.game}</span></div>
-                                <h4 style="margin:5px 0;">${UI.escapeHTML(t.title)}</h4>
-                                <div style="padding:8px; background:rgba(0,0,0,0.3); margin-bottom:10px;">Status: <strong style="color:var(--accent)">${t.status}</strong></div>
-                                ${roomHtml}
-                                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:auto;">
-                                    <button class="btn btn-outline" style="flex:1; padding:8px; font-size:0.85rem;" onclick="openLobbyChat('${rData.tournamentId}', '${UI.escapeHTML(t.title)}')"><i class="ph-fill ph-users"></i> Lobby Chat</button>
-                                    <button class="btn btn-outline" style="flex:1; padding:8px; font-size:0.85rem;" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}')"><i class="ph-fill ph-chat-teardrop"></i> DM Host</button>
+                        let roomHtml = t.roomDetails && (t.status === 'Live' || t.status === 'Room Released') ? `
+                            <div style="padding:16px; background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.3); border-radius:12px; margin-bottom:15px;">
+                                <div style="color:var(--success); font-weight:800; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;"><i class="ph-bold ph-lock-key-open"></i> Secure Room Intel</div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="font-family:monospace; font-size:1.1rem; color:white;">ID: ${t.roomDetails.id}</span>
+                                    <span style="font-family:monospace; font-size:1.1rem; color:var(--accent);">PASS: ${t.roomDetails.pass}</span>
                                 </div>
-                                <button class="btn btn-danger mt-2" style="width:100%; padding:6px; font-size:0.8rem;" onclick="reportMatchUI('${rData.tournamentId}', '${t.hostId}')"><i class="ph ph-warning-octagon"></i> Dispute / Report</button>
+                            </div>` : '';
+                        
+                        html += `
+                            <div class="glass card" style="padding:20px;">
+                                <div class="flex-between mb-2">
+                                    <span class="badge badge-game">${t.game}</span>
+                                    <span class="badge" style="background:rgba(255,255,255,0.1); color:white;">${t.status}</span>
+                                </div>
+                                <h3 style="font-family:var(--font-display); font-size:1.4rem; margin-bottom:15px;">${UI.escapeHTML(t.title)}</h3>
+                                ${roomHtml}
+                                <div style="display:grid; grid-template-columns: 1fr; gap:10px; margin-top:auto;">
+                                    <button class="btn btn-outline" style="padding:10px; font-size:0.9rem;" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}')"><i class="ph-fill ph-chat-circle"></i> Support Chat (Host)</button>
+                                </div>
                             </div>`;
                     }
                 }
@@ -913,28 +815,178 @@
             } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
         };
 
-        window.reportMatchUI = (tId, hostId) => {
-            UI.showModal(`<h3>Report Issue</h3><p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Submit a claim if the host did not start the match, gave wrong details, or scammed. Admins review all claims.</p><div class="form-group"><textarea id="disp-reason" rows="3" placeholder="Explain what happened..." required></textarea></div><button class="btn btn-danger" style="width:100%" onclick="submitDispute('${tId}', '${hostId}')">Submit Claim</button>`);
-        };
-        window.submitDispute = async (tId, hostId) => {
-            const reason = document.getElementById('disp-reason').value; if(!reason) return;
-            try { await addDoc(collection(db, "disputes"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, hostId: hostId, reason: reason, status: 'Open', timestamp: Date.now() }); UI.showToast("Dispute Submitted."); UI.closeModal(); } catch(e) {}
+        const loadClanSystem = async () => {
+            const container = document.getElementById('clan-content');
+            if(appState.userData.clanId) {
+                try {
+                    const cDoc = await getDoc(doc(db, "clans", appState.userData.clanId));
+                    if(cDoc.exists()) {
+                        const clan = cDoc.data();
+                        let mHtml = ''; clan.memberNames.forEach(m => mHtml += `<div style="padding:12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px;"><i class="ph-fill ph-user" style="color:var(--primary);"></i> <span style="color:white; font-weight:500;">${UI.escapeHTML(m)}</span></div>`);
+                        container.innerHTML = `
+                            <div class="glass" style="padding:40px 20px; text-align:center; background:linear-gradient(180deg, var(--surface-hover) 0%, var(--surface) 100%);">
+                                <h1 style="color:var(--primary); font-family:var(--font-display); font-size:3.5rem; margin-bottom:5px; line-height:1;">[${UI.escapeHTML(clan.tag)}]</h1>
+                                <h2 style="color:white; margin-bottom:15px;">${UI.escapeHTML(clan.name)}</h2>
+                                <div class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">Tag ID: ${clan.tag} <i class="ph-bold ph-copy" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${clan.tag}'); UI.showToast('Tag Copied!');"></i></div>
+                            </div>
+                            <div class="glass mt-4" style="padding:24px;"><h3 style="margin-bottom:15px; font-family:var(--font-display);">Active Roster</h3><div>${mHtml}</div></div>
+                        `;
+                    }
+                } catch(e) {}
+            } else {
+                container.innerHTML = `
+                    <div class="glass text-center" style="padding:60px 20px;">
+                        <i class="ph-duotone ph-users-three" style="font-size:5rem; color:var(--primary); margin-bottom:15px;"></i>
+                        <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:10px;">Join or Form a Team</h2>
+                        <p style="color:var(--text-muted); max-width:400px; margin:0 auto 30px;">Required for Duo and Squad deployments. Play together, win together.</p>
+                        <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+                            <button class="btn btn-outline" style="border-color:var(--primary); color:var(--primary);" onclick="joinClanUI()">Join via Tag</button>
+                            <button class="btn btn-primary" onclick="createClanUI()">Establish (₹${appState.clanCost})</button>
+                        </div>
+                    </div>
+                `;
+            }
         };
 
-        // --- HOST ANALYTICS & MANAGEMENT ---
+        window.createClanUI = () => { UI.showModal(`<h3>Establish Team</h3><div class="form-group mt-4"><label>Full Team Name</label><input type="text" id="cl-name" required></div><div class="form-group"><label>Unique Tag (2-4 Chars)</label><input type="text" id="cl-tag" maxlength="4" required></div><button class="btn btn-primary w-100" style="width:100%" onclick="submitClan()">Pay ₹${appState.clanCost} & Establish</button>`); };
+        window.submitClan = async () => {
+            const name = document.getElementById('cl-name').value; const tag = document.getElementById('cl-tag').value.toUpperCase();
+            if(!name || tag.length < 2) return;
+            if((appState.userData.wallet.coins || 0) < appState.clanCost) return UI.showToast("Insufficient Balance", "error");
+            try {
+                const snap = await getDocs(query(collection(db, "clans"), where("tag", "==", tag)));
+                if(!snap.empty) return UI.showToast("Tag already exists.", "error");
+
+                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-appState.clanCost) });
+                const clanRef = await addDoc(collection(db, "clans"), { name: name, tag: tag, leaderId: appState.user.uid, leaderName: appState.userData.username, members: [appState.user.uid], memberNames: [appState.userData.username], createdAt: Date.now() });
+                await updateDoc(doc(db, "users", appState.user.uid), { clanId: clanRef.id, clanTag: tag });
+                UI.showToast("Team Established!"); UI.closeModal(); loadClanSystem();
+            } catch(e) {}
+        };
+
+        window.joinClanUI = () => { UI.showModal(`<h3>Join Existing Team</h3><div class="form-group mt-4"><label>Enter Team Tag</label><input type="text" id="j-cl-tag" maxlength="4" required></div><button class="btn btn-primary w-100" style="width:100%" onclick="submitJoinClan()">Request Entry</button>`); };
+        window.submitJoinClan = async () => {
+            const tag = document.getElementById('j-cl-tag').value.toUpperCase(); if(!tag) return;
+            try {
+                const snap = await getDocs(query(collection(db, "clans"), where("tag", "==", tag)));
+                if(snap.empty) return UI.showToast("Team not found.", "error");
+                const clanDoc = snap.docs[0]; const clan = clanDoc.data();
+                if(clan.members.includes(appState.user.uid)) return UI.showToast("Already in team.", "error");
+
+                let newMembers = [...clan.members, appState.user.uid];
+                let newNames = [...clan.memberNames, appState.userData.username];
+
+                await updateDoc(doc(db, "clans", clanDoc.id), { members: newMembers, memberNames: newNames });
+                await updateDoc(doc(db, "users", appState.user.uid), { clanId: clanDoc.id, clanTag: tag });
+                UI.showToast("Joined Team successfully!"); UI.closeModal(); loadClanSystem();
+            } catch(e) {}
+        };
+
+        const renderHostDashboard = () => {
+            const container = document.getElementById('host-dash-content');
+            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { if(docSnap.exists() && appState.userData) { appState.userData = docSnap.data(); updateNav(); }});
+            
+            setupSidebar('host', (tab) => {
+                if(tab === 'host-overview') {
+                    container.innerHTML = `<h2>Host Analytics</h2><div id="host-analytics"><div class="skeleton" style="height:150px;"></div></div>`;
+                    loadHostAnalytics();
+                } else if(tab === 'host-create') {
+                    let gameOpts = appState.games.map(g => `<option value="${g}">${g}</option>`).join('');
+                    let hostFee = appState.hostCreationFee || 0;
+                    
+                    container.innerHTML = `
+                        <div class="glass" style="padding: 30px;">
+                            <div class="flex-between mb-4" style="flex-wrap: wrap; gap:10px;">
+                                <h2 style="font-family:var(--font-display); font-size:2rem; margin:0;">Deploy New Event</h2>
+                                <div class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); font-size:0.8rem;">
+                                    Creation Fee: <strong style="${hostFee > 0 ? 'color:var(--danger)' : 'color:var(--success)'}">₹${hostFee}</strong>
+                                </div>
+                            </div>
+                            
+                            <form id="form-create-t">
+                                <div class="grid-cards" style="grid-template-columns: 1fr 1fr; margin-top:0;">
+                                    <div class="form-group"><label>Operation Title</label><input type="text" id="c-title" required></div>
+                                    <div class="form-group"><label>Combat Sector (Game)</label><select id="c-game" required>${gameOpts}</select></div>
+                                    
+                                    <div class="form-group"><label>Format (Team Size)</label>
+                                        <select id="c-team-size" required>
+                                            <option value="1">Solo</option>
+                                            <option value="2">Duo</option>
+                                            <option value="4">Squad</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label>T-Zero (Start Time)</label><input type="datetime-local" id="c-time" required></div>
+                                    
+                                    <div class="form-group"><label>Entry Fee per Team (₹)</label><input type="number" id="c-fee" value="50" required></div>
+                                    <div class="form-group"><label>Prize Pool (₹)</label><input type="number" id="c-prize" value="1000" required></div>
+                                    
+                                    <div class="form-group"><label>Max Slots (Teams)</label><input type="number" id="c-slots" value="25" required></div>
+                                    <div class="form-group"><label>Banner Image URL</label><input type="url" id="c-banner" placeholder="https://..." required></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-4 w-100" id="btn-c-sub" style="width:100%;">Pay ₹${hostFee} & Initialize Event</button>
+                            </form>
+                        </div>
+                    `;
+                    document.getElementById('form-create-t').onsubmit = async (e) => {
+                        e.preventDefault(); 
+                        
+                        const creationFee = appState.hostCreationFee || 0;
+                        if ((appState.userData.wallet.coins || 0) < creationFee) {
+                            UI.showToast(`Insufficient Funds. Requires ₹${creationFee} to host.`, "error");
+                            return;
+                        }
+                        
+                        UI.setLoading('btn-c-sub', true);
+                        try {
+                            if (creationFee > 0) {
+                                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-creationFee) });
+                            }
+                            
+                            await addDoc(collection(db, "tournaments"), {
+                                hostId: appState.user.uid, hostName: appState.userData.username, title: document.getElementById('c-title').value, game: document.getElementById('c-game').value,
+                                teamSize: parseInt(document.getElementById('c-team-size').value), mode: "Battle Royale", startTime: document.getElementById('c-time').value, 
+                                entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value),
+                                maxSlots: parseInt(document.getElementById('c-slots').value), bannerUrl: document.getElementById('c-banner').value,
+                                filledSlots: 0, status: 'Registration Open', createdAt: new Date().toISOString()
+                            });
+                            
+                            UI.showToast("Event Initialized Successfully."); 
+                            document.querySelector('[data-tab="host-manage"]').click();
+                        } catch(err) { UI.showToast(err.message, "error"); } 
+                        finally { UI.setLoading('btn-c-sub', false); }
+                    };
+                } else if (tab === 'host-manage') {
+                    container.innerHTML = `<h2>Operations Management</h2><div id="host-manage-list" class="grid-cards"><div class="skeleton" style="height:200px;"></div></div>`;
+                    loadHostTournaments();
+                } else if (tab === 'host-wallet') {
+                    container.innerHTML = `
+                        <div class="flex-between mb-2"><h2>Host Ledger</h2></div>
+                        <div class="glass text-center" style="padding:50px;">
+                            <p style="color:var(--text-muted); text-transform:uppercase; font-size:0.8rem;">Cleared Earnings</p>
+                            <h1 style="font-size:4rem; margin:10px 0; color:var(--success); font-family:var(--font-display);">₹${appState.userData.wallet?.coins || 0}</h1>
+                            <button class="btn btn-outline mt-4" onclick="withdrawWalletUI()"><i class="ph-bold ph-arrow-up-right"></i> Request Withdrawal</button>
+                        </div>
+                        <h3 class="mt-4 mb-2">Payout History</h3><div id="wallet-history"><div class="skeleton" style="height:100px;"></div></div>`;
+                    loadWalletHistory();
+                } else if(tab === 'host-support') {
+                    container.innerHTML = `<div class="flex-between mb-2"><h2>Host Support Desk</h2><button class="btn btn-primary" onclick="createTicketUI()">Open Ticket</button></div><div id="support-list"><div class="skeleton" style="height:100px;"></div></div>`;
+                    loadSupportTickets();
+                }
+            });
+        };
+
         const loadHostAnalytics = async () => {
             const container = document.getElementById('host-analytics');
             try {
                 const snap = await getDocs(query(collection(db, "tournaments"), where("hostId", "==", appState.user.uid)));
-                let totalViews = 0; let totalRegs = 0; let revenue = 0;
-                snap.forEach(d => { const t = d.data(); totalViews += (t.views || 0); totalRegs += t.filledSlots; revenue += (t.filledSlots * t.entryFee); });
-                let conv = totalViews > 0 ? Math.round((totalRegs/totalViews)*100) : 0;
+                let totalRegs = 0; let revenue = 0; let count = 0;
+                snap.forEach(d => { const t = d.data(); totalRegs += t.filledSlots; revenue += (t.filledSlots * t.entryFee); count++; });
 
                 container.innerHTML = `
                     <div class="grid-cards">
-                        <div class="glass stat-box"><div style="color:var(--text-muted)">Total Page Views</div><div class="stat-value">${totalViews}</div></div>
-                        <div class="glass stat-box"><div style="color:var(--text-muted)">Conversion Rate</div><div class="stat-value">${conv}%</div></div>
-                        <div class="glass stat-box"><div style="color:var(--text-muted)">Gross Revenue</div><div class="stat-value" style="color:var(--success)">₹${revenue}</div></div>
+                        <div class="glass stat-box"><div style="color:var(--text-muted); font-size:0.9rem;">Events Hosted</div><div class="stat-value">${count}</div></div>
+                        <div class="glass stat-box"><div style="color:var(--text-muted); font-size:0.9rem;">Total Registrations</div><div class="stat-value">${totalRegs}</div></div>
+                        <div class="glass stat-box" style="border-color:rgba(16, 185, 129, 0.3);"><div style="color:var(--text-muted); font-size:0.9rem;">Gross Volume</div><div class="stat-value" style="color:var(--success)">₹${revenue}</div></div>
                     </div>
                 `;
             } catch(e) {}
@@ -944,27 +996,31 @@
             const container = document.getElementById('host-manage-list');
             try {
                 const snap = await getDocs(query(collection(db, "tournaments"), where("hostId", "==", appState.user.uid)));
-                if(snap.empty) { container.innerHTML = `<p>No active events.</p>`; return; }
+                if(snap.empty) { container.innerHTML = UI.emptyState('ph-kanban', 'No Operations', 'You have not initialized any events.'); return; }
                 let docs = []; snap.forEach(d => docs.push({ id: d.id, ...d.data() })); docs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
                 let html = '';
                 docs.forEach(t => {
                     let actions = '';
                     if(t.status === 'Registration Open' || t.status === 'Upcoming') {
-                        actions = `<button class="btn btn-outline mb-2" style="width:100%; padding:10px;" onclick="releaseRoomUI('${t.id}')">Deploy Room details</button>
-                                   <button class="btn btn-primary mb-2" style="width:100%; padding:10px;" onclick="forceStart('${t.id}')">Force Start Match</button>`;
+                        actions = `<button class="btn btn-outline mb-2 w-100" style="width:100%;" onclick="releaseRoomUI('${t.id}')">Deploy Room Intel</button>
+                                   <button class="btn btn-primary mb-2 w-100" style="width:100%;" onclick="forceStart('${t.id}')">Force Start Operation</button>`;
                     } else if(t.status === 'Live' || t.status === 'Room Released') {
-                        actions = `<button class="btn btn-success" style="width:100%; padding:10px;" onclick="concludeMatchUI('${t.id}')"><i class="ph-bold ph-check"></i> Select Winner & End</button>`;
-                    } else { actions = `<button class="btn btn-outline" style="width:100%; padding:10px;" disabled>${t.status}</button>`; }
+                        actions = `<button class="btn btn-primary w-100" style="width:100%; background:var(--success);" onclick="concludeMatchUI('${t.id}')"><i class="ph-bold ph-check"></i> Conclude & Select Winner</button>`;
+                    } else { actions = `<div class="badge" style="width:100%; justify-content:center; padding:12px; border:1px solid rgba(255,255,255,0.1); color:var(--text-muted);">${t.status.toUpperCase()}</div>`; }
 
                     html += `
-                        <div class="glass card">
-                            <span class="badge badge-game">${t.game}</span><h4 style="margin:5px 0;">${UI.escapeHTML(t.title)}</h4>
-                            <div class="flex-between mb-2 mt-2"><span class="badge badge-upcoming">${t.status}</span><span>${t.filledSlots}/${t.maxSlots} Slots</span></div>
-                            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                                <button class="btn btn-outline" style="flex:1; padding:8px; font-size:0.8rem;" onclick="openLobbyChat('${t.id}', '${UI.escapeHTML(t.title)}')">Lobby Chat</button>
-                                <button class="btn btn-outline" style="flex:1; padding:8px; font-size:0.8rem; color:var(--accent); border-color:var(--accent);" onclick="viewHostParts('${t.id}', '${UI.escapeHTML(t.title)}')">DM Players</button>
+                        <div class="glass card" style="padding:20px;">
+                            <div class="flex-between mb-2">
+                                <span class="badge badge-game">${t.game}</span>
+                                <span class="badge badge-upcoming">${t.status}</span>
                             </div>
-                            <div class="mt-auto pt-2" style="border-top:1px solid var(--border)">${actions}</div>
+                            <h3 style="font-family:var(--font-display); font-size:1.5rem;">${UI.escapeHTML(t.title)}</h3>
+                            <div style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;"><i class="ph-bold ph-users"></i> Slots: ${t.filledSlots}/${t.maxSlots}</div>
+                            
+                            <button class="btn btn-outline mb-4" style="font-size:0.85rem;" onclick="viewHostParts('${t.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-address-book"></i> Roster & Secure Comms</button>
+                            
+                            <div class="mt-auto pt-4" style="border-top:1px solid var(--border)">${actions}</div>
                         </div>`;
                 });
                 container.innerHTML = html;
@@ -972,105 +1028,121 @@
         };
 
         window.viewHostParts = async (tId, title) => {
-            UI.showModal(`<h3>Players in ${UI.escapeHTML(title)}</h3><div id="host-parts-modal" class="mt-4">Loading...</div>`);
+            UI.showModal(`<h3>Roster: ${UI.escapeHTML(title)}</h3><div id="host-parts-modal" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`);
             try {
                 const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
-                if(snap.empty) { document.getElementById('host-parts-modal').innerHTML = `<p>No players.</p>`; return; }
-                let html = '<div class="table-responsive"><table><tr><th>Username</th><th>Action</th></tr>';
+                if(snap.empty) { document.getElementById('host-parts-modal').innerHTML = `<p class="text-muted">No registrations yet.</p>`; return; }
+                let html = '<div class="table-responsive"><table><tr><th>Entity</th><th>Action</th></tr>';
+                
                 snap.forEach(rDoc => {
                     const r = rDoc.data();
-                    html += `<tr><td>${r.clanTag ? `<span class="clan-tag">[${r.clanTag}]</span> ` : ''}${UI.escapeHTML(r.username)}</td><td><button class="btn btn-primary" style="padding:5px 10px; font-size:0.8rem;" onclick="openDM('${r.userId}', '${UI.escapeHTML(r.username)}')">Message</button></td></tr>`;
+                    let entityName = r.isSquad ? `[${r.clanTag}] Team` : UI.escapeHTML(r.username);
+                    let subtext = r.isSquad ? `Leader: ${UI.escapeHTML(r.username)}` : `Solo Operator`;
+                    
+                    html += `<tr>
+                        <td><span style="color:white; font-weight:600;">${entityName}</span><br><span style="font-size:0.75rem; color:var(--text-muted);">${subtext}</span></td>
+                        <td><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="openDM('${r.userId}', '${UI.escapeHTML(r.username)}')"><i class="ph-bold ph-chat-circle"></i> DM Leader</button></td>
+                    </tr>`;
                 });
                 document.getElementById('host-parts-modal').innerHTML = html + '</table></div>';
             } catch(e) {}
         };
 
-        window.releaseRoomUI = (tId) => { UI.showModal(`<h3>Release Room Details</h3><div class="form-group mt-4"><label>Room ID</label><input type="text" id="r-id" required></div><div class="form-group"><label>Password</label><input type="text" id="r-pass" required></div><button class="btn btn-primary" onclick="submitRoom('${tId}')">Publish to Players</button>`); };
-        window.submitRoom = async (tId) => { const rId = document.getElementById('r-id').value; const rPass = document.getElementById('r-pass').value; if(!rId || !rPass) return; try { await updateDoc(doc(db, "tournaments", tId), { roomDetails: { id: rId, pass: rPass }, status: 'Room Released' }); UI.showToast("Published!"); UI.closeModal(); loadHostTournaments(); } catch(e) {} };
-        window.forceStart = async (tId) => { try { await updateDoc(doc(db, "tournaments", tId), { status: 'Live' }); UI.showToast("Match is Live!"); loadHostTournaments(); } catch(e) {} };
-        
-        window.concludeMatchUI = async (tId) => {
-            UI.showModal(`<h3>Loading Participants...</h3>`);
-            try {
-                const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
-                if(snap.empty) { UI.showModal(`<h3>Cancel Match?</h3><p>No players joined.</p><button class="btn btn-danger" onclick="cancelMatch('${tId}')">Cancel Event</button>`); return; }
-                let opts = ''; snap.forEach(d => { opts += `<option value="${d.data().userId}">${UI.escapeHTML(d.data().username)}</option>`; });
-                UI.showModal(`<h3>Select Winner</h3><p style="color:var(--text-muted); font-size:0.9rem;">Send match results to Admin Escrow for secure settlement.</p><div class="form-group mt-4"><label>Winner</label><select id="w-sel">${opts}</select></div><button class="btn btn-success" style="width:100%" onclick="submitSettlement('${tId}')">Send to Escrow</button>`);
-            } catch(e) {}
-        };
-        window.cancelMatch = async (tId) => { try { await updateDoc(doc(db, "tournaments", tId), { status: 'Cancelled' }); UI.closeModal(); loadHostTournaments(); } catch(e) {} };
-        window.submitSettlement = async (tId) => { try { await updateDoc(doc(db, "tournaments", tId), { status: 'Pending Settlement', winnerId: document.getElementById('w-sel').value }); UI.showToast("Sent to Admin for Escrow payout."); UI.closeModal(); loadHostTournaments(); } catch(e) { UI.showToast("Error", "error"); } };
-
-        // --- CHAT MODULES ---
-        window.openLobbyChat = (tId, title) => {
-            UI.showModal(`
-                <div class="flex-between" style="margin-bottom:15px;"><h3 style="margin:0;"><i class="ph-fill ph-chat-centered"></i> Lobby Chat</h3></div>
-                <div class="chat-container"><div class="chat-messages" id="c-box">Loading...</div>
-                <form class="chat-input-area" id="c-form"><input type="text" id="c-in" placeholder="Message..." required autocomplete="off"><button type="submit" class="btn btn-primary"><i class="ph-bold ph-paper-plane-right"></i></button></form></div>
-            `);
-            const msgBox = document.getElementById('c-box');
-            window.chatUnsub = onSnapshot(query(collection(db, "chats"), where("tournamentId", "==", tId)), (snap) => {
-                let msgs = []; snap.forEach(d => msgs.push(d.data())); msgs.sort((a,b) => a.timestamp - b.timestamp);
-                if(msgs.length === 0) { msgBox.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding-top:20px;">No messages yet.</div>`; }
-                else {
-                    let html = ''; msgs.forEach(m => { const isMine = m.userId === appState.user.uid; html += `<div class="chat-msg ${isMine ? 'mine' : ''}"><div class="author">${m.role==='host'?'<span style="color:var(--danger)">[HOST] </span>':''}${UI.escapeHTML(m.username)}</div>${UI.escapeHTML(m.text)}</div>`; });
-                    msgBox.innerHTML = html; msgBox.scrollTop = msgBox.scrollHeight;
-                }
-            });
-            document.getElementById('c-form').onsubmit = async (e) => { e.preventDefault(); const t = document.getElementById('c-in').value.trim(); if(!t) return; try { await addDoc(collection(db, "chats"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, role: appState.userData.role, text: t, timestamp: Date.now() }); document.getElementById('c-in').value = ''; } catch(err) {} };
-        };
-
         window.openDM = (targetUid, targetName) => {
             const chatId = [appState.user.uid, targetUid].sort().join('_');
             UI.showModal(`
-                <div class="flex-between" style="margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid var(--border);"><h3 style="margin:0;"><i class="ph-fill ph-chat-teardrop-text" style="color:var(--primary);"></i> Chat with ${UI.escapeHTML(targetName)}</h3></div>
-                <div class="chat-container" style="height:350px; margin-top:0;"><div class="chat-messages" id="dm-box">Loading...</div>
-                <form class="chat-input-area" id="dm-form"><input type="text" id="dm-in" placeholder="Secure message..." required autocomplete="off"><button type="submit" class="btn btn-primary"><i class="ph-bold ph-paper-plane-right"></i></button></form></div>
+                <div class="flex-between" style="margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid var(--border);">
+                    <h3 style="margin:0; font-family:var(--font-display); font-size:1.5rem; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-lock-key" style="color:var(--primary);"></i> SECURE LINK: <span style="color:white;">${UI.escapeHTML(targetName).toUpperCase()}</span></h3>
+                </div>
+                <div id="dm-box" style="display:flex; flex-direction:column; gap:12px; height:350px; overflow-y:auto; padding-right:5px; margin-bottom:15px;"></div>
+                <form id="dm-form" style="display:flex; gap:10px;">
+                    <input type="text" id="dm-in" placeholder="Transmit secure message..." required autocomplete="off" style="border-radius:8px;">
+                    <button type="submit" class="btn btn-primary" style="padding:12px; border-radius:8px;"><i class="ph-bold ph-paper-plane-right"></i></button>
+                </form>
             `);
             const msgBox = document.getElementById('dm-box');
+            if(window.chatUnsub) window.chatUnsub(); 
             window.chatUnsub = onSnapshot(query(collection(db, "direct_messages"), where("chatId", "==", chatId)), (snap) => {
                 let msgs = []; snap.forEach(d => msgs.push(d.data())); msgs.sort((a,b) => a.timestamp - b.timestamp);
-                if(msgs.length === 0) { msgBox.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding-top:40px;">Say hi!</div>`; } 
+                if(msgs.length === 0) { msgBox.innerHTML = `<div class="empty-state" style="padding:20px;"><i class="ph-duotone ph-chat-teardrop"></i><p>Link established. Awaiting transmission.</p></div>`; } 
                 else {
-                    let html = ''; msgs.forEach(m => { const isMine = m.senderId === appState.user.uid; html += `<div class="chat-msg ${isMine ? 'mine' : ''}"><div class="author">${isMine ? 'You' : UI.escapeHTML(m.senderName)}</div>${UI.escapeHTML(m.text)}</div>`; });
+                    let html = ''; msgs.forEach(m => { 
+                        const isMine = m.senderId === appState.user.uid; 
+                        html += `<div style="max-width:85%; padding:12px 16px; border-radius:12px; font-size:0.95rem; align-self:${isMine?'flex-end':'flex-start'}; background:${isMine?'var(--primary)':'var(--surface-hover)'}; border:1px solid ${isMine?'transparent':'var(--border)'}; color:${isMine?'white':'var(--text-main)'};">
+                                    ${UI.escapeHTML(m.text)}
+                                    <span style="display:block; font-size:0.7rem; opacity:0.7; margin-top:4px; text-align:right;">${new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                 </div>`; 
+                    });
                     msgBox.innerHTML = html; msgBox.scrollTop = msgBox.scrollHeight;
                 }
             });
             document.getElementById('dm-form').onsubmit = async (e) => { e.preventDefault(); const t = document.getElementById('dm-in').value.trim(); if(!t) return; try { await addDoc(collection(db, "direct_messages"), { chatId: chatId, senderId: appState.user.uid, senderName: appState.userData.username, receiverId: targetUid, text: t, timestamp: Date.now() }); document.getElementById('dm-in').value = ''; } catch(err) {} };
         };
 
-        // --- WALLET & WITHDRAWALS ---
+        window.releaseRoomUI = (tId) => { UI.showModal(`<h3>Transmit Room Intel</h3><div class="form-group mt-4"><label>Room ID</label><input type="text" id="r-id" required></div><div class="form-group"><label>Password</label><input type="text" id="r-pass" required></div><button class="btn btn-primary w-100" style="width:100%;" onclick="submitRoom('${tId}')">Transmit to Operators</button>`); };
+        window.submitRoom = async (tId) => { const rId = document.getElementById('r-id').value; const rPass = document.getElementById('r-pass').value; if(!rId || !rPass) return; try { await updateDoc(doc(db, "tournaments", tId), { roomDetails: { id: rId, pass: rPass }, status: 'Room Released' }); UI.showToast("Intel Transmitted!"); UI.closeModal(); loadHostTournaments(); } catch(e) {} };
+        window.forceStart = async (tId) => { try { await updateDoc(doc(db, "tournaments", tId), { status: 'Live' }); UI.showToast("Operation is Live!"); loadHostTournaments(); } catch(e) {} };
+        
+        window.concludeMatchUI = async (tId) => {
+            UI.showModal(`<div class="text-center"><i class="ph-duotone ph-spinner ph-spin" style="font-size:3rem;"></i><p class="mt-2 text-muted">Retrieving Roster...</p></div>`);
+            try {
+                const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
+                if(snap.empty) { UI.showModal(`<h3>Abort Operation?</h3><p class="text-muted">No operators deployed.</p><button class="btn btn-danger w-100" style="width:100%;" onclick="cancelMatch('${tId}')">Abort</button>`); return; }
+                
+                let opts = ''; 
+                snap.forEach(d => { 
+                    const r = d.data();
+                    let name = r.isSquad ? `[${r.clanTag}] (Leader: ${r.username})` : r.username;
+                    opts += `<option value="${r.userId}">${UI.escapeHTML(name)}</option>`; 
+                });
+                
+                UI.showModal(`
+                    <h3>Conclude Operation</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Transmit results to Admin Escrow for secure settlement of prize pool and host cuts.</p>
+                    <div class="form-group"><label>Select Victor (Team Leader / Solo)</label><select id="w-sel">${opts}</select></div>
+                    <button class="btn btn-primary w-100" style="width:100%; background:var(--success);" onclick="submitSettlement('${tId}')">Transmit to Escrow</button>
+                `);
+            } catch(e) {}
+        };
+        window.cancelMatch = async (tId) => { try { await updateDoc(doc(db, "tournaments", tId), { status: 'Cancelled' }); UI.closeModal(); loadHostTournaments(); } catch(e) {} };
+        window.submitSettlement = async (tId) => { try { await updateDoc(doc(db, "tournaments", tId), { status: 'Pending Settlement', winnerId: document.getElementById('w-sel').value }); UI.showToast("Transmitted to Escrow."); UI.closeModal(); loadHostTournaments(); } catch(e) { UI.showToast("Error", "error"); } };
+
         window.rechargeWalletUI = () => {
-            UI.showModal(`<h3>Recharge via UTR</h3><div class="form-group mt-2"><label>Amount (₹)</label><input type="number" id="r-amt" min="10" value="100" oninput="uQR()"></div>
-                <div class="glass text-center" style="padding:20px; background:rgba(255,255,255,0.02);"><img id="r-qr" src="" style="width:150px; border-radius:10px; border:2px solid white; margin-bottom:10px;"><p style="font-size:0.9rem; color:var(--text-muted);">Scan to Pay</p><p style="color:var(--accent); font-weight:600;">${appState.upiId}</p></div>
-                <div class="form-group mt-4"><label>12-Digit UTR</label><input type="text" id="r-utr" required></div><button class="btn btn-primary" style="width:100%" onclick="subR()">Submit UTR</button>`);
-            window.uQR = () => { document.getElementById('r-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`upi://pay?pa=${appState.upiId}&pn=Nexus&am=${document.getElementById('r-amt').value||0}&cu=INR`)}&color=6c5ce7&bgcolor=ffffff`; }; window.uQR();
+            UI.showModal(`<h3>Deposit Funds</h3><div class="form-group mt-4"><label>Amount (₹)</label><input type="number" id="r-amt" min="10" value="100" oninput="uQR()"></div>
+                <div class="glass text-center" style="padding:24px; background:rgba(0,0,0,0.3); border-color:var(--border); margin-bottom:20px;">
+                    <img id="r-qr" src="" style="width:160px; border-radius:12px; border:4px solid white; margin-bottom:15px;">
+                    <p style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">Scan to Authenticate Transfer</p>
+                    <p style="color:var(--primary); font-family:monospace; font-size:1.1rem; margin-top:5px; background:rgba(59, 130, 246, 0.1); padding:6px; border-radius:8px;">${appState.upiId}</p>
+                </div>
+                <div class="form-group"><label>12-Digit UTR Number</label><input type="text" id="r-utr" placeholder="Required for verification" required></div>
+                <button class="btn btn-primary w-100" style="width:100%" onclick="subR()">Transmit UTR</button>`);
+            window.uQR = () => { document.getElementById('r-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`upi://pay?pa=${appState.upiId}&pn=${appState.brandName}&am=${document.getElementById('r-amt').value||0}&cu=INR`)}&color=3b82f6&bgcolor=ffffff`; }; window.uQR();
         };
         window.subR = async () => {
             const amt = parseInt(document.getElementById('r-amt').value); const utr = document.getElementById('r-utr').value; if(!amt || !utr || utr.length<8) return;
-            try { await addDoc(collection(db, "recharges"), { userId: appState.user.uid, username: appState.userData.username, amount: amt, utr: utr, status: 'pending', createdAt: new Date().toISOString() }); UI.showToast("Submitted."); UI.closeModal(); if(document.querySelector('[data-tab="player-wallet"]')?.classList.contains('active')) loadWalletHistory(); } catch(e){}
+            try { await addDoc(collection(db, "recharges"), { userId: appState.user.uid, username: appState.userData.username, amount: amt, utr: utr, status: 'pending', createdAt: new Date().toISOString() }); UI.showToast("UTR Transmitted."); UI.closeModal(); if(document.querySelector('[data-tab="player-wallet"]')?.classList.contains('active')) loadWalletHistory(); } catch(e){}
         };
 
         window.withdrawWalletUI = () => {
-            UI.showModal(`<h3>Withdrawal</h3>
-                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Available: ₹${appState.userData.wallet.coins || 0} ${appState.userData.isPro ? '<span class="badge badge-pro">PRO: 0% Fee</span>' : `(${appState.withdrawalFeePercent}% Platform Fee applies)`}</p>
+            UI.showModal(`<h3>Withdrawal Interface</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Available: <strong style="color:white;">₹${appState.userData.wallet.coins || 0}</strong> <br><span style="color:var(--danger); font-size:0.8rem;">(${appState.withdrawalFeePercent}% Platform Fee applies)</span></p>
                 <div class="form-group"><label>Amount (₹)</label><input type="number" id="w-amt" min="50" max="${appState.userData.wallet.coins || 0}" required></div>
-                <div class="form-group"><label>Method</label><select id="w-met" onchange="tW()"><option value="upi">UPI ID</option><option value="bank">Bank</option></select></div>
-                <div id="w-u-f" class="form-group"><label>UPI ID</label><input type="text" id="w-upi"></div>
-                <div id="w-b-f" style="display:none;"><div class="form-group"><label>Account No.</label><input type="text" id="w-acc"></div><div class="form-group"><label>IFSC</label><input type="text" id="w-ifsc"></div></div>
-                <button class="btn btn-primary" style="width:100%" onclick="subW()">Request Payout</button>
-                <p class="mt-2 text-center" style="font-size:0.8rem; color:var(--text-muted);">Processing time: 24-48 hours</p>`);
+                <div class="form-group"><label>Transfer Method</label><select id="w-met" onchange="tW()"><option value="upi">UPI ID</option><option value="bank">Bank Transfer</option></select></div>
+                <div id="w-u-f" class="form-group"><label>Target UPI ID</label><input type="text" id="w-upi"></div>
+                <div id="w-b-f" style="display:none;"><div class="form-group"><label>Account Number</label><input type="text" id="w-acc"></div><div class="form-group"><label>IFSC Code</label><input type="text" id="w-ifsc"></div></div>
+                <button class="btn btn-primary w-100" style="width:100%" onclick="subW()">Authorize Payout</button>
+                <p class="mt-4 text-center" style="font-size:0.8rem; color:var(--text-muted);"><i class="ph-bold ph-clock"></i> Escrow processing time: 24-48 hours</p>`);
             window.tW = () => { const isB = document.getElementById('w-met').value === 'bank'; document.getElementById('w-u-f').style.display = isB ? 'none' : 'block'; document.getElementById('w-b-f').style.display = isB ? 'block' : 'none'; };
         };
         window.subW = async () => {
             const amt = parseInt(document.getElementById('w-amt').value); if(!amt || amt > (appState.userData.wallet.coins||0) || amt < 50) return UI.showToast("Invalid amount", "error");
             const met = document.getElementById('w-met').value; const det = met === 'upi' ? `UPI: ${document.getElementById('w-upi').value}` : `Acc: ${document.getElementById('w-acc').value}, IFSC: ${document.getElementById('w-ifsc').value}`;
             let feeMultiplier = 1 - (appState.withdrawalFeePercent / 100);
-            let finalAmt = appState.userData.isPro ? amt : Math.floor(amt * feeMultiplier);
+            let finalAmt = Math.floor(amt * feeMultiplier);
             try {
                 await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-amt) });
-                await addDoc(collection(db, "withdrawals"), { userId: appState.user.uid, username: appState.userData.username, requestedAmount: amt, finalAmount: finalAmt, method: met, details: det, status: 'pending', isPro: appState.userData.isPro || false, createdAt: new Date().toISOString() });
-                UI.showToast("Requested!"); UI.closeModal(); if(document.querySelector('[data-tab="player-wallet"]')?.classList.contains('active') || document.querySelector('[data-tab="host-wallet"]')?.classList.contains('active')) loadWalletHistory();
+                await addDoc(collection(db, "withdrawals"), { userId: appState.user.uid, username: appState.userData.username, requestedAmount: amt, finalAmount: finalAmt, method: met, details: det, status: 'pending', createdAt: new Date().toISOString() });
+                UI.showToast("Payout Authorized."); UI.closeModal(); if(document.querySelector('[data-tab="player-wallet"]')?.classList.contains('active') || document.querySelector('[data-tab="host-wallet"]')?.classList.contains('active')) loadWalletHistory();
             } catch(e) {}
         };
 
@@ -1080,27 +1152,26 @@
                 const [rSnap, wSnap] = await Promise.all([getDocs(query(collection(db, "recharges"), where("userId", "==", appState.user.uid))), getDocs(query(collection(db, "withdrawals"), where("userId", "==", appState.user.uid)))]);
                 let docs = []; rSnap.forEach(d => docs.push({...d.data(), type: 'Deposit'})); wSnap.forEach(d => docs.push({...d.data(), type: 'Withdrawal'}));
                 docs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                if(docs.length === 0) { container.innerHTML = `<p style="color:var(--text-muted)">No history.</p>`; return; }
+                if(docs.length === 0) { container.innerHTML = UI.emptyState('ph-receipt', 'Ledger Empty', 'No financial transactions logged.'); return; }
                 let html = '<div class="table-responsive"><table><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr>';
-                docs.forEach(r => { let col = r.status === 'approved' || r.status === 'paid' ? 'var(--success)' : (r.status === 'rejected' ? 'var(--danger)' : 'var(--accent)'); html += `<tr><td>${new Date(r.createdAt).toLocaleDateString()}</td><td>${r.type}</td><td style="color:${r.type==='Deposit'?'var(--success)':'white'}">${r.type==='Deposit'?'+':'-'}₹${r.amount || r.requestedAmount}</td><td style="color:${col}; font-weight:700; font-size:0.8rem; text-transform:uppercase;">${r.status}</td></tr>`; });
+                docs.forEach(r => { let col = r.status === 'approved' || r.status === 'paid' ? 'var(--success)' : (r.status === 'rejected' ? 'var(--danger)' : 'var(--accent)'); html += `<tr><td>${new Date(r.createdAt).toLocaleDateString()}</td><td>${r.type}</td><td style="color:${r.type==='Deposit'?'var(--success)':'white'}; font-weight:700;">${r.type==='Deposit'?'+':'-'}₹${r.amount || r.requestedAmount}</td><td><span class="badge" style="border:1px solid ${col}; color:${col}; background:transparent;">${r.status}</span></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
 
-        // --- SUPPORT DESK ---
-        window.createTicketUI = () => { UI.showModal(`<h3>Support Ticket</h3><div class="form-group mt-4"><label>Subject</label><input type="text" id="t-sub" required></div><div class="form-group"><label>Message</label><textarea id="t-msg" rows="4" required></textarea></div><button class="btn btn-primary" style="width:100%;" onclick="subT()">Send</button>`); };
+        window.createTicketUI = () => { UI.showModal(`<h3>Open Support Line</h3><div class="form-group mt-4"><label>Subject</label><input type="text" id="t-sub" required></div><div class="form-group"><label>Message</label><textarea id="t-msg" rows="4" required></textarea></div><button class="btn btn-primary w-100" style="width:100%;" onclick="subT()">Transmit to Admin</button>`); };
         window.subT = async () => {
             const sub = document.getElementById('t-sub').value; const msg = document.getElementById('t-msg').value; if(!sub || !msg) return;
-            try { await addDoc(collection(db, "tickets"), { userId: appState.user.uid, username: appState.userData.username, role: appState.userData.role, subject: sub, message: msg, status: 'Open', replies: [], createdAt: new Date().toISOString() }); UI.showToast("Created."); UI.closeModal(); loadSupportTickets(); } catch(e) {}
+            try { await addDoc(collection(db, "tickets"), { userId: appState.user.uid, username: appState.userData.username, role: appState.userData.role, subject: sub, message: msg, status: 'Open', replies: [], createdAt: new Date().toISOString() }); UI.showToast("Ticket Opened."); UI.closeModal(); loadSupportTickets(); } catch(e) {}
         };
         const loadSupportTickets = async () => {
             const container = document.getElementById('support-list');
             try {
                 const snap = await getDocs(query(collection(db, "tickets"), where("userId", "==", appState.user.uid)));
                 let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-                if(data.length === 0) { container.innerHTML = `<p style="color:var(--text-muted);">No open tickets.</p>`; return; }
+                if(data.length === 0) { container.innerHTML = UI.emptyState('ph-headset', 'All Systems Nominal', 'No open support lines.'); return; }
                 let html = '<div class="table-responsive"><table><tr><th>Subject</th><th>Status</th><th>Action</th></tr>';
-                data.forEach(t => { html += `<tr><td>${UI.escapeHTML(t.subject)}</td><td style="color:${t.status==='Open'?'var(--accent)':'var(--success)'}; font-size:0.8rem; font-weight:700; text-transform:uppercase;">${t.status}</td><td><button class="btn btn-outline" style="padding:5px 10px; font-size:0.8rem;" onclick="vT('${t.id}')">View</button></td></tr>`; });
+                data.forEach(t => { html += `<tr><td style="font-weight:500;">${UI.escapeHTML(t.subject)}</td><td><span class="badge" style="border:1px solid ${t.status==='Open'?'var(--accent)':'var(--success)'}; color:${t.status==='Open'?'var(--accent)':'var(--success)'}; background:transparent;">${t.status}</span></td><td><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="vT('${t.id}')">View</button></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
@@ -1108,21 +1179,17 @@
             try {
                 const t = (await getDoc(doc(db, "tickets", tId))).data();
                 let rHtml = t.replies.length > 0 ? t.replies.map(r => `
-                    <div style="margin-bottom: 10px; text-align: ${r.role==='admin' ? 'left' : 'right'};">
-                        <div style="display:inline-block; max-width:85%; padding:10px 15px; border-radius:12px; background: ${r.role==='admin' ? 'rgba(108,92,231,0.2)' : 'rgba(255,255,255,0.05)'}; border: 1px solid ${r.role==='admin' ? 'var(--primary)' : 'var(--border)'}; text-align: left;">
-                            <strong style="font-size:0.8rem; color:${r.role==='admin'?'var(--primary)':'var(--text-muted)'}; display:block; margin-bottom:4px;">${r.role==='admin'?'Support Team':UI.escapeHTML(r.name)}</strong>
-                            ${UI.escapeHTML(r.text)}
-                        </div>
+                    <div style="max-width:85%; padding:12px 16px; border-radius:12px; font-size:0.95rem; align-self:${r.role==='admin'?'flex-start':'flex-end'}; background:${r.role==='admin'?'var(--surface-hover)':'var(--primary)'}; border:1px solid ${r.role==='admin'?'var(--border)':'transparent'};">
+                        ${r.role==='admin'?`<strong style="font-size:0.75rem; color:var(--primary); display:block; margin-bottom:4px;">SUPPORT AGENT</strong>`:''}
+                        ${UI.escapeHTML(r.text)}
                     </div>
-                `).join('') : '<p class="text-center" style="color:var(--text-muted); font-size:0.9rem;">We typically reply within 2 hours.</p>';
+                `).join('') : '<div class="empty-state" style="padding:10px;"><p style="font-size:0.85rem;">Agent response pending.</p></div>';
                 
                 UI.showModal(`
-                    <h3>${UI.escapeHTML(t.subject)}</h3>
-                    <div class="mt-2 mb-4" style="padding:15px; background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:8px;">${UI.escapeHTML(t.message)}</div>
-                    <div class="chat-container" style="height:250px; background:transparent; border:none; margin-top:0;">
-                        <div class="chat-messages" style="padding:0;">${rHtml}</div>
-                    </div>
-                    ${t.status === 'Open' ? `<div class="mt-2 form-group"><textarea id="tr-txt" rows="2" placeholder="Write a reply..."></textarea><button class="btn btn-primary mt-2" style="width:100%;" onclick="addTR('${tId}')">Send Reply</button></div>` : '<div class="mt-4 badge badge-live" style="width:100%; text-align:center;">Ticket Closed</div>'}
+                    <h3 style="font-family:var(--font-display); font-size:1.8rem;">${UI.escapeHTML(t.subject)}</h3>
+                    <div class="mt-4 mb-2" style="max-width:85%; padding:12px 16px; border-radius:12px; font-size:0.95rem; align-self:flex-end; background:var(--primary);">${UI.escapeHTML(t.message)}</div>
+                    <div style="display:flex; flex-direction:column; gap:12px; height:250px; overflow-y:auto; padding:10px; background:rgba(0,0,0,0.2); border-radius:12px;">${rHtml}</div>
+                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:10px;"><input type="text" id="tr-txt" placeholder="Transmit reply..." style="border-radius:8px;"><button class="btn btn-primary" style="padding:12px; border-radius:8px;" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:12px; border:1px solid var(--border); color:var(--text-muted);">Line Terminated</div>'}
                 `);
             } catch(e) {}
         };
@@ -1131,35 +1198,79 @@
             try { const r = doc(db, "tickets", tId); const d = await getDoc(r); const reps = d.data().replies || []; reps.push({ uid: appState.user.uid, name: appState.userData.username, role: appState.userData.role, text: txt, timestamp: Date.now() }); await updateDoc(r, { replies: reps }); vT(tId); } catch(e) {}
         };
 
-        // --- ADMIN MODULES ---
         const renderAdminDashboard = () => {
             const container = document.getElementById('admin-dash-content');
-            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { if(docSnap.exists() && appState.userData) { appState.userData = docSnap.data(); updateNav(); }});
-
             setupSidebar('admin', (tab) => {
                 if(tab === 'admin-overview') {
                     container.innerHTML = `
-                        <h2>God Mode Initialization Complete.</h2>
-                        <p style="color:var(--accent)">Full write access to collections granted.</p>
-                        <div class="glass p-4 mt-4 text-center" style="padding:40px;">
-                            <i class="ph-duotone ph-cpu" style="font-size:4rem; color:var(--primary);"></i>
-                            <h3>Nexus Core Engine Active</h3>
+                        <h2>God Mode Diagnostics</h2>
+                        <div class="glass p-4 mt-4 text-center" style="padding:60px 20px; position:relative; overflow:hidden;">
+                            <i class="ph-duotone ph-cpu" style="font-size:5rem; color:var(--primary); margin-bottom:15px;"></i>
+                            <h2 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin:0;">NEXUS CORE ENGINE</h2>
+                            <p style="color:var(--success); font-weight:700; letter-spacing:2px; font-size:0.9rem; margin-top:10px;">STATUS: ONLINE</p>
                         </div>
                     `;
                 } else if(tab === 'admin-settings') {
-                    container.innerHTML = `<h2>Global Settings</h2><div class="glass mt-4" style="padding:20px; max-width:500px;">
+                    container.innerHTML = `<h2>Platform Settings</h2><div class="glass mt-4" style="padding:30px; max-width:600px;">
                         <div class="form-group"><label>Platform Brand Name</label><input type="text" id="cfg-brand" value="${appState.brandName}"></div>
-                        <div class="form-group"><label>Host Revenue Cut (%) [Amount Nexus takes from Escrow]</label><input type="number" id="cfg-host-fee" value="${appState.platformFeePercent}"></div>
-                        <div class="form-group"><label>User Withdrawal Fee (%) [Applies to Non-Pro Users]</label><input type="number" id="cfg-withdraw-fee" value="${appState.withdrawalFeePercent}"></div>
-                        <button class="btn btn-primary w-100" style="width:100%" onclick="saveSettings()">Save & Deploy Live</button></div>`;
-                    window.saveSettings = async () => { try { await setDoc(doc(db, "platform", "settings"), { brandName: document.getElementById('cfg-brand').value, platformFeePercent: parseInt(document.getElementById('cfg-host-fee').value), withdrawalFeePercent: parseInt(document.getElementById('cfg-withdraw-fee').value) }, {merge: true}); UI.showToast("Saved settings."); } catch(e){} };
-                } else if(tab === 'admin-tournaments') { container.innerHTML = `<h2>Override Events</h2><div id="admin-t-list" class="mt-4">Loading...</div>`; loadAdminTournaments();
-                } else if(tab === 'admin-settlements') { container.innerHTML = `<h2>Escrow Settlements</h2><div id="admin-s-list" class="mt-4">Loading...</div>`; loadAdminSettlements();
-                } else if(tab === 'admin-recharges') { container.innerHTML = `<h2>Approve UTRs</h2><div id="admin-r-list" class="mt-4">Loading...</div>`; loadAdminRecharges();
-                } else if(tab === 'admin-withdrawals') { container.innerHTML = `<h2>Withdrawals</h2><div id="admin-w-list" class="mt-4">Loading...</div>`; loadAdminWithdrawals();
-                } else if(tab === 'admin-disputes') { container.innerHTML = `<h2>Active Disputes</h2><div id="admin-disp-list" class="mt-4">Loading...</div>`; fetchDisputes();
-                } else if(tab === 'admin-users') { container.innerHTML = `<h2>User Manager</h2><div id="admin-u-list" class="mt-4">Loading...</div>`; loadAdminUsers();
-                } else if(tab === 'admin-support') { container.innerHTML = `<h2>Help Desk</h2><div id="admin-tkt-list" class="mt-4">Loading...</div>`; loadAdminTickets(); }
+                        
+                        <div class="form-group mt-2">
+                            <label>Upload Brand Logo</label>
+                            <input type="file" id="cfg-logo-file" accept="image/*">
+                            <input type="hidden" id="cfg-logo-base64" value="${appState.brandLogo || ''}">
+                            <div id="logo-preview" class="mt-2 text-center" style="background:var(--bg-base); padding:10px; border-radius:8px;">
+                                ${appState.brandLogo ? `<img src="${appState.brandLogo}" style="height:40px; border-radius:8px;">` : '<span style="color:var(--text-muted); font-size:0.8rem;">No logo uploaded</span>'}
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                            <div class="form-group"><label>Host Revenue Cut (%)</label><input type="number" id="cfg-host-fee" value="${appState.platformFeePercent}"></div>
+                            <div class="form-group"><label>Withdrawal Fee (%)</label><input type="number" id="cfg-withdraw-fee" value="${appState.withdrawalFeePercent}"></div>
+                            <div class="form-group" style="grid-column: 1 / -1;"><label>Event Creation Fee (₹) [Host Pays to Publish]</label><input type="number" id="cfg-create-fee" value="${appState.hostCreationFee}"></div>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-4" style="width:100%" onclick="saveSettings()">Deploy Configuration</button></div>`;
+                    
+                    document.getElementById('cfg-logo-file').addEventListener('change', function(e) {
+                        const file = e.target.files[0]; if(!file) return;
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const img = new Image();
+                            img.onload = function() {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 250; const MAX_HEIGHT = 100;
+                                let width = img.width; let height = img.height;
+                                if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
+                                else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                                canvas.width = width; canvas.height = height;
+                                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                                const dataUrl = canvas.toDataURL('image/png');
+                                document.getElementById('cfg-logo-base64').value = dataUrl;
+                                document.getElementById('logo-preview').innerHTML = `<img src="${dataUrl}" style="height:40px; border-radius:8px;">`;
+                            }
+                            img.src = event.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    });
+
+                    window.saveSettings = async () => { 
+                        try { 
+                            let payload = { 
+                                brandName: document.getElementById('cfg-brand').value, 
+                                brandLogo: document.getElementById('cfg-logo-base64').value,
+                                platformFeePercent: parseInt(document.getElementById('cfg-host-fee').value), 
+                                withdrawalFeePercent: parseInt(document.getElementById('cfg-withdraw-fee').value),
+                                hostCreationFee: parseInt(document.getElementById('cfg-create-fee').value)
+                            };
+                            await setDoc(doc(db, "platform", "settings"), payload, {merge: true}); 
+                            UI.showToast("Settings Deployed."); 
+                        } catch(e){} 
+                    };
+                } else if(tab === 'admin-tournaments') { container.innerHTML = `<h2>Global Tournament Override</h2><div id="admin-t-list" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`; loadAdminTournaments();
+                } else if(tab === 'admin-settlements') { container.innerHTML = `<h2>Escrow Queue</h2><div id="admin-s-list" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`; loadAdminSettlements();
+                } else if(tab === 'admin-recharges') { container.innerHTML = `<h2>Pending Wallet Recharges</h2><div id="admin-r-list" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`; loadAdminRecharges();
+                } else if(tab === 'admin-withdrawals') { container.innerHTML = `<h2>Withdrawal Requests</h2><div id="admin-w-list" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`; loadAdminWithdrawals();
+                } else if(tab === 'admin-users') { container.innerHTML = `<h2>User Matrix</h2><div id="admin-u-list" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`; loadAdminUsers();
+                } else if(tab === 'admin-support') { container.innerHTML = `<h2>Admin Help Desk</h2><div id="admin-tkt-list" class="mt-4"><div class="skeleton" style="height:200px;"></div></div>`; loadAdminTickets(); }
             });
         };
         
@@ -1168,100 +1279,85 @@
             try {
                 const snap = await getDocs(collection(db, "tournaments"));
                 let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-                let html = '<div class="table-responsive"><table><tr><th>Title</th><th>Host</th><th>Prize</th><th>Slots</th><th>Actions</th></tr>';
-                data.forEach(t => { html += `<tr><td>${t.title}</td><td>${t.hostName}</td><td>₹${t.prizePool}</td><td>${t.filledSlots}/${t.maxSlots}</td><td><button class="btn btn-outline" style="padding:5px 10px; font-size:0.8rem;" onclick="adminEditT('${t.id}')">EDIT</button></td></tr>`; });
+                let html = '<div class="table-responsive"><table><tr><th>Operation</th><th>Host</th><th>Prize</th><th>Slots</th><th>Actions</th></tr>';
+                data.forEach(t => { html += `<tr><td style="font-weight:600;">${UI.escapeHTML(t.title)}</td><td>${UI.escapeHTML(t.hostName)}</td><td style="color:var(--success);">₹${t.prizePool}</td><td>${t.filledSlots}/${t.maxSlots}</td><td><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="adminEditT('${t.id}')">OVERRIDE</button></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
                 window._aTData = window._aTData || {}; data.forEach(d => window._aTData[d.id] = d);
             } catch(e) {}
         };
         window.adminEditT = (id) => {
             const t = window._aTData[id];
-            UI.showModal(`<h3>Override Event</h3><div class="form-group mt-4"><label>Prize Pool</label><input type="number" id="ae-prize" value="${t.prizePool}"></div><div class="form-group"><label>Slots</label><input type="number" id="ae-slots" value="${t.filledSlots}"></div>
-                <div class="form-group"><label>Status</label><select id="ae-status"><option value="Registration Open" ${t.status==='Registration Open'?'selected':''}>Registration Open</option><option value="Upcoming" ${t.status==='Upcoming'?'selected':''}>Upcoming</option><option value="Live" ${t.status==='Live'?'selected':''}>Live</option><option value="Cancelled" ${t.status==='Cancelled'?'selected':''}>Cancelled</option></select></div><button class="btn btn-primary" style="width:100%;" onclick="aST('${id}')">Force Update</button>`);
+            UI.showModal(`<h3>Override Directive</h3><div class="form-group mt-4"><label>Prize Pool</label><input type="number" id="ae-prize" value="${t.prizePool}"></div><div class="form-group"><label>Filled Slots</label><input type="number" id="ae-slots" value="${t.filledSlots}"></div>
+                <div class="form-group"><label>Status</label><select id="ae-status"><option value="Registration Open" ${t.status==='Registration Open'?'selected':''}>Registration Open</option><option value="Upcoming" ${t.status==='Upcoming'?'selected':''}>Upcoming</option><option value="Live" ${t.status==='Live'?'selected':''}>Live</option><option value="Cancelled" ${t.status==='Cancelled'?'selected':''}>Cancelled</option></select></div><button class="btn btn-primary w-100" style="width:100%;" onclick="aST('${id}')">Execute Override</button>`);
         };
-        window.aST = async (id) => { try { await updateDoc(doc(db, "tournaments", id), { prizePool: parseInt(document.getElementById('ae-prize').value), filledSlots: parseInt(document.getElementById('ae-slots').value), status: document.getElementById('ae-status').value }); UI.showToast("Overridden."); UI.closeModal(); loadAdminTournaments(); } catch(e) {} };
+        window.aST = async (id) => { try { await updateDoc(doc(db, "tournaments", id), { prizePool: parseInt(document.getElementById('ae-prize').value), filledSlots: parseInt(document.getElementById('ae-slots').value), status: document.getElementById('ae-status').value }); UI.showToast("Override Successful."); UI.closeModal(); loadAdminTournaments(); } catch(e) {} };
 
         const loadAdminSettlements = async () => {
             const container = document.getElementById('admin-s-list');
             try {
                 const snap = await getDocs(query(collection(db, "tournaments"), where("status", "==", "Pending Settlement")));
-                if(snap.empty) { container.innerHTML = `<p>No matches await settlement.</p>`; return; }
-                let html = '<div class="table-responsive"><table><tr><th>Match</th><th>Total</th><th>Prize</th><th>Host Cut</th><th>Action</th></tr>';
+                if(snap.empty) { container.innerHTML = UI.emptyState('ph-scales', 'Escrow Clear', 'No operations pending settlement.'); return; }
+                let html = '<div class="table-responsive"><table><tr><th>Operation</th><th>Gross</th><th>Prize</th><th>Host Net</th><th>Action</th></tr>';
                 snap.forEach(doc => {
                     const t = doc.data(); let tot = t.filledSlots * t.entryFee; let rem = tot - t.prizePool; let hC = rem > 0 ? Math.floor(rem * (1 - (appState.platformFeePercent/100))) : 0;
-                    html += `<tr><td>${t.title}</td><td>₹${tot}</td><td style="color:var(--success)">₹${t.prizePool}</td><td style="color:var(--accent)">₹${hC} <span style="font-size:0.7rem;">(${100-appState.platformFeePercent}%)</span></td><td><button class="btn btn-primary" style="padding:5px 10px; font-size:0.8rem;" onclick="aAS('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hC})">Approve</button></td></tr>`;
+                    html += `<tr><td style="font-weight:600;">${UI.escapeHTML(t.title)}</td><td>₹${tot}</td><td style="color:var(--success)">₹${t.prizePool}</td><td style="color:var(--accent)">₹${hC} <span style="font-size:0.7rem; color:var(--text-muted);">(${100-appState.platformFeePercent}%)</span></td><td><button class="btn btn-primary" style="padding:6px 12px; font-size:0.8rem; background:var(--success);" onclick="aAS('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hC})">Authorize</button></td></tr>`;
                 });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aAS = async (tId, wId, prize, hId, hCut) => { try { if(wId) await updateDoc(doc(db, "users", wId), { "wallet.coins": increment(prize) }); if(hCut > 0) await updateDoc(doc(db, "users", hId), { "wallet.coins": increment(hCut) }); await updateDoc(doc(db, "tournaments", tId), { status: 'Completed' }); UI.showToast("Settlement Approved!"); loadAdminSettlements(); } catch(e) {} };
+        window.aAS = async (tId, wId, prize, hId, hCut) => { try { if(wId) await updateDoc(doc(db, "users", wId), { "wallet.coins": increment(prize) }); if(hCut > 0) await updateDoc(doc(db, "users", hId), { "wallet.coins": increment(hCut) }); await updateDoc(doc(db, "tournaments", tId), { status: 'Completed' }); UI.showToast("Escrow Cleared!"); loadAdminSettlements(); } catch(e) {} };
 
         const loadAdminRecharges = async () => {
             const container = document.getElementById('admin-r-list');
             try {
                 const snap = await getDocs(query(collection(db, "recharges"), where("status", "==", "pending")));
                 let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
-                if(data.length === 0) { container.innerHTML = `<p>No pending recharges.</p>`; return; }
+                if(data.length === 0) { container.innerHTML = UI.emptyState('ph-bank', 'No Deposits', 'No pending UTR verifications.'); return; }
                 let html = '<div class="table-responsive"><table><tr><th>Date</th><th>User</th><th>UTR</th><th>Amount</th><th>Actions</th></tr>';
-                data.forEach(r => { html += `<tr><td>${new Date(r.createdAt).toLocaleDateString()}</td><td>${r.username}</td><td>${r.utr}</td><td><strong style="color:var(--success)">₹${r.amount}</strong></td><td><button class="btn btn-danger" style="padding:5px;" onclick="aHR('${r.id}', false, '${r.userId}', ${r.amount})">Reject</button> <button class="btn btn-primary" style="padding:5px; background:var(--success);" onclick="aHR('${r.id}', true, '${r.userId}', ${r.amount})">Approve</button></td></tr>`; });
+                data.forEach(r => { html += `<tr><td>${new Date(r.createdAt).toLocaleDateString()}</td><td style="font-weight:600;">${UI.escapeHTML(r.username)}</td><td style="font-family:monospace; color:var(--text-muted);">${UI.escapeHTML(r.utr)}</td><td><strong style="color:var(--success); font-size:1.1rem;">₹${r.amount}</strong></td><td><button class="btn btn-danger" style="padding:6px;" onclick="aHR('${r.id}', false, '${r.userId}', ${r.amount})"><i class="ph-bold ph-x"></i></button> <button class="btn btn-primary" style="padding:6px; background:var(--success);" onclick="aHR('${r.id}', true, '${r.userId}', ${r.amount})"><i class="ph-bold ph-check"></i></button></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aHR = async (rId, app, uId, amt) => { try { await updateDoc(doc(db, "recharges", rId), { status: app ? 'approved' : 'rejected' }); if(app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); UI.showToast(app?'Approved':'Rejected'); loadAdminRecharges(); } catch(e) {} };
+        window.aHR = async (rId, app, uId, amt) => { try { await updateDoc(doc(db, "recharges", rId), { status: app ? 'approved' : 'rejected' }); if(app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); UI.showToast(app?'Deposit Cleared':'Deposit Rejected'); loadAdminRecharges(); } catch(e) {} };
 
         const loadAdminWithdrawals = async () => {
             const container = document.getElementById('admin-w-list');
             try {
                 const snap = await getDocs(query(collection(db, "withdrawals"), where("status", "==", "pending")));
                 let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
-                if(data.length === 0) { container.innerHTML = `<p>No pending withdrawals.</p>`; return; }
-                let html = '<div class="table-responsive"><table><tr><th>Date</th><th>User</th><th>Amount</th><th>Details</th><th>Actions</th></tr>';
-                data.forEach(w => { html += `<tr><td>${new Date(w.createdAt).toLocaleDateString()}</td><td>${w.username} ${w.isPro ? '<span class="badge badge-pro">PRO</span>' : ''}</td><td><strong style="color:var(--accent)">₹${w.finalAmount}</strong></td><td>${w.details}</td><td><button class="btn btn-danger" style="padding:5px;" onclick="aHW('${w.id}', false, '${w.userId}', ${w.requestedAmount})">Reject (Refund)</button> <button class="btn btn-primary" style="padding:5px;" onclick="aHW('${w.id}', true, '${w.userId}', ${w.requestedAmount})">Mark Paid</button></td></tr>`; });
+                if(data.length === 0) { container.innerHTML = UI.emptyState('ph-money', 'Queue Clear', 'No pending payout requests.'); return; }
+                let html = '<div class="table-responsive"><table><tr><th>Date</th><th>User</th><th>Net Payout</th><th>Target</th><th>Actions</th></tr>';
+                data.forEach(w => { html += `<tr><td>${new Date(w.createdAt).toLocaleDateString()}</td><td style="font-weight:600;">${UI.escapeHTML(w.username)}</td><td><strong style="color:var(--accent); font-size:1.1rem;">₹${w.finalAmount}</strong></td><td style="font-family:monospace; font-size:0.85rem; color:var(--text-muted);">${UI.escapeHTML(w.details)}</td><td><div style="display:flex; gap:6px;"><button class="btn btn-danger" style="padding:6px 10px; font-size:0.8rem;" onclick="aHW('${w.id}', false, '${w.userId}', ${w.requestedAmount})">Reject</button> <button class="btn btn-primary" style="padding:6px 10px; font-size:0.8rem; background:var(--success);" onclick="aHW('${w.id}', true, '${w.userId}', ${w.requestedAmount})">Pay</button></div></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aHW = async (wId, app, uId, amt) => { try { await updateDoc(doc(db, "withdrawals", wId), { status: app ? 'paid' : 'rejected' }); if(!app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); UI.showToast(app?'Paid':'Refunded'); loadAdminWithdrawals(); } catch(e) {} };
+        window.aHW = async (wId, app, uId, amt) => { try { await updateDoc(doc(db, "withdrawals", wId), { status: app ? 'paid' : 'rejected' }); if(!app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); UI.showToast(app?'Payout Logged':'Refund Issued'); loadAdminWithdrawals(); } catch(e) {} };
 
         const loadAdminUsers = async () => {
             const container = document.getElementById('admin-u-list');
             try {
                 const snap = await getDocs(collection(db, "users"));
-                let html = '<div class="table-responsive"><table><tr><th>User</th><th>Role</th><th>Wallet</th><th>Actions</th></tr>';
-                snap.forEach(doc => { const u = doc.data(); html += `<tr><td>${u.username}<br><span style="font-size:0.7rem; color:var(--text-muted)">${u.email}</span></td><td>${u.role}</td><td>₹${u.wallet?.coins || 0}</td><td><button class="btn btn-outline" style="padding:5px;" onclick="aEU('${doc.id}', ${u.wallet?.coins || 0})">Wallet</button> <button class="btn btn-outline" style="padding:5px;" onclick="aRP('${u.email}')">Reset Pwd</button></td></tr>`; });
+                let html = '<div class="table-responsive"><table><tr><th>User Matrix</th><th>Role</th><th>Ledger</th><th>System Commands</th></tr>';
+                snap.forEach(doc => { const u = doc.data(); html += `<tr><td style="font-weight:600;">${UI.escapeHTML(u.username)}<br><span style="font-size:0.75rem; color:var(--text-muted); font-weight:400; font-family:monospace;">${UI.escapeHTML(u.email)}</span></td><td><span class="badge" style="border:1px solid var(--border); background:transparent;">${u.role.toUpperCase()}</span></td><td style="color:white; font-weight:700;">₹${u.wallet?.coins || 0}</td><td><button class="btn btn-outline" style="padding:6px 10px; font-size:0.8rem;" onclick="aEU('${doc.id}', ${u.wallet?.coins || 0})">Wallet</button></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aEU = (uId, c) => { UI.showModal(`<h3>Direct Wallet Injection</h3><div class="form-group mt-4"><label>Balance (₹)</label><input type="number" id="au-wallet" value="${c}"></div><button class="btn btn-primary" onclick="aSU('${uId}')">Force Inject</button>`); };
-        window.aSU = async (uId) => { try { await updateDoc(doc(db, "users", uId), { "wallet.coins": parseInt(document.getElementById('au-wallet').value) }); UI.showToast("Injected."); UI.closeModal(); loadAdminUsers(); } catch(e) {} };
-        window.aRP = async (email) => { try { await sendPasswordResetEmail(auth, email); UI.showToast("Email sent!"); } catch(e) { UI.showToast(e.message, "error"); } };
-
-        const fetchDisputes = async () => {
-            const c = document.getElementById('admin-disp-list');
-            try {
-                const snap = await getDocs(query(collection(db, "disputes"), where("status", "==", "Open")));
-                let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => b.timestamp - a.timestamp);
-                if(data.length === 0) { c.innerHTML = '<p>No active disputes.</p>'; return; }
-                let html = '<div class="table-responsive"><table><tr><th>Date</th><th>Player</th><th>Reason</th><th>Action</th></tr>';
-                data.forEach(dt => { html += `<tr><td>${new Date(dt.timestamp).toLocaleDateString()}</td><td>${dt.username}</td><td>${dt.reason}</td><td><button class="btn btn-danger" style="padding:5px;" onclick="resD('${dt.id}')">Resolve</button></td></tr>`; });
-                c.innerHTML = html + '</table></div>';
-            } catch(e) {}
-        };
-        window.resD = async (id) => { await updateDoc(doc(db, "disputes", id), {status: 'Resolved'}); UI.showToast("Resolved"); fetchDisputes(); };
+        window.aEU = (uId, c) => { UI.showModal(`<h3>Direct Asset Injection</h3><div class="form-group mt-4"><label>New Balance (₹)</label><input type="number" id="au-wallet" value="${c}"></div><button class="btn btn-primary w-100" style="width:100%" onclick="aSU('${uId}')">Execute Injection</button>`); };
+        window.aSU = async (uId) => { try { await updateDoc(doc(db, "users", uId), { "wallet.coins": parseInt(document.getElementById('au-wallet').value) }); UI.showToast("Injection Complete."); UI.closeModal(); loadAdminUsers(); } catch(e) {} };
 
         const loadAdminTickets = async () => {
             const container = document.getElementById('admin-tkt-list');
             try {
                 const snap = await getDocs(query(collection(db, "tickets"), where("status", "==", "Open")));
                 let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-                if(data.length === 0) { container.innerHTML = `<p>Inbox zero.</p>`; return; }
+                if(data.length === 0) { container.innerHTML = UI.emptyState('ph-headset', 'Queue Empty', 'No incoming support signals.'); return; }
                 let html = '<div class="table-responsive"><table><tr><th>Date</th><th>User</th><th>Subject</th><th>Action</th></tr>';
-                data.forEach(t => { html += `<tr><td>${new Date(t.createdAt).toLocaleDateString()}</td><td>${t.username}</td><td>${t.subject}</td><td><button class="btn btn-outline" style="padding:5px;" onclick="vT('${t.id}')">Reply</button> <button class="btn btn-danger" style="padding:5px;" onclick="aCT('${t.id}')">Close</button></td></tr>`; });
+                data.forEach(t => { html += `<tr><td style="font-size:0.85rem; color:var(--text-muted);">${new Date(t.createdAt).toLocaleDateString()}</td><td style="font-weight:600;">${UI.escapeHTML(t.username)}</td><td style="font-weight:500;">${UI.escapeHTML(t.subject)}</td><td><div style="display:flex; gap:6px;"><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="vT('${t.id}')">Reply</button> <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; color:var(--text-muted);" onclick="aCT('${t.id}')">Close</button></div></td></tr>`; });
                 container.innerHTML = html + '</table></div>';
             } catch(e) {}
         };
-        window.aCT = async (tId) => { try { await updateDoc(doc(db, "tickets", tId), { status: 'Closed' }); UI.showToast("Closed."); loadAdminTickets(); } catch(e) {} };
+        window.aCT = async (tId) => { try { await updateDoc(doc(db, "tickets", tId), { status: 'Closed' }); UI.showToast("Line Terminated."); loadAdminTickets(); } catch(e) {} };
 
-        window.addEventListener('DOMContentLoaded', () => navigate('landing'));
     </script>
 </body>
 </html>
