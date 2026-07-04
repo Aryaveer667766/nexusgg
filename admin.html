@@ -242,7 +242,7 @@
 
     <nav>
         <div class="logo-container">
-            <img id="nav-logo-img" src="" style="display:none; height:36px;">
+            <img id="nav-logo-img" src="" style="display:none; height:36px; border-radius:4px;">
             <i id="nav-logo-icon" class="ph-fill ph-cpu" style="font-size: 36px; color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);"></i>
             <span class="logo-text brand-name">NEXUS <span style="font-size:1.1rem; color:var(--primary); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--primary-glow);">CORE</span></span>
         </div>
@@ -395,11 +395,13 @@
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
                 if(data.hostCreationFee !== undefined) appState.hostCreationFee = parseInt(data.hostCreationFee);
                 if(data.maintenanceMode !== undefined) appState.maintenanceMode = data.maintenanceMode;
+                
                 if(data.brandLogo) {
                     appState.brandLogo = data.brandLogo;
-                    document.getElementById('nav-logo-icon').style.display = 'none';
+                    const icon = document.getElementById('nav-logo-icon');
                     const img = document.getElementById('nav-logo-img');
-                    img.src = data.brandLogo; img.style.display = 'block';
+                    if (icon) icon.style.display = 'none';
+                    if (img) { img.src = data.brandLogo; img.style.display = 'block'; }
                 }
             }
         });
@@ -691,7 +693,8 @@
                     <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Banner Image URL</label><input type="url" id="ae-banner" value="${t.bannerUrl}"></div>
                     <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Operation Brief</label><textarea id="ae-desc" rows="4">${UI.escapeHTML(t.description || '')}</textarea></div>
                     
-                    <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:8px; color:var(--accent); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Winner ID (If completed)</label><input type="text" id="ae-winner" value="${t.winnerId || ''}" placeholder="User ID of winner..."></div>
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--accent); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Winner ID</label><input type="text" id="ae-winner-id" value="${t.winnerId || ''}" placeholder="User ID of winner..."></div>
+                    <div class="form-group"><label style="display:block; margin-bottom:8px; color:var(--accent); font-weight:600; font-size:0.8rem; text-transform:uppercase;">Winner Name</label><input type="text" id="ae-winner-name" value="${t.winnerName || ''}" placeholder="Username of winner..."></div>
                 </div>
                 
                 <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="aST('${id}')"><i class="ph-bold ph-warning"></i> Force Update Document</button>
@@ -712,7 +715,8 @@
                     maxSlots: parseInt(document.getElementById('ae-slots').value),
                     bannerUrl: document.getElementById('ae-banner').value,
                     description: document.getElementById('ae-desc').value,
-                    winnerId: document.getElementById('ae-winner').value || null
+                    winnerId: document.getElementById('ae-winner-id').value || null,
+                    winnerName: document.getElementById('ae-winner-name').value || null
                 };
                 
                 await updateDoc(doc(db, "tournaments", id), payload); 
@@ -728,33 +732,76 @@
                 const snap = await getDocs(query(collection(db, "tournaments"), where("status", "==", "Pending Settlement")));
                 if(snap.empty) { container.innerHTML = UI.emptyState('ph-scales', 'Escrow Clear', 'No operations pending settlement.'); return; }
                 
-                let html = '<div class="table-responsive stagger-card"><table><tr><th>Operation</th><th>Gross / Prize</th><th>Platform/Host Split</th><th>Actions</th></tr>';
-                snap.forEach(doc => {
-                    const t = doc.data(); 
+                let html = '<div class="table-responsive stagger-card"><table><tr><th>Operation</th><th>Gross / Prize</th><th>Payout Breakdown</th><th>Winner</th><th>Actions</th></tr>';
+                
+                for (let docSnap of snap.docs) {
+                    const t = docSnap.data(); 
                     let tot = t.filledSlots * t.entryFee; 
                     let rem = tot - t.prizePool; 
                     let platformCutPercent = appState.platformFeePercent;
                     let hostCutPercent = 100 - platformCutPercent;
                     let hC = rem > 0 ? Math.floor(rem * (hostCutPercent/100)) : 0;
                     let pC = rem > 0 ? rem - hC : 0;
+
+                    let winnerName = t.winnerName || t.winnerId || "Unknown";
+                    if (t.winnerId && !t.winnerName) {
+                        try {
+                            const wDoc = await getDoc(doc(db, "users", t.winnerId));
+                            if (wDoc.exists()) winnerName = wDoc.data().username;
+                        } catch(e) {}
+                    }
                     
                     html += `<tr>
-                        <td style="font-weight:600; font-size:1.05rem;">${UI.escapeHTML(t.title)}<br><span style="font-size:0.75rem; color:var(--text-muted); font-weight:400; font-family:monospace;">Winner: ${t.winnerId}</span></td>
+                        <td style="font-weight:600; font-size:1.05rem;">${UI.escapeHTML(t.title)}<br><span style="font-size:0.75rem; color:var(--text-muted); font-weight:400; font-family:monospace;">ID: ${docSnap.id}</span></td>
                         <td>Total: ₹${tot}<br><span style="color:var(--success); font-weight:700;">Prize: ₹${t.prizePool}</span></td>
                         <td><span style="color:var(--primary)">Platform (${platformCutPercent}%): ₹${pC}</span><br><span style="color:#d946ef">Host (${hostCutPercent}%): ₹${hC}</span></td>
-                        <td><button class="btn btn-primary" style="padding:8px 16px; font-size:0.85rem; background:var(--success); box-shadow:none;" onclick="aAS('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hC})"><i class="ph-bold ph-check"></i> Authorize</button></td>
+                        <td><strong style="color:white;">${UI.escapeHTML(winnerName)}</strong></td>
+                        <td>
+                            <div style="display:flex; gap:8px;">
+                                <button class="btn btn-outline" style="padding:8px 12px; font-size:0.85rem; border-color:var(--primary); color:var(--primary);" onclick="aVP('${docSnap.id}')"><i class="ph-bold ph-image"></i> Verify Proofs</button>
+                                <button class="btn btn-primary" style="padding:8px 12px; font-size:0.85rem; background:var(--success); box-shadow:none;" onclick="aAS('${docSnap.id}', '${t.winnerId}', '${UI.escapeHTML(winnerName)}', ${t.prizePool}, '${t.hostId}', ${hC})"><i class="ph-bold ph-check"></i> Authorize</button>
+                            </div>
+                        </td>
                     </tr>`;
-                });
+                }
                 container.innerHTML = html + '</table></div>';
-            } catch(e) {}
+            } catch(e) { console.error(e); container.innerHTML = `<p style="color:var(--danger)">Error loading escrow queue.</p>`; }
         };
-        window.aAS = async (tId, wId, prize, hId, hCut) => { 
+
+        window.aVP = async (tId) => {
+            UI.showModal(`<h3 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin-bottom:24px;">Operator Proofs</h3><div id="proof-modal-content"><div class="skeleton" style="height:250px;"></div></div>`);
+            try {
+                const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
+                let html = '<div style="display:flex; flex-direction:column; gap:20px;">';
+                let found = false;
+                snap.forEach(rDoc => {
+                    const r = rDoc.data();
+                    if(r.proofImage) {
+                        found = true;
+                        let entityName = r.isSquad ? `[${r.clanTag}] Team (Leader: ${r.username})` : r.username;
+                        html += `
+                        <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:12px; padding:16px;">
+                            <div style="font-weight:700; font-size:1.1rem; color:white; margin-bottom:12px;">${UI.escapeHTML(entityName)}</div>
+                            <img src="${r.proofImage}" style="width:100%; border-radius:8px; display:block;">
+                        </div>`;
+                    }
+                });
+                if(!found) {
+                    html = `<div class="empty-state"><i class="ph-duotone ph-image-broken"></i><h3>No Proofs Uploaded</h3><p>No operators submitted screenshots for this event.</p></div>`;
+                } else {
+                    html += '</div>';
+                }
+                document.getElementById('proof-modal-content').innerHTML = html;
+            } catch(e) { console.error(e); }
+        };
+
+        window.aAS = async (tId, wId, wName, prize, hId, hCut) => { 
             try { 
                 if(wId && prize > 0) await updateDoc(doc(db, "users", wId), { "wallet.coins": increment(prize) }); 
                 if(hId && hCut > 0) await updateDoc(doc(db, "users", hId), { "wallet.coins": increment(hCut) }); 
-                await updateDoc(doc(db, "tournaments", tId), { status: 'Completed' }); 
-                UI.showToast("Escrow Cleared!"); loadAdminSettlements(); 
-            } catch(e) {} 
+                await updateDoc(doc(db, "tournaments", tId), { status: 'Completed', winnerName: wName }); 
+                UI.showToast("Escrow Cleared & Paid!"); loadAdminSettlements(); 
+            } catch(e) { console.error(e); UI.showToast("Error processing settlement.", "error"); } 
         };
 
         const loadAdminRecharges = async () => {
