@@ -312,7 +312,7 @@
                     <p>Enter premium lobbies across BGMI, Free Fire, and Valorant. Play securely with 100% Escrow Guaranteed payouts and professional anti-cheat protocols.</p>
                     <div style="display:flex; gap:16px; flex-wrap: wrap; width: 100%;">
                         <button class="btn btn-primary" onclick="navigateToRegister('player')" style="animation: pulseGlow 2.5s infinite; font-size:1.2rem; padding:16px 32px;"><i class="ph-bold ph-game-controller"></i> Play Tournaments</button>
-                        <a href="champzone.apk" download class="btn btn-outline" style="font-size:1.2rem; padding:16px 32px; border-color:var(--success); color:var(--success); text-decoration:none;"><i class="ph-bold ph-android-logo"></i> Download App</a>
+                        
                     </div>
                     <div style="margin-top:16px;">
                         <a href="#" onclick="navigateToRegister('host')" style="color:var(--text-muted); font-size:1rem; text-decoration:underline;">Want to organize matches? Click here.</a>
@@ -405,7 +405,7 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, addDoc, updateDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
+       const firebaseConfig = {
   apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
   authDomain: "champzonegaming.firebaseapp.com",
   projectId: "champzonegaming",
@@ -652,8 +652,8 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
-                        if (role === 'admin') { window.location.href = 'admin.html'; return; } 
-                        else if (role === 'host') { window.location.href = 'host.html'; return; }
+                        if (role === 'admin') { window.location.href = 'admin'; return; } 
+                        else if (role === 'host') { window.location.href = 'host'; return; }
                         updateNav();
                         
                         // Force navigation to dash on load if logged in
@@ -729,7 +729,7 @@
                 const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
-                if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
+                if (role === 'host') window.location.href = 'host'; else navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
@@ -831,11 +831,8 @@
 
                         <div class="glass" style="margin-top:32px; padding:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; border-left: 4px solid var(--success);">
                             <div>
-                                <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:4px; text-transform:uppercase;"><i class="ph-bold ph-android-logo" style="color:var(--success);"></i> Download the Official App</h3>
-                                <p style="color:var(--text-muted); font-size:0.95rem;">Get the best experience, faster notifications, and seamless gameplay.</p>
                             </div>
-                            <a href="champzone.apk" download class="btn btn-primary" style="background:var(--success); color:#000; box-shadow:0 10px 20px rgba(0,255,157,0.2); text-decoration:none;"><i class="ph-bold ph-download-simple"></i> Download APK</a>
-                        </div>
+                            
                     `;
                 } else if(tab === 'player-browse') {
                     container.innerHTML = `
