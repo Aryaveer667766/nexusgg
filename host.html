@@ -360,6 +360,7 @@
             }
         });
 
+        // CORE AUTH & BAN LOCKOUT LOGIC
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 appState.user = user;
@@ -368,6 +369,20 @@
                     if (!docSnap.exists()) { await new Promise(r => setTimeout(r, 1500)); docSnap = await getDoc(doc(db, "users", user.uid)); }
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
+                        
+                        // Strict Ban Lockout Enforcement
+                        if(appState.userData.isBanned) {
+                            document.body.innerHTML = `
+                                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#050303; color:white; text-align:center; padding:20px;">
+                                    <i class="ph-duotone ph-warning-octagon" style="font-size:6rem; color:#ff2a5f; margin-bottom:20px; filter:drop-shadow(0 0 20px rgba(255,42,95,0.5));"></i>
+                                    <h1 style="font-family:'Rajdhani', sans-serif; font-size:3.5rem; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">Host Privileges Revoked</h1>
+                                    <p style="color:#9ca3af; font-size:1.1rem; max-width:500px; margin-bottom:30px;">Your operating account has been permanently suspended by the System Administrator due to a violation of platform integrity protocols.</p>
+                                    <button onclick="window.logoutUser()" class="btn" style="background:#ff2a5f; color:white; padding:12px 30px; border-radius:8px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer;">Acknowledge & Terminate Link</button>
+                                </div>
+                            `;
+                            return;
+                        }
+
                         if (appState.userData.role !== 'host') { window.location.href = 'index.html'; return; }
                         document.getElementById('desk-username').innerText = appState.userData.username;
                         document.getElementById('drawer-username').innerText = appState.userData.username;
@@ -375,6 +390,23 @@
                     } else { window.location.href = 'index.html'; }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
             } else { window.location.href = 'index.html'; }
+        });
+
+        // Real-time listener for Ban trigger mid-session
+        onSnapshot(doc(db, "users", appState.user?.uid || 'temp'), (docSnap) => { 
+            if(docSnap.exists() && appState.userData) { 
+                appState.userData = docSnap.data(); 
+                if(appState.userData.isBanned) {
+                    document.body.innerHTML = `
+                        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#050303; color:white; text-align:center; padding:20px;">
+                            <i class="ph-duotone ph-warning-octagon" style="font-size:6rem; color:#ff2a5f; margin-bottom:20px; filter:drop-shadow(0 0 20px rgba(255,42,95,0.5));"></i>
+                            <h1 style="font-family:'Rajdhani', sans-serif; font-size:3.5rem; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">Host Privileges Revoked</h1>
+                            <p style="color:#9ca3af; font-size:1.1rem; max-width:500px; margin-bottom:30px;">Your operating account has been suspended mid-session by the System Administrator.</p>
+                            <button onclick="window.logoutUser()" class="btn" style="background:#ff2a5f; color:white; padding:12px 30px; border-radius:8px; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:none; cursor:pointer;">Acknowledge & Terminate Link</button>
+                        </div>
+                    `;
+                }
+            }
         });
 
         const setupSidebar = (role, callback) => {
@@ -401,7 +433,6 @@
 
         const renderHostDashboard = () => {
             const container = document.getElementById('host-dash-content');
-            onSnapshot(doc(db, "users", appState.user.uid), (docSnap) => { if(docSnap.exists() && appState.userData) { appState.userData = docSnap.data(); }});
             
             setupSidebar('host', (tab) => {
                 if(tab === 'host-overview') {
@@ -548,6 +579,23 @@
         }
         window.subBroadcast = async (tId) => { const msg = document.getElementById('b-msg').value; if(!msg) return; try { await updateDoc(doc(db, "tournaments", tId), { latestAnnouncement: msg, announcementTime: new Date().toISOString() }); UI.showToast("Broadcast executed successfully."); UI.closeModal(); } catch(e) { UI.showToast("Failed to broadcast.", "error"); } }
 
+        window.viewProof = async (rId) => {
+            try {
+                const rDoc = await getDoc(doc(db, "registrations", rId));
+                if(rDoc.exists() && rDoc.data().proofImage) {
+                    UI.showModal(`
+                        <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:20px; text-transform:uppercase; letter-spacing:1px; color:var(--success); text-shadow:0 0 15px rgba(0,255,157,0.3);">Placement Proof</h3>
+                        <div style="background:rgba(0,0,0,0.5); padding:10px; border-radius:16px; border:1px solid var(--border);">
+                            <img src="${rDoc.data().proofImage}" style="width:100%; border-radius:12px; display:block;">
+                        </div>
+                        <p style="text-align:center; font-size:0.85rem; color:var(--text-muted); margin-top:20px;"><i class="ph-fill ph-check-circle" style="color:var(--success);"></i> Uploaded securely via Canvas Engine.</p>
+                    `);
+                } else {
+                    UI.showToast("No proof found for this operator.", "error");
+                }
+            } catch(e) { UI.showToast("Error retrieving proof.", "error"); }
+        }
+
         window.viewHostParts = async (tId, title, tStatus) => {
             UI.showModal(`<h3 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin-bottom:24px;">Roster: <span style="color:var(--primary)">${UI.escapeHTML(title)}</span></h3><div id="host-parts-modal"><div class="skeleton" style="height:250px;"></div></div>`);
             try {
@@ -557,9 +605,11 @@
                 snap.forEach(rDoc => {
                     const r = rDoc.data(); let entityName = r.isSquad ? `<span style="color:var(--accent); font-weight:800;">[${r.clanTag}]</span> Team` : UI.escapeHTML(r.username); let subtext = r.isSquad ? `Leader: <span style="color:white;">${UI.escapeHTML(r.username)}</span>` : `Solo Operator`;
                     let removeBtn = (tStatus === 'Registration Open' || tStatus === 'Upcoming') ? `<button class="btn btn-danger" style="padding:10px 14px; font-size:0.9rem;" title="Remove Entry" onclick="kickParticipant('${rDoc.id}', '${tId}')"><i class="ph-bold ph-user-minus"></i></button>` : '';
+                    let proofBtn = r.proofImage ? `<button class="btn btn-outline" style="padding:10px 14px; font-size:0.9rem; border-color:var(--success); color:var(--success);" onclick="window.viewProof('${rDoc.id}')" title="View Match Proof"><i class="ph-bold ph-image"></i> View Proof</button>` : `<span style="font-size:0.8rem; color:var(--text-muted); padding:10px 0;">No Proof Uploaded</span>`;
+                    
                     html += `<tr>
                         <td><div style="font-weight:700; font-size:1.15rem; margin-bottom:4px;">${entityName}</div><div style="font-size:0.85rem; color:var(--text-muted); font-weight:500; text-transform:uppercase; letter-spacing:1px;">${subtext}</div></td>
-                        <td><div style="display:flex; gap:12px;"><button class="btn btn-outline" style="padding:10px 18px; font-size:0.9rem;" onclick="openDM('${r.userId}', '${UI.escapeHTML(r.username)}')"><i class="ph-bold ph-chat-circle"></i> DM Link</button>${removeBtn}</div></td>
+                        <td><div style="display:flex; gap:12px; align-items:center;"><button class="btn btn-outline" style="padding:10px 18px; font-size:0.9rem;" onclick="openDM('${r.userId}', '${UI.escapeHTML(r.username)}')"><i class="ph-bold ph-chat-circle"></i> DM Link</button>${proofBtn}${removeBtn}</div></td>
                     </tr>`;
                 });
                 document.getElementById('host-parts-modal').innerHTML = html + '</table></div>';
@@ -629,7 +679,7 @@
                 
                 UI.showModal(`
                     <h3 style="font-family:var(--font-display); font-size:2.8rem; margin-bottom:16px; letter-spacing:1px; text-transform:uppercase; color:var(--success); text-shadow:0 0 20px rgba(0,255,157,0.3);">Conclude Operation</h3>
-                    <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:32px; line-height:1.6;">Transmit results to the Admin Escrow layer for secure settlement of the prize pool and your host operational cut.</p>
+                    <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:32px; line-height:1.6;">Transmit results to the Admin Escrow layer for secure settlement of the prize pool and your host operational cut. <br><br><span style="color:white;">Please verify uploaded proofs in the Roster tab before confirming the victor!</span></p>
                     <div class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; text-transform:uppercase; font-size:0.85rem;">Select Victor (Team Leader / Solo)</label><select id="w-sel" style="padding:16px; font-size:1.05rem;">${opts}</select></div>
                     <button class="btn btn-primary w-100" style="width:100%; background:linear-gradient(135deg, var(--success), #059669); box-shadow:0 15px 30px rgba(0,255,157,0.4); padding:18px; font-size:1.2rem; color:#000;" onclick="submitSettlement('${tId}')"><i class="ph-bold ph-check-circle"></i> Transmit to Escrow</button>
                 `);
