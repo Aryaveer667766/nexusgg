@@ -34,18 +34,10 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body {
-            font-family: var(--font-body); background-color: var(--bg-base);
-            color: var(--text-main); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
-        }
-
+        body { font-family: var(--font-body); background-color: var(--bg-base); color: var(--text-main); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         .d-none { display: none !important; }
 
-        body::before {
-            content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%), radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.08) 0%, transparent 50%);
-            z-index: -1; pointer-events: none;
-        }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%), radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.08) 0%, transparent 50%); z-index: -1; pointer-events: none; }
 
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
@@ -59,18 +51,14 @@
         @keyframes pulseGlow { 0% { box-shadow: 0 0 10px var(--primary-glow); } 50% { box-shadow: 0 0 25px var(--primary-glow); } 100% { box-shadow: 0 0 10px var(--primary-glow); } }
 
         .typewriter-cursor { animation: blink 1s step-end infinite; color: var(--primary); font-weight: 800; }
-        
         .glass { background: var(--surface); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); }
 
         .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; border: none; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; white-space: nowrap; }
         .btn:active { transform: scale(0.96); }
-        
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
         .btn-primary:hover:not(:disabled) { box-shadow: 0 0 25px var(--primary-glow); transform: translateY(-2px); filter: brightness(1.2); }
-        
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
         .btn-outline:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: rgba(0, 229, 255, 0.05); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        
         .btn-danger { background: rgba(255, 42, 95, 0.1); border: 1px solid var(--danger); color: var(--danger); }
         .btn-danger:hover { background: var(--danger); color: white; box-shadow: 0 0 15px rgba(255, 42, 95, 0.4);}
 
@@ -100,7 +88,7 @@
         .drawer-close { font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
         .drawer-close:hover { color: var(--danger); transform: rotate(90deg); }
 
-        #app-content { margin-top: 90px; padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 80px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        #app-content { margin-top: 90px; padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 0px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
@@ -142,7 +130,7 @@
         .role-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
 
         .dashboard-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; align-items: start; }
-        .dashboard-content { min-width: 0; width: 100%; }
+        .dashboard-content { min-width: 0; width: 100%; padding-bottom: 40px; }
         
         .sidebar { padding: 24px; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 110px; height: max-content; }
         .sidebar-item { padding: 16px 20px; border-radius: 12px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 14px; color: var(--text-muted); font-weight: 600; font-size: 1.1rem;}
@@ -178,6 +166,9 @@
         .stat-box:hover::before { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
         .stat-value { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: white; margin: 12px 0 0 0; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
 
+        .legal-text h4 { font-family: var(--font-display); color: var(--primary); font-size: 1.5rem; margin-top: 24px; margin-bottom: 8px; text-transform: uppercase; }
+        .legal-text p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; line-height: 1.7; }
+
         @media (max-width: 900px) {
             .glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
             .nav-actions { display: none; }
@@ -204,6 +195,8 @@
             th, td { padding: 12px 10px; font-size: 0.9rem; }
             .card-content { padding: 20px !important; }
             .stat-value { font-size: 2.5rem !important; }
+            
+            .squad-grid { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
@@ -289,6 +282,24 @@
                     <div class="glass card"><div class="skeleton" style="height:200px;"></div><div style="padding:24px;"><div class="skeleton" style="height:30px; margin-bottom:12px;"></div><div class="skeleton" style="height:20px;"></div></div></div>
                 </div>
             </div>
+            
+            <footer class="glass" style="margin-top: 80px; padding: 60px 5%; text-align: center; border-radius: 24px 24px 0 0; border-bottom: none; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: rgba(10, 10, 15, 0.9);">
+                <i class="ph-fill ph-crosshair" style="font-size: 48px; color: var(--primary); text-shadow: 0 0 20px var(--primary-glow); margin-bottom: 16px;"></i>
+                <h3 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 2px;">Join The Community</h3>
+                <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 32px; font-size: 1.05rem;">Follow our official channels for massive giveaways, highlight clips, and tournament announcements.</p>
+                
+                <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 48px; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-danger" style="background: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.4); border:none; color:white;"><i class="ph-bold ph-youtube-logo"></i> Subscribe</a>
+                    <a href="#" class="btn btn-primary" style="background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 0 20px rgba(220, 39, 67, 0.4); border:none; color:white;"><i class="ph-bold ph-instagram-logo"></i> Follow Us</a>
+                </div>
+                
+                <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; font-size: 0.95rem; font-weight: 600; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 32px;">
+                    <a href="#" style="color:var(--text-muted); text-decoration:none; transition:0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'" onclick="UI.showLegal('tos')">Terms of Service</a>
+                    <a href="#" style="color:var(--text-muted); text-decoration:none; transition:0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'" onclick="UI.showLegal('privacy')">Privacy Policy</a>
+                    <a href="#" style="color:var(--text-muted); text-decoration:none; transition:0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'" onclick="UI.showLegal('refund')">Refund Policy</a>
+                </div>
+                <p style="margin-top: 32px; font-size: 0.85rem; color: rgba(255,255,255,0.3); font-family: var(--font-display); letter-spacing: 1px;">© 2026 NEXUS ESPORTS. ALL RIGHTS RESERVED.</p>
+            </footer>
         </section>
 
         <section id="view-auth" class="view-section">
@@ -401,8 +412,38 @@
                     </div>
                 `);
                 document.getElementById('btn-confirm-yes').onclick = () => { UI.closeModal(); onConfirm(); };
+            },
+            showLegal: (type) => {
+                let title = "", content = "";
+                if(type === 'tos') {
+                    title = "Terms of Service";
+                    content = `<div class="legal-text">
+                        <p>Welcome to ${appState.brandName}. By accessing our platform, you agree to abide by our strict competitive ruleset.</p>
+                        <h4>1. Anti-Cheat & Integrity</h4><p>We maintain a zero-tolerance policy for third-party software, scripts, aimbots, or any form of game manipulation. Detection results in a permanent ban and forfeiture of all Escrow funds.</p>
+                        <h4>2. Punctuality & Match Rules</h4><p>Operators must enter the provided Room ID 5 minutes prior to T-Zero. The host is not responsible for players missing the start time.</p>
+                        <h4>3. Escrow Placements</h4><p>All players are highly encouraged to upload end-of-match placement screenshots. Admin decisions regarding match results and Escrow payouts are final and binding.</p>
+                    </div>`;
+                } else if(type === 'privacy') {
+                    title = "Privacy Policy";
+                    content = `<div class="legal-text">
+                        <p>Your privacy and data security are paramount at ${appState.brandName}.</p>
+                        <h4>1. Data Collection</h4><p>We securely collect your email, in-game usernames, and IP address solely for anti-fraud and identity verification purposes.</p>
+                        <h4>2. Financial Data</h4><p>We do not store raw banking data. UTR numbers and UPI IDs are processed temporarily for the strict purpose of Escrow clearance and payouts.</p>
+                        <h4>3. Comms Security</h4><p>All direct messages and squad chats are encrypted. However, moderation teams may review logs if a formal objection or report is filed.</p>
+                    </div>`;
+                } else if(type === 'refund') {
+                    title = "Refund Policy";
+                    content = `<div class="legal-text">
+                        <p>Due to the high-stakes nature of Escrow operations, our refund policy is strictly enforced.</p>
+                        <h4>1. Tournament Cancellations</h4><p>If an operation is aborted or cancelled by the Host or Admin, 100% of the entry fee will be immediately refunded to your Nexus Wallet.</p>
+                        <h4>2. Player No-Shows</h4><p>If you fail to join the room before T-Zero, your entry fee is forfeited and added to the prize pool. No refunds are issued for no-shows.</p>
+                        <h4>3. Withdrawal Processing</h4><p>Payouts from your Nexus Wallet to your bank/UPI are processed within 24-48 hours. The standard platform fee is deducted upon withdrawal.</p>
+                    </div>`;
+                }
+                UI.showModal(`<h2 style="font-family:var(--font-display); font-size:2.5rem; text-transform:uppercase; color:var(--primary); border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:24px;">${title}</h2>${content}`);
             }
         };
+        window.UI = UI;
         window.closeModal = UI.closeModal; 
 
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
@@ -453,7 +494,7 @@
             // Hard Dashboard Lock for Authenticated Users
             if (appState.user && appState.userData) {
                 if (['landing', 'login', 'register'].includes(viewName)) {
-                    viewName = 'player-dash'; // Snap back to dashboard
+                    viewName = 'player-dash'; // Snap back to dashboard safely
                 }
             }
 
@@ -464,7 +505,7 @@
             const target = document.getElementById(`view-${viewName}`);
             if(target) {
                 target.classList.add('active'); appState.currentView = viewName;
-                if(viewName === 'landing') setTimeout(() => loadTournamentsList('landing-tournaments-list'), 0);
+                if(viewName === 'landing') setTimeout(() => window.loadTournamentsList('landing-tournaments-list'), 0);
                 if(viewName === 'player-dash') renderPlayerDashboard();
             }
         };
@@ -505,7 +546,7 @@
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => { if(appState.currentView === 'landing') loadTournamentsList('landing-tournaments-list'); });
+        document.addEventListener('DOMContentLoaded', () => { if(appState.currentView === 'landing') window.loadTournamentsList('landing-tournaments-list'); });
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -657,8 +698,13 @@
                 if(tab === 'player-overview') {
                     let totalDeployments = 0;
                     try {
-                        const snap = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
-                        totalDeployments = snap.size;
+                        // Count deployments where user is either registered solo, OR is part of a squad
+                        const q1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
+                        const q2 = await getDocs(query(collection(db, "registrations"), where("memberUids", "array-contains", appState.user.uid)));
+                        let uniqueDocs = new Map();
+                        q1.forEach(d => uniqueDocs.set(d.id, d));
+                        q2.forEach(d => uniqueDocs.set(d.id, d));
+                        totalDeployments = uniqueDocs.size;
                     } catch(e) {}
 
                     container.innerHTML = `
@@ -688,12 +734,16 @@
                     `;
                 } else if(tab === 'player-browse') {
                     container.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; flex-wrap:wrap; gap:12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; flex-wrap:wrap; gap:12px;">
                             <h2 style="font-family:var(--font-display); font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 1px; text-transform:uppercase; margin:0;">Live Arena</h2>
-                            <span class="badge badge-live" style="background:transparent; border:1px solid var(--primary); color:var(--primary); box-shadow:none; padding:10px 16px;"><i class="ph-bold ph-trend-up"></i> Sorted by Nearest Start</span>
+                            <select id="sort-tourneys" onchange="window.loadTournamentsList('player-browse-list')" style="width:auto; padding:10px 16px; background:rgba(0, 229, 255, 0.05); border-color:var(--primary); color:white; border-radius:8px; font-weight:600; cursor:pointer;">
+                                <option value="nearest">Sort: Nearest Start Time</option>
+                                <option value="prize">Sort: Highest Prize Pool</option>
+                                <option value="filled">Sort: Most Slots Filled</option>
+                            </select>
                         </div>
                         <div id="player-browse-list" class="grid-cards"><div class="skeleton" style="height:250px;"></div></div>`;
-                    loadTournamentsList('player-browse-list');
+                    window.loadTournamentsList('player-browse-list');
                 } else if(tab === 'player-my-tournaments') {
                     container.innerHTML = `
                         <div style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
@@ -738,7 +788,7 @@
             });
         };
 
-        const loadTournamentsList = async (containerId) => {
+        window.loadTournamentsList = async (containerId) => {
             const container = document.getElementById(containerId);
             if (!container) return;
             try {
@@ -746,7 +796,17 @@
                 let docs = []; snap.forEach(d => docs.push({id: d.id, ...d.data()})); 
                 
                 docs = docs.filter(t => t.status === 'Upcoming' || t.status === 'Registration Open');
-                docs.sort((a,b) => { let dateA = new Date(a.startTime || a.createdAt).getTime(); let dateB = new Date(b.startTime || b.createdAt).getTime(); return dateA - dateB; });
+                
+                // Advanced Sorting Logic
+                const sortDropdown = document.getElementById('sort-tourneys');
+                const sortType = sortDropdown ? sortDropdown.value : 'nearest';
+                
+                docs.sort((a,b) => { 
+                    if(sortType === 'nearest') return new Date(a.startTime || a.createdAt).getTime() - new Date(b.startTime || b.createdAt).getTime();
+                    if(sortType === 'prize') return (b.prizePool || 0) - (a.prizePool || 0);
+                    if(sortType === 'filled') return (b.filledSlots || 0) - (a.filledSlots || 0);
+                    return 0;
+                });
                 
                 let html = '';
                 docs.forEach((t, index) => {
@@ -767,7 +827,7 @@
                     }
 
                     html += `
-                        <div class="glass card" style="animation-delay: ${index * 0.1}s;">
+                        <div class="glass card" style="animation-delay: ${index * 0.05}s;">
                             <div class="card-banner" style="height:220px; background-image: url('${t.bannerUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80'}');">
                                 <div class="card-banner-overlay"></div>
                                 <div style="position:absolute; top:20px; left:20px;" class="badge badge-game">${t.game}</div>
@@ -867,14 +927,12 @@
 
         window.initJoin = async (tId, fee, title, teamSize) => {
             const splitFee = fee / teamSize;
-            const snap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId)));
-            let joined = false;
-            snap.forEach(d => {
-                const data = d.data();
-                if(data.userId === appState.user.uid) joined = true; 
-                if(data.teamMembers) { data.teamMembers.forEach(m => { if(m.uid === appState.user.uid) joined = true; }); }
-            });
-            if(joined) return UI.showToast("Already deployed in this event.", "error");
+            
+            // Cross-check: is the user part of ANY squad/solo registration for this tournament?
+            const snap1 = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId), where("userId", "==", appState.user.uid)));
+            const snap2 = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId), where("memberUids", "array-contains", appState.user.uid)));
+            
+            if(!snap1.empty || !snap2.empty) return UI.showToast("Already deployed in this event.", "error");
 
             if (teamSize > 1) {
                 if(!appState.userData.clanId) {
@@ -913,6 +971,7 @@
                         
                         UI.setLoading('btn-sq-sub', true);
                         let selectedMembers = [];
+                        let memberUidsArray = [];
                         let canAfford = true;
 
                         for(let cb of checked) {
@@ -925,6 +984,7 @@
                                     break;
                                 }
                                 selectedMembers.push({ uid: cb.value, name: cb.dataset.name });
+                                memberUidsArray.push(cb.value);
                             }
                         }
 
@@ -934,7 +994,16 @@
                             for(let member of selectedMembers) {
                                 await updateDoc(doc(db, "users", member.uid), { "wallet.coins": increment(-splitFee) });
                             }
-                            await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: clan.tag, isSquad: true, teamMembers: selectedMembers, joinedAt: new Date().toISOString() });
+                            await addDoc(collection(db, "registrations"), { 
+                                tournamentId: tId, 
+                                userId: appState.user.uid, 
+                                username: appState.userData.username, 
+                                clanTag: clan.tag, 
+                                isSquad: true, 
+                                teamMembers: selectedMembers, 
+                                memberUids: memberUidsArray, // Crucial for visibility querying
+                                joinedAt: new Date().toISOString() 
+                            });
                             await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
                             
                             UI.showToast(`Squad Deployed! ₹${splitFee} deducted per member.`); 
@@ -949,7 +1018,15 @@
                 UI.showModal(`<div class="text-center" style="padding:80px 40px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:6rem; color:var(--primary); filter:drop-shadow(0 0 20px var(--primary-glow));"></i><h3 class="mt-4" style="font-family:var(--font-display); font-size:2.2rem; margin-top:20px;">Securing Slot...</h3></div>`);
                 try {
                     await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-fee) });
-                    await addDoc(collection(db, "registrations"), { tournamentId: tId, userId: appState.user.uid, username: appState.userData.username, clanTag: appState.userData.clanTag || '', isSquad: false, joinedAt: new Date().toISOString() });
+                    await addDoc(collection(db, "registrations"), { 
+                        tournamentId: tId, 
+                        userId: appState.user.uid, 
+                        username: appState.userData.username, 
+                        clanTag: appState.userData.clanTag || '', 
+                        isSquad: false, 
+                        memberUids: [appState.user.uid],
+                        joinedAt: new Date().toISOString() 
+                    });
                     await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(1) });
                     UI.showToast(`Deployed to ${title}!`); UI.closeModal(); navigate('player-dash'); setTimeout(() => document.querySelector(`.sidebar-item[data-tab="player-my-tournaments"]`).click(), 100);
                 } catch (e) { UI.showToast("Deployment failed.", "error"); UI.closeModal(); }
@@ -959,8 +1036,16 @@
         const loadMyTournaments = async () => {
             const container = document.getElementById('player-my-list');
             try {
-                const snap1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
-                let regs = []; snap1.forEach(d => regs.push({rId: d.id, ...d.data()})); 
+                // Fetch deployments where user registered, OR user is part of a deployed squad
+                const q1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
+                const q2 = await getDocs(query(collection(db, "registrations"), where("memberUids", "array-contains", appState.user.uid)));
+                
+                let uniqueRegs = new Map();
+                q1.forEach(d => uniqueRegs.set(d.id, {rId: d.id, ...d.data()}));
+                q2.forEach(d => uniqueRegs.set(d.id, {rId: d.id, ...d.data()}));
+                
+                let regs = Array.from(uniqueRegs.values());
+                
                 if(regs.length === 0) { container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); return; }
                 regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
                 let html = '';
@@ -1068,13 +1153,19 @@
                 let winnerHtml = `<div class="empty-state" style="padding:20px;"><i class="ph-duotone ph-clock"></i><p>Results are being verified and will be posted shortly.</p></div>`;
                 
                 if((t.status === 'Completed' || t.status === 'Pending Settlement') && t.winnerName) {
+                    
+                    let payoutText = `₹${t.prizePool || 0}`;
+                    if(t.teamSize > 1) payoutText += ` <span style="font-size:0.8rem; color:white; font-weight:normal; font-family:var(--font-body); display:block; margin-top:4px;">(₹${(t.prizePool / t.teamSize).toFixed(2)} per player)</span>`;
+
                     winnerHtml = `
-                        <div class="glass" style="padding:16px 20px; margin-bottom:12px; border-left: 4px solid var(--success); display:flex; justify-content:space-between; align-items:center;">
+                        <div class="glass" style="padding:24px 20px; margin-bottom:12px; border-left: 4px solid var(--success); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
                             <div>
-                                <strong style="font-size:1.1rem; color:white;">${UI.escapeHTML(t.winnerName)}</strong>
+                                <strong style="font-size:1.2rem; color:white;">${UI.escapeHTML(t.winnerName)}</strong>
                                 <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Operation Victor</div>
                             </div>
-                            <div style="font-family:var(--font-display); font-weight:800; color:var(--success); font-size:1.5rem;">₹${t.prizePool || 0}</div>
+                            <div style="font-family:var(--font-display); font-weight:800; color:var(--success); font-size:1.8rem; text-align:right;">
+                                ${payoutText}
+                            </div>
                         </div>
                     `;
                     // Fire celebratory effects
@@ -1153,20 +1244,70 @@
                         });
 
                         container.innerHTML = `
-                            <div class="glass" style="padding:60px 20px; text-align:center; position:relative; overflow:hidden; border-radius:24px;">
-                                <div style="position:absolute; bottom:-50px; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--accent); opacity:0.15; filter:blur(60px); pointer-events:none;"></div>
-                                <h1 style="color:var(--primary); font-family:var(--font-display); font-size: clamp(3.5rem, 10vw, 5rem); margin-bottom:8px; line-height:1; text-shadow:0 0 30px var(--primary-glow);">[${UI.escapeHTML(clan.tag)}]</h1>
-                                <h2 style="color:white; margin-bottom:24px; font-weight:700; font-size:2rem; text-transform:uppercase; letter-spacing:1px;">${UI.escapeHTML(clan.name)}</h2>
-                                <div class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-main); font-size:1rem; padding:12px 24px; box-shadow:none; flex-wrap:wrap; justify-content:center;">
-                                    Tag ID: <strong style="color:var(--primary); margin:0 8px; letter-spacing:2px; font-family:var(--font-mono);">${clan.tag}</strong> 
-                                    <i class="ph-bold ph-copy" style="cursor:pointer; color:var(--text-muted); font-size:1.2rem; transition:0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-muted)'" onclick="navigator.clipboard.writeText('${clan.tag}'); UI.showToast('Tag Copied!');"></i>
+                            <div class="squad-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
+                                
+                                <!-- Squad Info & Roster (Left) -->
+                                <div style="display:flex; flex-direction:column; gap:24px;">
+                                    <div class="glass" style="padding:40px 20px; text-align:center; position:relative; overflow:hidden; border-radius:24px;">
+                                        <div style="position:absolute; bottom:-50px; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--accent); opacity:0.15; filter:blur(60px); pointer-events:none;"></div>
+                                        <h1 style="color:var(--primary); font-family:var(--font-display); font-size: clamp(3rem, 8vw, 4rem); margin-bottom:8px; line-height:1; text-shadow:0 0 30px var(--primary-glow);">[${UI.escapeHTML(clan.tag)}]</h1>
+                                        <h2 style="color:white; margin-bottom:24px; font-weight:700; font-size:1.8rem; text-transform:uppercase; letter-spacing:1px;">${UI.escapeHTML(clan.name)}</h2>
+                                        <div class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-main); font-size:1rem; padding:12px 24px; box-shadow:none; flex-wrap:wrap; justify-content:center;">
+                                            Tag ID: <strong style="color:var(--primary); margin:0 8px; letter-spacing:2px; font-family:var(--font-mono);">${clan.tag}</strong> 
+                                            <i class="ph-bold ph-copy" style="cursor:pointer; color:var(--text-muted); font-size:1.2rem; transition:0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-muted)'" onclick="navigator.clipboard.writeText('${clan.tag}'); UI.showToast('Tag Copied!');"></i>
+                                        </div>
+                                    </div>
+                                    <div class="glass" style="padding:0; overflow:hidden; border-radius:24px;">
+                                        <div style="padding:24px 32px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.03);"><h3 style="margin:0; font-family:var(--font-display); font-size:1.5rem; letter-spacing:1px; text-transform:uppercase;">Active Roster</h3></div>
+                                        <div>${mHtml}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="glass mt-4" style="padding:0; overflow:hidden; border-radius:24px;">
-                                <div style="padding:24px 32px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.03);"><h3 style="margin:0; font-family:var(--font-display); font-size:1.8rem; letter-spacing:1px; text-transform:uppercase;">Active Roster</h3></div>
-                                <div>${mHtml}</div>
+                                
+                                <!-- Squad Chat (Right) -->
+                                <div class="glass" style="display:flex; flex-direction:column; height: 100%; border-radius:24px; overflow:hidden;">
+                                    <div style="padding:24px 32px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.03);">
+                                        <h3 style="margin:0; font-family:var(--font-display); font-size:1.5rem; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-chat-teardrop-text" style="color:var(--accent);"></i> Squad Comms</h3>
+                                    </div>
+                                    <div id="clan-chat-box" style="flex:1; min-height: 400px; max-height: 500px; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px;">
+                                        <div class="skeleton" style="height:50px;"></div>
+                                        <div class="skeleton" style="height:50px;"></div>
+                                    </div>
+                                    <form id="clan-chat-form" style="display:flex; gap:12px; padding:20px; border-top:1px solid var(--border); background: rgba(0,0,0,0.3);">
+                                        <input type="text" id="clan-chat-in" placeholder="Message squad..." required autocomplete="off" style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; border-color:var(--border);">
+                                        <button type="submit" class="btn btn-primary" style="padding:16px 20px; border-radius:12px; box-shadow:0 0 15px var(--accent-glow); background:var(--accent);"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button>
+                                    </form>
+                                </div>
+
                             </div>
                         `;
+                        
+                        // Initialize Clan Chat Logic
+                        const msgBox = document.getElementById('clan-chat-box');
+                        if(window.clanChatUnsub) window.clanChatUnsub();
+                        window.clanChatUnsub = onSnapshot(query(collection(db, "clan_messages"), where("clanId", "==", cDoc.id)), (snap) => {
+                            let msgs = []; snap.forEach(d => msgs.push(d.data())); msgs.sort((a,b) => a.timestamp - b.timestamp);
+                            if(msgs.length === 0) { msgBox.innerHTML = `<div class="empty-state" style="padding:40px 20px;"><i class="ph-duotone ph-chats" style="font-size:3rem;"></i><p style="font-size:1rem;">Encrypted comms initialized.</p></div>`; } 
+                            else { 
+                                let cHtml = ''; 
+                                msgs.forEach(m => { 
+                                    const isMine = m.senderId === appState.user.uid; 
+                                    cHtml += `<div style="max-width:85%; padding:14px 18px; border-radius:16px; font-size:0.95rem; align-self:${isMine?'flex-end':'flex-start'}; background:${isMine?'linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(139,92,246,0.05) 100%)':'rgba(255,255,255,0.03)'}; border:1px solid ${isMine?'rgba(139, 92, 246, 0.4)':'var(--border)'}; color:${isMine?'white':'var(--text-main)'};">
+                                        ${!isMine ? `<span style="display:block; font-size:0.75rem; color:var(--primary); font-weight:700; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">${UI.escapeHTML(m.senderName)}</span>` : ''}
+                                        ${UI.escapeHTML(m.text)}
+                                    </div>`; 
+                                }); 
+                                msgBox.innerHTML = cHtml; 
+                                setTimeout(() => { msgBox.scrollTop = msgBox.scrollHeight; }, 30);
+                            }
+                        });
+                        document.getElementById('clan-chat-form').onsubmit = async (e) => { 
+                            e.preventDefault(); const t = document.getElementById('clan-chat-in').value.trim(); if(!t) return; 
+                            try { 
+                                await addDoc(collection(db, "clan_messages"), { clanId: cDoc.id, senderId: appState.user.uid, senderName: appState.userData.username, text: t, timestamp: Date.now() }); 
+                                document.getElementById('clan-chat-in').value = ''; 
+                            } catch(err) {} 
+                        };
+
                     }
                 } catch(e) {}
             } else {
@@ -1185,7 +1326,7 @@
         };
 
         window.kickClanMember = async (uid, clanId) => {
-            UI.confirm("Are you sure you want to kick this player from the squad?", async () => {
+            UI.confirm("Are you sure you want to kick this operator from the squad?", async () => {
                 try {
                     const cDoc = await getDoc(doc(db, "clans", clanId)); let clan = cDoc.data(); let idx = clan.members.indexOf(uid);
                     if(idx > -1) {
