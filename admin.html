@@ -119,7 +119,11 @@
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
 
-        .skeleton { background: var(--surface-hover); background-image: linear-gradient(to right, var(--surface-hover) 0%, rgba(255,255,255,0.05) 20%, var(--surface-hover) 40%, var(--surface-hover) 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear; border-radius: 8px; }
+        .skeleton { 
+            background: var(--surface-hover); 
+            background-image: linear-gradient(to right, var(--surface-hover) 0%, rgba(255,255,255,0.05) 20%, var(--surface-hover) 40%, var(--surface-hover) 100%); 
+            background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear; border-radius: 8px; 
+        }
         
         .empty-state { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
         .empty-state i { font-size: 5rem; color: rgba(255,255,255,0.05); filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.2)); }
@@ -253,6 +257,11 @@
                 document.getElementById('modal-container').classList.add('active');
             },
             closeModal: () => document.getElementById('modal-container').classList.remove('active'),
+            setLoading: (btnId, isLoading, text = 'Processing...') => {
+                const btn = document.getElementById(btnId); if(!btn) return;
+                if(isLoading) { btn.dataset.original = btn.innerHTML; btn.innerHTML = `<i class="ph-bold ph-spinner ph-spin"></i> ${text}`; btn.disabled = true; } 
+                else { btn.innerHTML = btn.dataset.original; btn.disabled = false; }
+            },
             escapeHTML: (str) => String(str || '').replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)),
             emptyState: (icon, title, desc) => `<div class="empty-state"><i class="ph-duotone ${icon}"></i><h3 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin-bottom:8px;">${title}</h3><p style="font-size:1.1rem;">${desc}</p></div>`,
             confirm: (msg, onConfirm) => {
@@ -508,10 +517,11 @@
                 }
             });
         };
-
+        
         const loadAdminOverview = async () => {
             const container = document.getElementById('admin-analytics');
             try {
+                // Fetch actual data
                 const usersSnap = await getDocs(collection(db, "users"));
                 let totalUsers = 0; let platformEconomy = 0;
                 usersSnap.forEach(d => { totalUsers++; platformEconomy += (d.data().wallet?.coins || 0); });
@@ -548,7 +558,7 @@
                             <div class="stat-value" style="color:var(--success); text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">${activeTournaments}</div>
                         </div>
                         <div class="glass stat-box stagger-card" style="animation-delay: 0.4s; border-color:rgba(225, 29, 72, 0.3);">
-                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Critical Alerts (Tkt/Payouts)</div>
+                            <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:700;">Critical Alerts</div>
                             <div class="stat-value" style="color:var(--accent); text-shadow: 0 0 20px var(--accent-glow);">${pendingTickets + pendingPayouts}</div>
                         </div>
                     </div>
@@ -670,7 +680,7 @@
                         <td>Total: ₹${tot}<br><span style="color:var(--success); font-weight:700;">Prize: ₹${t.prizePool}</span></td>
                         <td><span style="color:var(--primary)">Platform (${platformCutPercent}%): ₹${pC}</span><br><span style="color:#d946ef">Host (${hostCutPercent}%): ₹${hC}</span></td>
                         <td><button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; border-color:var(--accent); color:var(--accent);" onclick="verifyProofs('${doc.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-image"></i> Check Proofs</button></td>
-                        <td><button class="btn btn-primary" style="padding:8px 16px; font-size:0.85rem; background:var(--success); box-shadow:none;" onclick="aAS('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hC})"><i class="ph-bold ph-check"></i> Authorize</button></td>
+                        <td><button class="btn btn-primary" id="btn-auth-${doc.id}" style="padding:8px 16px; font-size:0.85rem; background:var(--success); box-shadow:none;" onclick="aAS('${doc.id}', '${t.winnerId}', ${t.prizePool}, '${t.hostId}', ${hC})"><i class="ph-bold ph-check"></i> Authorize</button></td>
                     </tr>`;
                 });
                 container.innerHTML = html + '</table></div>';
@@ -697,13 +707,42 @@
             } catch(e) { document.getElementById('proof-container').innerHTML = '<p>Error loading proofs.</p>'; }
         };
 
+        // --- AUTOMATED ESCROW SQUAD SPLITTING LOGIC ---
         window.aAS = async (tId, wId, prize, hId, hCut) => { 
-            try { 
-                if(wId && prize > 0) await updateDoc(doc(db, "users", wId), { "wallet.coins": increment(prize) }); 
-                if(hId && hCut > 0) await updateDoc(doc(db, "users", hId), { "wallet.coins": increment(hCut) }); 
-                await updateDoc(doc(db, "tournaments", tId), { status: 'Completed' }); 
-                UI.showToast("Escrow Cleared!"); loadAdminSettlements(); 
-            } catch(e) {} 
+            UI.confirm(`Authorize Escrow payout of ₹${prize}?`, async () => {
+                UI.setLoading('btn-auth-'+tId, true, 'Clearing...');
+                try { 
+                    if(hId && hCut > 0) await updateDoc(doc(db, "users", hId), { "wallet.coins": increment(hCut) }); 
+                    
+                    if(wId && prize > 0) {
+                        // Dynamically determine if the winner deployed as a Solo or a Squad
+                        const regSnap = await getDocs(query(collection(db, "registrations"), where("tournamentId", "==", tId), where("userId", "==", wId)));
+                        if(!regSnap.empty) {
+                            const regData = regSnap.docs[0].data();
+                            if(regData.isSquad && regData.teamMembers && regData.teamMembers.length > 0) {
+                                // Automated Equal Split
+                                let splitAmount = Math.floor(prize / regData.teamMembers.length);
+                                for(let member of regData.teamMembers) {
+                                    await updateDoc(doc(db, "users", member.uid), { "wallet.coins": increment(splitAmount) }); 
+                                }
+                            } else {
+                                // Solo Payout
+                                await updateDoc(doc(db, "users", wId), { "wallet.coins": increment(prize) }); 
+                            }
+                        } else {
+                            // Fallback if registration document fails
+                            await updateDoc(doc(db, "users", wId), { "wallet.coins": increment(prize) });
+                        }
+                    }
+                    
+                    await updateDoc(doc(db, "tournaments", tId), { status: 'Completed' }); 
+                    UI.showToast("Escrow Cleared & Funds Distributed Automatically!"); 
+                    loadAdminSettlements(); 
+                } catch(e) {
+                    UI.showToast("Critical error during settlement.", "error");
+                    UI.setLoading('btn-auth-'+tId, false);
+                } 
+            });
         };
 
         const loadAdminRecharges = async () => {
@@ -733,11 +772,13 @@
             } catch(e) {}
         };
         window.aHR = async (rId, app, uId, amt) => { 
-            try { 
-                await updateDoc(doc(db, "recharges", rId), { status: app ? 'approved' : 'rejected' }); 
-                if(app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); 
-                UI.showToast(app ? 'Deposit Cleared' : 'Deposit Rejected'); loadAdminRecharges(); 
-            } catch(e) {} 
+            UI.confirm(`Verify UTR and approve deposit of ₹${amt}?`, async () => {
+                try { 
+                    await updateDoc(doc(db, "recharges", rId), { status: app ? 'approved' : 'rejected' }); 
+                    if(app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); 
+                    UI.showToast(app ? 'Deposit Cleared' : 'Deposit Rejected'); loadAdminRecharges(); 
+                } catch(e) {} 
+            });
         };
 
         const loadAdminWithdrawals = async () => {
@@ -767,11 +808,13 @@
             } catch(e) {}
         };
         window.aHW = async (wId, app, uId, amt) => { 
-            try { 
-                await updateDoc(doc(db, "withdrawals", wId), { status: app ? 'paid' : 'rejected' }); 
-                if(!app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); 
-                UI.showToast(app ? 'Payout Logged' : 'Refund Issued'); loadAdminWithdrawals(); 
-            } catch(e) {} 
+            UI.confirm(`Mark this payout request as ${app ? 'Paid' : 'Rejected'}?`, async () => {
+                try { 
+                    await updateDoc(doc(db, "withdrawals", wId), { status: app ? 'paid' : 'rejected' }); 
+                    if(!app) await updateDoc(doc(db, "users", uId), { "wallet.coins": increment(amt) }); 
+                    UI.showToast(app ? 'Payout Logged' : 'Refund Issued'); loadAdminWithdrawals(); 
+                } catch(e) {} 
+            });
         };
 
         const loadAdminUsers = async () => {
@@ -875,10 +918,12 @@
             } catch(e) {}
         };
         window.aCT = async (tId) => { 
-            try { 
-                await updateDoc(doc(db, "tickets", tId), { status: 'Closed' }); 
-                UI.showToast("Line Terminated."); loadAdminTickets(); 
-            } catch(e) {} 
+            UI.confirm("Are you sure you want to close this ticket?", async () => {
+                try { 
+                    await updateDoc(doc(db, "tickets", tId), { status: 'Closed' }); 
+                    UI.showToast("Line Terminated."); loadAdminTickets(); 
+                } catch(e) {} 
+            });
         };
         
         window.vT = async (tId) => {
@@ -895,7 +940,7 @@
                     <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:16px; letter-spacing:1px; text-transform:uppercase;">${UI.escapeHTML(t.subject)}</h3>
                     <div class="mt-4 mb-4" style="max-width:95%; padding:20px; border-radius:16px; font-size:1.05rem; align-self:flex-start; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-muted); font-style:italic; box-shadow:inset 0 0 15px rgba(0,0,0,0.5);">"${UI.escapeHTML(t.message)}"</div>
                     <div style="display:flex; flex-direction:column; gap:14px; height:350px; overflow-y:auto; padding:20px; background:rgba(0,0,0,0.3); border-radius:16px; border:1px solid var(--border); margin-bottom:24px;">${rHtml}</div>
-                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:12px;"><input type="text" id="tr-txt" placeholder="Transmit reply as Admin..." style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; font-size:1.05rem;"><button class="btn btn-primary" style="padding:16px 20px; border-radius:12px; box-shadow:0 10px 20px var(--primary-glow);" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,42,95,0.3); background:rgba(255,42,95,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>'}
+                    ${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:12px;"><input type="text" id="tr-txt" placeholder="Transmit reply as Admin..." style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; font-size:1.05rem;"><button class="btn btn-primary" style="padding:16px 20px; border-radius:12px; box-shadow:0 10px 20px var(--primary-glow);" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(239,68,68,0.3); background:rgba(239,68,68,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>'}
                 `);
             } catch(e) {}
         };
@@ -949,10 +994,12 @@
         };
 
         window.resolveObj = async (oId) => {
-            try {
-                await updateDoc(doc(db, "objections", oId), { status: 'Resolved' });
-                UI.showToast("Objection marked resolved."); UI.closeModal(); loadAdminObjections();
-            } catch(e) {}
+            UI.confirm("Mark this objection as fully resolved?", async () => {
+                try {
+                    await updateDoc(doc(db, "objections", oId), { status: 'Resolved' });
+                    UI.showToast("Objection marked resolved."); UI.closeModal(); loadAdminObjections();
+                } catch(e) {}
+            });
         };
 
     </script>
