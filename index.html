@@ -631,7 +631,7 @@
                 const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
-                if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
+                if (role === 'host') window.location.href = 'host'; else navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
