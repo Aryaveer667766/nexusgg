@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus | Premium Esports</title>
+    <title>Champzone | Premium Esports</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -206,7 +206,7 @@
         <div class="logo-container" onclick="navigate('landing'); closeMenu();">
             <img id="nav-logo-img" class="logo-img" alt="Brand Logo">
             <i id="nav-logo-icon" class="ph-fill ph-crosshair" style="font-size: 36px; color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);"></i>
-            <span class="logo-text brand-name">NEXUS</span>
+            <span class="logo-text brand-name">Champzone</span>
         </div>
         <div class="nav-actions" id="nav-auth-container-desktop"></div>
         <button class="mobile-menu-btn" onclick="window.openMenu()"><i class="ph-bold ph-list"></i></button>
@@ -215,7 +215,7 @@
     <div class="drawer-overlay" id="drawer-overlay" onclick="closeMenu()"></div>
     <div class="mobile-drawer" id="mobile-drawer">
         <div class="drawer-header">
-            <span class="logo-text brand-name" style="font-size:1.8rem;">NEXUS</span>
+            <span class="logo-text brand-name" style="font-size:1.8rem;">CHAMPZONE</span>
             <button class="drawer-close" onclick="closeMenu()" style="background:transparent; border:none;"><i class="ph-bold ph-x"></i></button>
         </div>
         <div id="drawer-auth-state" style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);"></div>
@@ -289,8 +289,8 @@
                 <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 32px; font-size: 1.05rem;">Follow our official channels for massive giveaways, highlight clips, and tournament announcements.</p>
                 
                 <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 48px; flex-wrap: wrap;">
-                    <a href="#" class="btn btn-danger" style="background: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.4); border:none; color:white;"><i class="ph-bold ph-youtube-logo"></i> Subscribe</a>
-                    <a href="#" class="btn btn-primary" style="background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 0 20px rgba(220, 39, 67, 0.4); border:none; color:white;"><i class="ph-bold ph-instagram-logo"></i> Follow Us</a>
+                    <a href="https://www.youtube.com/@CHAMPISLIVE21" class="btn btn-danger" style="background: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.4); border:none; color:white;"><i class="ph-bold ph-youtube-logo"></i> Subscribe</a>
+                    <a href="https://www.instagram.com/champzone.gaming/" class="btn btn-primary" style="background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 0 20px rgba(220, 39, 67, 0.4); border:none; color:white;"><i class="ph-bold ph-instagram-logo"></i> Follow Us</a>
                 </div>
                 
                 <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; font-size: 0.95rem; font-weight: 600; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 32px;">
@@ -298,7 +298,7 @@
                     <a href="#" style="color:var(--text-muted); text-decoration:none; transition:0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'" onclick="UI.showLegal('privacy')">Privacy Policy</a>
                     <a href="#" style="color:var(--text-muted); text-decoration:none; transition:0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'" onclick="UI.showLegal('refund')">Refund Policy</a>
                 </div>
-                <p style="margin-top: 32px; font-size: 0.85rem; color: rgba(255,255,255,0.3); font-family: var(--font-display); letter-spacing: 1px;">© 2026 NEXUS ESPORTS. ALL RIGHTS RESERVED.</p>
+                <p style="margin-top: 32px; font-size: 0.85rem; color: rgba(255,255,255,0.3); font-family: var(--font-display); letter-spacing: 1px;">© 2026 CHAMPZONE ESPORTS. ALL RIGHTS RESERVED.</p>
             </footer>
         </section>
 
@@ -350,7 +350,7 @@
         let appState = {
             user: null, userData: null, currentView: 'landing',
             upiId: "gpay-11245353662@okbizaxis", games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"],
-            brandName: "NEXUS", brandLogo: "", clanCost: 50, withdrawalFeePercent: 5
+            brandName: "CHAMPZONE", brandLogo: "", clanCost: 50, withdrawalFeePercent: 5
         };
 
         const Sound = {
@@ -435,9 +435,9 @@
                     title = "Refund Policy";
                     content = `<div class="legal-text">
                         <p>Due to the high-stakes nature of Escrow operations, our refund policy is strictly enforced.</p>
-                        <h4>1. Tournament Cancellations</h4><p>If an operation is aborted or cancelled by the Host or Admin, 100% of the entry fee will be immediately refunded to your Nexus Wallet.</p>
+                        <h4>1. Tournament Cancellations</h4><p>If an operation is aborted or cancelled by the Host or Admin, 100% of the entry fee will be immediately refunded to your CHAMPZONE Wallet.</p>
                         <h4>2. Player No-Shows</h4><p>If you fail to join the room before T-Zero, your entry fee is forfeited and added to the prize pool. No refunds are issued for no-shows.</p>
-                        <h4>3. Withdrawal Processing</h4><p>Payouts from your Nexus Wallet to your bank/UPI are processed within 24-48 hours. The standard platform fee is deducted upon withdrawal.</p>
+                        <h4>3. Withdrawal Processing</h4><p>Payouts from your CHAMPZONE Wallet to your bank/UPI are processed within 24-48 hours. The standard platform fee is deducted upon withdrawal.</p>
                     </div>`;
                 }
                 UI.showModal(`<h2 style="font-family:var(--font-display); font-size:2.5rem; text-transform:uppercase; color:var(--primary); border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:24px;">${title}</h2>${content}`);
@@ -557,8 +557,8 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
-                        if (role === 'admin') { window.location.href = 'admin.html'; return; } 
-                        else if (role === 'host') { window.location.href = 'host.html'; return; }
+                        if (role === 'admin') { window.location.href = 'admin'; return; } 
+                        else if (role === 'host') { window.location.href = 'host'; return; }
                         updateNav();
                         
                         // Force navigation to dash on load if logged in
@@ -671,7 +671,7 @@
                                 <div class="glass" style="max-width:650px; margin: 40px auto; padding:60px 40px; text-align:center; border-color:var(--danger); box-shadow:0 0 60px rgba(255,42,95,0.15);">
                                     <i class="ph-duotone ph-warning-octagon" style="font-size:7rem; color:var(--danger); margin-bottom:24px; filter:drop-shadow(0 0 20px rgba(255,42,95,0.4));"></i>
                                     <h1 style="font-family:var(--font-display); font-size: 3rem; color:var(--danger); text-transform:uppercase; margin-bottom:16px;">Account Suspended</h1>
-                                    <p style="color:var(--text-muted); font-size:1.15rem; line-height:1.6; margin-bottom:32px;">Your access to the Nexus platform has been revoked due to policy violations or suspicious activity detected during an operation.</p>
+                                    <p style="color:var(--text-muted); font-size:1.15rem; line-height:1.6; margin-bottom:32px;">Your access to the Champzone platform has been revoked due to policy violations or suspicious activity detected during an operation.</p>
                                     <button class="btn btn-primary" style="background:var(--danger); color:white; box-shadow:0 0 15px rgba(255,42,95,0.4); padding:16px 32px; font-size:1.1rem; width: 100%;" onclick="window.logoutUser()"><i class="ph-bold ph-sign-out"></i> Acknowledge & Logout</button>
                                 </div>
                             `;
@@ -723,7 +723,7 @@
 
                         <div class="grid-cards" style="margin-top:32px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
                             <div class="stat-box glass" style="animation-delay:0.1s;">
-                                <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; font-weight:700; letter-spacing:1.5px;">Nexus Balance</div>
+                                <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; font-weight:700; letter-spacing:1.5px;">Champzone Balance</div>
                                 <div class="stat-value" style="color:var(--success); text-shadow:0 0 20px rgba(0,255,157,0.3);">₹${appState.userData.wallet.coins || 0}</div>
                             </div>
                             <div class="stat-box glass" style="animation-delay:0.2s;">
@@ -1505,7 +1505,7 @@
         window.vT = async (tId) => {
             try {
                 const t = (await getDoc(doc(db, "tickets", tId))).data();
-                let rHtml = t.replies.length > 0 ? t.replies.map(r => `<div style="max-width:85%; padding:16px 20px; border-radius:16px; font-size:1.05rem; align-self:${r.role==='admin'?'flex-start':'flex-end'}; background:${r.role==='admin'?'rgba(255,255,255,0.03)':'linear-gradient(135deg, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0.05) 100%)'}; border:1px solid ${r.role==='admin'?'var(--border)':'rgba(0, 229, 255, 0.4)'}; box-shadow:${r.role==='admin'?'none':'0 10px 20px rgba(0,0,0,0.3)'};">${r.role==='admin'?`<strong style="font-size:0.8rem; color:var(--primary); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:2px;">NEXUS ADMIN</strong>`:''}${UI.escapeHTML(r.text)}<span style="display:block; font-size:0.75rem; opacity:0.6; margin-top:10px; text-align:right; font-weight:600; letter-spacing:1px;">${new Date(r.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>`).join('') : '<div class="empty-state" style="padding:40px 20px;"><i class="ph-duotone ph-chat-teardrop" style="font-size:3rem;"></i><p style="font-size:1.05rem;">Awaiting Admin response.</p></div>';
+                let rHtml = t.replies.length > 0 ? t.replies.map(r => `<div style="max-width:85%; padding:16px 20px; border-radius:16px; font-size:1.05rem; align-self:${r.role==='admin'?'flex-start':'flex-end'}; background:${r.role==='admin'?'rgba(255,255,255,0.03)':'linear-gradient(135deg, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0.05) 100%)'}; border:1px solid ${r.role==='admin'?'var(--border)':'rgba(0, 229, 255, 0.4)'}; box-shadow:${r.role==='admin'?'none':'0 10px 20px rgba(0,0,0,0.3)'};">${r.role==='admin'?`<strong style="font-size:0.8rem; color:var(--primary); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:2px;">CHAMPZONE ADMIN</strong>`:''}${UI.escapeHTML(r.text)}<span style="display:block; font-size:0.75rem; opacity:0.6; margin-top:10px; text-align:right; font-weight:600; letter-spacing:1px;">${new Date(r.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>`).join('') : '<div class="empty-state" style="padding:40px 20px;"><i class="ph-duotone ph-chat-teardrop" style="font-size:3rem;"></i><p style="font-size:1.05rem;">Awaiting Admin response.</p></div>';
                 UI.showModal(`<h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom:20px; letter-spacing:1px; text-transform:uppercase;">${UI.escapeHTML(t.subject)}</h3><div class="mt-4 mb-4" style="max-width:95%; padding:20px 24px; border-radius:16px; font-size:1.1rem; align-self:flex-end; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-muted); font-style:italic; line-height:1.6;">"${UI.escapeHTML(t.message)}"</div><div style="display:flex; flex-direction:column; gap:16px; height:350px; overflow-y:auto; padding:20px; background:rgba(0,0,0,0.3); border-radius:16px; border:1px solid var(--border); margin-bottom:24px; box-shadow:inset 0 0 20px rgba(0,0,0,0.5);">${rHtml}</div>${t.status === 'Open' ? `<div class="form-group mt-2" style="display:flex; gap:16px;"><input type="text" id="tr-txt" placeholder="Transmit reply..." style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; font-size:1.05rem;"><button class="btn btn-primary" style="padding:16px 24px; border-radius:12px; box-shadow:0 10px 25px var(--primary-glow);" onclick="addTR('${tId}')"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>` : '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,42,95,0.3); background:rgba(255,42,95,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>'}`);
             } catch(e) {}
         };
