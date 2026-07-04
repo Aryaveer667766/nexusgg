@@ -336,7 +336,20 @@
             emptyState: (icon, title, desc) => `<div class="empty-state"><i class="ph-duotone ${icon}"></i><h3 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin-bottom:8px;">${title}</h3><p style="font-size:1.1rem;">${desc}</p></div>`
         };
         window.closeModal = UI.closeModal; 
-        window.logoutUser = () => { signOut(auth).then(() => { window.location.href = 'index.html'; }); };
+
+        // Safe Fallback Auth Redirection System for IDE/Sandbox Support
+        const redirectToLogin = () => {
+            document.body.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--bg-base); color:white; text-align:center; padding:20px;">
+                    <i class="ph-duotone ph-shield-warning" style="font-size:6rem; color:var(--danger); margin-bottom:20px;"></i>
+                    <h1 style="font-family:var(--font-display); font-size:3rem; margin-bottom:10px; text-transform:uppercase;">Access Restricted</h1>
+                    <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom:30px;">You must be logged in as a Host Commander.</p>
+                    <a href="index.html" style="padding:14px 28px; background:var(--accent); color:white; text-decoration:none; font-weight:bold; border-radius:8px; font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; letter-spacing:1px; box-shadow: 0 0 20px var(--accent-glow);">Return to Portal</a>
+                </div>
+            `;
+        };
+
+        window.logoutUser = () => { signOut(auth).then(() => { redirectToLogin(); }); };
 
         // Mobile Menu Logic
         window.toggleMobileMenu = () => {
@@ -383,13 +396,13 @@
                             return;
                         }
 
-                        if (appState.userData.role !== 'host') { window.location.href = 'index.html'; return; }
+                        if (appState.userData.role !== 'host') { redirectToLogin(); return; }
                         document.getElementById('desk-username').innerText = appState.userData.username;
                         document.getElementById('drawer-username').innerText = appState.userData.username;
                         renderHostDashboard();
-                    } else { window.location.href = 'index.html'; }
+                    } else { redirectToLogin(); }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
-            } else { window.location.href = 'index.html'; }
+            } else { redirectToLogin(); }
         });
 
         // Real-time listener for Ban trigger mid-session
@@ -461,20 +474,65 @@
                                     <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Entry Fee per Team (₹)</label><input type="number" id="c-fee" value="50" required style="padding:16px;"></div>
                                     <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Prize Pool (₹)</label><input type="number" id="c-prize" value="1000" required style="padding:16px;"></div>
                                     <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Max Slots (Teams)</label><input type="number" id="c-slots" value="25" required style="padding:16px;"></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Banner Image URL</label><input type="url" id="c-banner" placeholder="https://..." required style="padding:16px;"></div>
+                                    
+                                    <div class="form-group" style="margin-top:10px;">
+                                        <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Upload Event Banner</label>
+                                        <div style="background:rgba(0,0,0,0.4); border:1px dashed var(--accent); border-radius:12px; padding:24px; text-align:center; position:relative;">
+                                            <input type="file" id="c-banner-file" accept="image/*" required style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
+                                            <div id="c-banner-placeholder">
+                                                <i class="ph-duotone ph-image" style="font-size:3rem; color:var(--accent); margin-bottom:12px;"></i>
+                                                <div style="font-weight:600; color:white; font-size:1.1rem;">Tap to Upload Banner</div>
+                                            </div>
+                                            <div id="c-banner-preview" style="display:none; position:relative; z-index:5;"></div>
+                                            <input type="hidden" id="c-banner-b64">
+                                        </div>
+                                    </div>
+
                                     <div class="form-group" style="grid-column: 1 / -1; margin-top:10px;"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Operation Brief (Rules, Details)</label><textarea id="c-desc" rows="5" placeholder="Enter special rules, map selection, or payout breakdown..." required style="padding:16px;"></textarea></div>
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-4 w-100" id="btn-c-sub" style="width:100%; margin-top:40px; padding:18px; font-size:1.2rem; box-shadow: 0 15px 30px rgba(217,70,239,0.3);"><i class="ph-bold ph-rocket-launch"></i> Authorize & Initialize Event</button>
                             </form>
                         </div>
                     `;
+
+                    // Banner Upload Logic
+                    document.getElementById('c-banner-file').addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if(!file) return;
+                        
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 800;
+                                let scaleSize = 1;
+                                if(img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                                canvas.width = img.width * scaleSize;
+                                canvas.height = img.height * scaleSize;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                                
+                                const dataUrl = canvas.toDataURL('image/jpeg', 0.6); 
+                                document.getElementById('c-banner-b64').value = dataUrl;
+                                
+                                document.getElementById('c-banner-placeholder').style.display = 'none';
+                                const preview = document.getElementById('c-banner-preview');
+                                preview.style.display = 'block';
+                                preview.innerHTML = `<img src="${dataUrl}" style="width:100%; max-height:200px; object-fit:cover; border-radius:8px; border:1px solid var(--border);">`;
+                            }
+                            img.src = event.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    });
+
                     document.getElementById('form-create-t').onsubmit = async (e) => {
                         e.preventDefault(); const creationFee = appState.hostCreationFee || 0;
                         if ((appState.userData.wallet.coins || 0) < creationFee) { UI.showToast(`Insufficient Funds. Requires ₹${creationFee} to host. Please deposit.`, "error"); return; }
                         UI.setLoading('btn-c-sub', true);
                         try {
                             if (creationFee > 0) { await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-creationFee) }); }
-                            await addDoc(collection(db, "tournaments"), { hostId: appState.user.uid, hostName: appState.userData.username, title: document.getElementById('c-title').value, game: document.getElementById('c-game').value, description: document.getElementById('c-desc').value, teamSize: parseInt(document.getElementById('c-team-size').value), mode: "Battle Royale", startTime: document.getElementById('c-time').value, entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value), maxSlots: parseInt(document.getElementById('c-slots').value), bannerUrl: document.getElementById('c-banner').value, filledSlots: 0, status: 'Registration Open', createdAt: new Date().toISOString() });
+                            await addDoc(collection(db, "tournaments"), { hostId: appState.user.uid, hostName: appState.userData.username, title: document.getElementById('c-title').value, game: document.getElementById('c-game').value, description: document.getElementById('c-desc').value, teamSize: parseInt(document.getElementById('c-team-size').value), mode: "Battle Royale", startTime: document.getElementById('c-time').value, entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value), maxSlots: parseInt(document.getElementById('c-slots').value), bannerUrl: document.getElementById('c-banner-b64').value, filledSlots: 0, status: 'Registration Open', createdAt: new Date().toISOString() });
                             UI.showToast("Event Initialized Successfully."); document.querySelector('.sidebar-item[data-tab="host-manage"]').click();
                         } catch(err) { UI.showToast(err.message, "error"); } finally { UI.setLoading('btn-c-sub', false); }
                     };
@@ -573,7 +631,7 @@
             UI.showModal(`
                 <h3 style="font-family:var(--font-display); font-size:2.5rem; margin-bottom:16px; text-transform:uppercase; letter-spacing:1px;">Global Broadcast</h3>
                 <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:32px;">Send a high-priority push message to all operators currently deployed in this event. It will pin to their dashboards.</p>
-                <textarea id="b-msg" rows="5" placeholder="Enter transmission (e.g., 'Room delayed by 10 mins')..." style="margin-bottom:32px; background:rgba(0,0,0,0.6); padding:20px; font-size:1.05rem;"></textarea>
+                <textarea id="b-msg" rows="5" placeholder="Enter transmission (e.g., 'Room delayed by 10 mins')...." style="margin-bottom:32px; background:rgba(0,0,0,0.6); padding:20px; font-size:1.05rem;"></textarea>
                 <button class="btn btn-primary w-100" style="width:100%; padding:16px; background:var(--accent); font-size:1.2rem; box-shadow:0 15px 30px rgba(217,70,239,0.3);" onclick="subBroadcast('${tId}')"><i class="ph-bold ph-paper-plane-right"></i> Execute Broadcast</button>
             `);
         }
@@ -609,7 +667,7 @@
                     
                     html += `<tr>
                         <td><div style="font-weight:700; font-size:1.15rem; margin-bottom:4px;">${entityName}</div><div style="font-size:0.85rem; color:var(--text-muted); font-weight:500; text-transform:uppercase; letter-spacing:1px;">${subtext}</div></td>
-                        <td><div style="display:flex; gap:12px; align-items:center;"><button class="btn btn-outline" style="padding:10px 18px; font-size:0.9rem;" onclick="openDM('${r.userId}', '${UI.escapeHTML(r.username)}')"><i class="ph-bold ph-chat-circle"></i> DM Link</button>${proofBtn}${removeBtn}</div></td>
+                        <td><div style="display:flex; gap:12px; align-items:center;"><button class="btn btn-outline" style="padding:10px 18px; font-size:0.9rem;" onclick="openDM('${tId}', '${r.userId}', '${UI.escapeHTML(r.username)}')"><i class="ph-bold ph-chat-circle"></i> DM Link</button>${proofBtn}${removeBtn}</div></td>
                     </tr>`;
                 });
                 document.getElementById('host-parts-modal').innerHTML = html + '</table></div>';
@@ -621,8 +679,9 @@
             try { await deleteDoc(doc(db, "registrations", rId)); await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(-1) }); UI.showToast("Operator removed."); UI.closeModal(); loadHostTournaments(); } catch(e) { UI.showToast("Failed to remove.", "error"); }
         };
 
-        window.openDM = (targetUid, targetName) => {
-            const chatId = [appState.user.uid, targetUid].sort().join('_');
+        window.openDM = (tId, targetUid, targetName) => {
+            // MATCH SPECIFIC CHAT ID
+            const chatId = `${tId}_${[appState.user.uid, targetUid].sort().join('_')}`;
             UI.showModal(`
                 <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border);">
                     <h3 style="margin:0; font-family:var(--font-display); font-size:2.2rem; display:flex; align-items:center; gap:16px;">
