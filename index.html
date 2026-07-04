@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nexus | Premium Esports</title>
     
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -449,7 +448,16 @@
         window.logoutUser = () => { signOut(auth).then(() => { window.location.reload(); }); };
 
         window.navigate = (viewName) => {
-            closeMenu(); document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            closeMenu(); 
+            
+            // Hard Dashboard Lock for Authenticated Users
+            if (appState.user && appState.userData) {
+                if (['landing', 'login', 'register'].includes(viewName)) {
+                    viewName = 'player-dash'; // Snap back to dashboard
+                }
+            }
+
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             if(viewName === 'login' || viewName === 'register') {
                 document.getElementById('view-auth').classList.add('active'); renderAuthForm(viewName); appState.currentView = viewName; return;
             }
@@ -511,8 +519,9 @@
                         if (role === 'admin') { window.location.href = 'admin.html'; return; } 
                         else if (role === 'host') { window.location.href = 'host.html'; return; }
                         updateNav();
-                        // Only force navigate to dash if they are currently on auth screens
-                        if(['login', 'register'].includes(appState.currentView)) { navigate('player-dash'); }
+                        
+                        // Force navigation to dash on load if logged in
+                        navigate('player-dash'); 
                     } else { signOut(auth); }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
             } else {
