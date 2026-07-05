@@ -731,8 +731,8 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
-                        if (role === 'admin') { window.location.href = 'admin.html'; return; } 
-                        else if (role === 'host') { window.location.href = 'host.html'; return; }
+                        if (role === 'admin') { window.location.href = 'admin'; return; } 
+                        else if (role === 'host') { window.location.href = 'host'; return; }
                         updateNav();
                         
                         // Force navigation to dash on load if logged in (respects maintenance mode)
@@ -810,7 +810,7 @@
                 const newData = { uid: userCred.user.uid, email: email, username: username, phone: phone, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
-                if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
+                if (role === 'host') window.location.href = 'host'; else navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
