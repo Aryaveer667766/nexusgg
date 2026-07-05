@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus | System Core (Admin)</title>
+    <title>Champzone | System Core (Admin)</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -112,7 +112,11 @@
             .mobile-menu-btn { display: block; }
             .hide-mobile { display: none !important; }
             .nav-actions { gap: 12px; }
-            .modal-content { padding: 32px 20px; }
+            .modal-content { padding: 32px 20px !important; margin: 10px; width: 100%; max-height: 85vh; }
+            .glass.stagger-card { padding: 24px !important; }
+            .grid-cards { grid-template-columns: 1fr; }
+            .table-responsive { border-radius: 8px; margin-top: 10px; }
+            th, td { padding: 12px 10px; font-size: 0.9rem; }
         }
 
         @keyframes fadeUpStagger { to { opacity: 1; transform: translateY(0); } }
@@ -161,7 +165,7 @@
         <div class="logo-container">
             <img id="nav-logo-img" src="" style="display:none; height:36px;">
             <i id="nav-logo-icon" class="ph-fill ph-cpu" style="font-size: 36px; color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);"></i>
-            <span class="logo-text brand-name">NEXUS <span style="font-size:1.1rem; color:var(--primary); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--primary-glow);">CORE</span></span>
+            <span class="logo-text brand-name">CHAMPZONE <span style="font-size:1.1rem; color:var(--primary); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--primary-glow);">CORE</span></span>
         </div>
         <div class="nav-actions" id="nav-auth-container">
             <button class="btn btn-outline hide-mobile" style="border-color:var(--danger); color:var(--danger); padding: 10px 16px; font-size: 0.95rem;" onclick="logoutUser()"><i class="ph-bold ph-power"></i> System Halt</button>
@@ -172,7 +176,7 @@
     <div class="drawer-overlay" id="drawerOverlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-drawer" id="mobileDrawer">
         <div class="drawer-header">
-            <span class="logo-text brand-name" style="font-size:1.5rem;">NEXUS <span style="color:var(--primary);">CORE</span></span>
+            <span class="logo-text brand-name" style="font-size:1.5rem;">CHAMPZONE <span style="color:var(--primary);">CORE</span></span>
             <i class="ph-bold ph-x drawer-close" onclick="toggleMobileMenu()"></i>
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y:auto; padding-right:10px;">
@@ -225,15 +229,15 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, doc, getDoc, getDocs, query, where, updateDoc, setDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-       const firebaseConfig = {
-  apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
-  authDomain: "champzonegaming.firebaseapp.com",
-  projectId: "champzonegaming",
-  storageBucket: "champzonegaming.firebasestorage.app",
-  messagingSenderId: "96825707375",
-  appId: "1:96825707375:web:88fbce144131f0670ef69a",
-  measurementId: "G-7Q9RS046FV"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
+            authDomain: "champzonegaming.firebaseapp.com",
+            projectId: "champzonegaming",
+            storageBucket: "champzonegaming.firebasestorage.app",
+            messagingSenderId: "96825707375",
+            appId: "1:96825707375:web:88fbce144131f0670ef69a",
+            measurementId: "G-7Q9RS046FV"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -241,7 +245,7 @@
 
         let appState = {
             user: null, userData: null,
-            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, maintenanceMode: false, games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"]
+            brandName: "CHAMPZONE", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, clanCost: 50, maintenanceMode: false, games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"]
         };
 
         const UI = {
@@ -257,11 +261,6 @@
                 document.getElementById('modal-container').classList.add('active');
             },
             closeModal: () => document.getElementById('modal-container').classList.remove('active'),
-            setLoading: (btnId, isLoading, text = 'Processing...') => {
-                const btn = document.getElementById(btnId); if(!btn) return;
-                if(isLoading) { btn.dataset.original = btn.innerHTML; btn.innerHTML = `<i class="ph-bold ph-spinner ph-spin"></i> ${text}`; btn.disabled = true; } 
-                else { btn.innerHTML = btn.dataset.original; btn.disabled = false; }
-            },
             escapeHTML: (str) => String(str || '').replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)),
             emptyState: (icon, title, desc) => `<div class="empty-state"><i class="ph-duotone ${icon}"></i><h3 style="font-family:var(--font-display); font-size:2.5rem; letter-spacing:1px; margin-bottom:8px;">${title}</h3><p style="font-size:1.1rem;">${desc}</p></div>`,
             confirm: (msg, onConfirm) => {
@@ -277,6 +276,11 @@
                     </div>
                 `);
                 document.getElementById('btn-confirm-yes').onclick = () => { UI.closeModal(); onConfirm(); };
+            },
+            setLoading: (btnId, isLoading, text = 'Processing...') => {
+                const btn = document.getElementById(btnId); if(!btn) return;
+                if(isLoading) { btn.dataset.original = btn.innerHTML; btn.innerHTML = `<i class="ph-bold ph-spinner ph-spin"></i> ${text}`; btn.disabled = true; } 
+                else { btn.innerHTML = btn.dataset.original; btn.disabled = false; }
             }
         };
         window.closeModal = UI.closeModal; 
@@ -326,6 +330,7 @@
                 if(data.platformFeePercent !== undefined) appState.platformFeePercent = parseInt(data.platformFeePercent);
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
                 if(data.hostCreationFee !== undefined) appState.hostCreationFee = parseInt(data.hostCreationFee);
+                if(data.clanCost !== undefined) appState.clanCost = parseInt(data.clanCost);
                 if(data.maintenanceMode !== undefined) appState.maintenanceMode = data.maintenanceMode;
                 if(data.brandLogo) {
                     appState.brandLogo = data.brandLogo;
@@ -388,68 +393,105 @@
                     `;
                     loadAdminOverview();
                 } else if(tab === 'admin-settings') {
-                    container.innerHTML = `
-                        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Platform Config</h2>
-                        <div class="glass stagger-card" style="padding:48px; max-width:700px;">
+                    container.innerHTML = `<div class="skeleton" style="height:400px;"></div>`;
+                    
+                    const renderSettingsUI = async () => {
+                        let bc = { active: false, intensity: 'casual', message: '' };
+                        try {
+                            const bcSnap = await getDoc(doc(db, "platform", "broadcast"));
+                            if(bcSnap.exists()) bc = bcSnap.data();
+                        } catch(e) {}
+
+                        container.innerHTML = `
+                            <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:32px; letter-spacing:1px; text-transform:uppercase;">Platform Config</h2>
                             
-                            <div class="form-group" style="margin-bottom:32px; padding:24px; border:1px dashed var(--danger); border-radius:12px; background:rgba(239, 68, 68, 0.05);">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div>
-                                        <label style="display:block; margin-bottom:4px; color:var(--danger); font-weight:700; letter-spacing:1px; font-size:0.95rem; text-transform:uppercase;"><i class="ph-bold ph-warning"></i> Maintenance Mode</label>
-                                        <span style="font-size:0.8rem; color:var(--text-muted);">Lock out all non-admin users instantly.</span>
+                            <div class="glass stagger-card" style="padding:48px; max-width:700px; margin-bottom:32px;">
+                                <div class="form-group" style="margin-bottom:32px; padding:24px; border:1px dashed var(--danger); border-radius:12px; background:rgba(239, 68, 68, 0.05);">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <label style="display:block; margin-bottom:4px; color:var(--danger); font-weight:700; letter-spacing:1px; font-size:0.95rem; text-transform:uppercase;"><i class="ph-bold ph-warning"></i> Maintenance Mode</label>
+                                            <span style="font-size:0.8rem; color:var(--text-muted);">Lock out all non-admin users instantly.</span>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="cfg-maintenance" ${appState.maintenanceMode ? 'checked' : ''}>
+                                            <span class="slider"></span>
+                                        </label>
                                     </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:24px;">
+                                    <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Platform Brand Name</label>
+                                    <input type="text" id="cfg-brand" value="${appState.brandName}" style="padding:16px;">
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom:32px; padding:24px; border:1px dashed var(--border); border-radius:12px; background:rgba(0,0,0,0.3);">
+                                    <label style="display:block; margin-bottom:12px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Upload Brand Logo</label>
+                                    <input type="file" id="cfg-logo-file" accept="image/*" style="padding:10px; border:none; background:transparent;">
+                                    <input type="hidden" id="cfg-logo-base64" value="${appState.brandLogo || ''}">
+                                    <div id="logo-preview" class="mt-2 text-center" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; margin-top:16px;">
+                                        ${appState.brandLogo ? `<img src="${appState.brandLogo}" style="height:50px; border-radius:4px;">` : '<span style="color:var(--text-muted); font-size:0.9rem;">No logo uploaded</span>'}
+                                    </div>
+                                </div>
+
+                                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:24px; margin-bottom:40px;">
+                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Host Cut (%)</label><input type="number" id="cfg-host-fee" value="${appState.platformFeePercent}" style="padding:16px;"></div>
+                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Withdrawal Fee (%)</label><input type="number" id="cfg-withdraw-fee" value="${appState.withdrawalFeePercent}" style="padding:16px;"></div>
+                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Host Reg Fee (₹)</label><input type="number" id="cfg-create-fee" value="${appState.hostCreationFee}" style="padding:16px;"></div>
+                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Squad Est. Fee (₹)</label><input type="number" id="cfg-clan-fee" value="${appState.clanCost}" style="padding:16px;"></div>
+                                </div>
+                                
+                                <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(245,158,11,0.3);" onclick="saveSettings()"><i class="ph-bold ph-rocket-launch"></i> Deploy Configuration</button>
+                            </div>
+
+                            <div class="glass stagger-card" style="padding:48px; max-width:700px; animation-delay: 0.1s;">
+                                <h3 style="color:var(--primary); font-family:var(--font-display); font-size:2rem; text-transform:uppercase; margin-bottom:24px;"><i class="ph-bold ph-broadcast"></i> Global Broadcast System</h3>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                                    <label style="color:var(--text-muted); font-weight:600; font-size:0.95rem; text-transform:uppercase;">Transmission Status</label>
                                     <label class="switch">
-                                        <input type="checkbox" id="cfg-maintenance" ${appState.maintenanceMode ? 'checked' : ''}>
+                                        <input type="checkbox" id="cfg-bc-active" ${bc.active ? 'checked' : ''}>
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                            </div>
-
-                            <div class="form-group" style="margin-bottom:24px;">
-                                <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Platform Brand Name</label>
-                                <input type="text" id="cfg-brand" value="${appState.brandName}" style="padding:16px;">
-                            </div>
-                            
-                            <div class="form-group" style="margin-bottom:32px; padding:24px; border:1px dashed var(--border); border-radius:12px; background:rgba(0,0,0,0.3);">
-                                <label style="display:block; margin-bottom:12px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Upload Brand Logo</label>
-                                <input type="file" id="cfg-logo-file" accept="image/*" style="padding:10px; border:none; background:transparent;">
-                                <input type="hidden" id="cfg-logo-base64" value="${appState.brandLogo || ''}">
-                                <div id="logo-preview" class="mt-2 text-center" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:8px; margin-top:16px;">
-                                    ${appState.brandLogo ? `<img src="${appState.brandLogo}" style="height:50px; border-radius:4px;">` : '<span style="color:var(--text-muted); font-size:0.9rem;">No logo uploaded</span>'}
+                                <div class="form-group" style="margin-bottom:24px;">
+                                    <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; font-size:0.85rem; text-transform:uppercase;">Intensity Level</label>
+                                    <select id="cfg-bc-intensity" style="padding:16px;">
+                                        <option value="casual" ${bc.intensity === 'casual' ? 'selected' : ''}>Casual (Cyan / Info)</option>
+                                        <option value="important" ${bc.intensity === 'important' ? 'selected' : ''}>Important (Amber / Warning)</option>
+                                        <option value="alert" ${bc.intensity === 'alert' ? 'selected' : ''}>Alert (Red / Critical)</option>
+                                    </select>
                                 </div>
+                                <div class="form-group" style="margin-bottom:32px;">
+                                    <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; font-size:0.85rem; text-transform:uppercase;">Transmission Message</label>
+                                    <textarea id="cfg-bc-msg" rows="4" placeholder="Enter broadcast message here..." style="padding:16px;">${UI.escapeHTML(bc.message || '')}</textarea>
+                                </div>
+                                <button class="btn btn-outline w-100" style="width:100%; padding:18px; border-color:var(--primary); color:var(--primary);" onclick="transmitBroadcast()"><i class="ph-bold ph-paper-plane-right"></i> Deploy Broadcast</button>
                             </div>
-
-                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:40px;">
-                                <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Host Cut (%)</label><input type="number" id="cfg-host-fee" value="${appState.platformFeePercent}" style="padding:16px;"></div>
-                                <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Withdrawal Fee (%)</label><input type="number" id="cfg-withdraw-fee" value="${appState.withdrawalFeePercent}" style="padding:16px;"></div>
-                                <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Event Creation Fee (₹)</label><input type="number" id="cfg-create-fee" value="${appState.hostCreationFee}" style="padding:16px;"></div>
-                            </div>
-                            
-                            <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(245,158,11,0.3);" onclick="saveSettings()"><i class="ph-bold ph-rocket-launch"></i> Deploy Configuration</button>
-                        </div>
-                    `;
-                    
-                    document.getElementById('cfg-logo-file').addEventListener('change', function(e) {
-                        const file = e.target.files[0]; if(!file) return;
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            const img = new Image();
-                            img.onload = function() {
-                                const canvas = document.createElement('canvas');
-                                const MAX_WIDTH = 250; const MAX_HEIGHT = 100;
-                                let width = img.width; let height = img.height;
-                                if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
-                                else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
-                                canvas.width = width; canvas.height = height;
-                                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                                const dataUrl = canvas.toDataURL('image/png');
-                                document.getElementById('cfg-logo-base64').value = dataUrl;
-                                document.getElementById('logo-preview').innerHTML = `<img src="${dataUrl}" style="height:50px; border-radius:4px;">`;
+                        `;
+                        
+                        document.getElementById('cfg-logo-file').addEventListener('change', function(e) {
+                            const file = e.target.files[0]; if(!file) return;
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                const img = new Image();
+                                img.onload = function() {
+                                    const canvas = document.createElement('canvas');
+                                    const MAX_WIDTH = 250; const MAX_HEIGHT = 100;
+                                    let width = img.width; let height = img.height;
+                                    if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
+                                    else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                                    canvas.width = width; canvas.height = height;
+                                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                                    const dataUrl = canvas.toDataURL('image/png');
+                                    document.getElementById('cfg-logo-base64').value = dataUrl;
+                                    document.getElementById('logo-preview').innerHTML = `<img src="${dataUrl}" style="height:50px; border-radius:4px;">`;
+                                }
+                                img.src = event.target.result;
                             }
-                            img.src = event.target.result;
-                        }
-                        reader.readAsDataURL(file);
-                    });
+                            reader.readAsDataURL(file);
+                        });
+                    };
+
+                    renderSettingsUI();
 
                     window.saveSettings = async () => { 
                         try { 
@@ -459,11 +501,27 @@
                                 platformFeePercent: parseInt(document.getElementById('cfg-host-fee').value), 
                                 withdrawalFeePercent: parseInt(document.getElementById('cfg-withdraw-fee').value),
                                 hostCreationFee: parseInt(document.getElementById('cfg-create-fee').value),
+                                clanCost: parseInt(document.getElementById('cfg-clan-fee').value),
                                 maintenanceMode: document.getElementById('cfg-maintenance').checked
                             };
                             await setDoc(doc(db, "platform", "settings"), payload, {merge: true}); 
                             UI.showToast("Settings Deployed Globally."); 
                         } catch(e){} 
+                    };
+
+                    window.transmitBroadcast = async () => {
+                        try {
+                            let payload = {
+                                active: document.getElementById('cfg-bc-active').checked,
+                                intensity: document.getElementById('cfg-bc-intensity').value,
+                                message: document.getElementById('cfg-bc-msg').value,
+                                updatedAt: new Date().toISOString()
+                            };
+                            await setDoc(doc(db, "platform", "broadcast"), payload, {merge: true});
+                            UI.showToast("Global Broadcast Updated.");
+                        } catch(e) {
+                            UI.showToast("Failed to update broadcast.", "error");
+                        }
                     };
                 } else if(tab === 'admin-tournaments') { 
                     container.innerHTML = `
