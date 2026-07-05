@@ -376,21 +376,6 @@
             }
         };
 
-        // UI Logic for Switching Event Type
-        window.togglePrizeFields = () => {
-            const type = document.getElementById('c-event-type').value;
-            const prizeSection = document.getElementById('prize-fee-section');
-            if(type === 'free') {
-                prizeSection.style.display = 'none';
-                document.getElementById('c-fee').value = 0;
-                document.getElementById('c-prize').value = 0;
-            } else {
-                prizeSection.style.display = 'grid';
-                document.getElementById('c-fee').value = 50;
-                document.getElementById('c-prize').value = 1000;
-            }
-        };
-
         // Listen for Admin Global Broadcasts
         onSnapshot(doc(db, "platform", "broadcast"), (docSnap) => {
             const container = document.getElementById('global-broadcast-container');
@@ -582,17 +567,9 @@
                                         <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-clock" style="color:var(--accent); font-size:1.2rem;"></i> T-Zero (Start Time)</label>
                                         <input type="datetime-local" id="c-time" required style="padding:16px; border:none; border-bottom:2px solid var(--border); border-radius:0; background:transparent; color:white;">
                                     </div>
-                                    
-                                    <div style="grid-column: 1 / -1; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
-                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-broadcast" style="color:var(--accent); font-size:1.2rem;"></i> Event Category</label>
-                                        <select id="c-event-type" onchange="togglePrizeFields()" required style="padding:16px; border:none; border-bottom:2px solid var(--border); border-radius:0; background:transparent;">
-                                            <option value="paid">Prize Competition (Requires Entry Fee)</option>
-                                            <option value="free">Free / Livestreaming Only (No Entry Fee, No Prize)</option>
-                                        </select>
-                                    </div>
                                 </div>
 
-                                <div id="prize-fee-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; background: linear-gradient(135deg, rgba(0,229,255,0.05), transparent); padding: 24px; border-radius: 16px; border: 1px solid rgba(0,229,255,0.2);">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; background: linear-gradient(135deg, rgba(0,229,255,0.05), transparent); padding: 24px; border-radius: 16px; border: 1px solid rgba(0,229,255,0.2);">
                                     <div>
                                         <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--primary); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-ticket" style="font-size:1.2rem;"></i> Entry Fee / Team (₹)</label>
                                         <input type="number" id="c-fee" value="50" required style="padding:16px; font-family:var(--font-display); font-size:1.5rem; font-weight:700; background:rgba(0,0,0,0.5);">
@@ -601,11 +578,10 @@
                                         <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--success); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-trophy" style="font-size:1.2rem;"></i> Prize Pool (₹)</label>
                                         <input type="number" id="c-prize" value="1000" required style="padding:16px; font-family:var(--font-display); font-size:1.5rem; font-weight:700; background:rgba(0,0,0,0.5); border-color:var(--success);">
                                     </div>
-                                </div>
-                                
-                                <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px;">
-                                    <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-hash" style="font-size:1.2rem;"></i> Max Slots (Teams)</label>
-                                    <input type="number" id="c-slots" value="25" required style="padding:16px; background:rgba(0,0,0,0.5);">
+                                    <div style="grid-column: 1 / -1;">
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-hash" style="font-size:1.2rem;"></i> Max Slots (Teams)</label>
+                                        <input type="number" id="c-slots" value="25" required style="padding:16px; background:rgba(0,0,0,0.5);">
+                                    </div>
                                 </div>
 
                                 <div class="form-group" style="margin-bottom:24px;">
@@ -668,7 +644,7 @@
                         UI.setLoading('btn-c-sub', true);
                         try {
                             if (creationFee > 0) { await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-creationFee) }); }
-                            await addDoc(collection(db, "tournaments"), { hostId: appState.user.uid, hostName: appState.userData.username, title: document.getElementById('c-title').value, game: document.getElementById('c-game').value, description: document.getElementById('c-desc').value, teamSize: parseInt(document.getElementById('c-team-size').value), mode: "Battle Royale", startTime: document.getElementById('c-time').value, entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value), eventCategory: document.getElementById('c-event-type').value, maxSlots: parseInt(document.getElementById('c-slots').value), bannerUrl: document.getElementById('c-banner-b64').value, filledSlots: 0, status: 'Registration Open', createdAt: new Date().toISOString() });
+                            await addDoc(collection(db, "tournaments"), { hostId: appState.user.uid, hostName: appState.userData.username, title: document.getElementById('c-title').value, game: document.getElementById('c-game').value, description: document.getElementById('c-desc').value, teamSize: parseInt(document.getElementById('c-team-size').value), mode: "Battle Royale", startTime: document.getElementById('c-time').value, entryFee: parseInt(document.getElementById('c-fee').value), prizePool: parseInt(document.getElementById('c-prize').value), maxSlots: parseInt(document.getElementById('c-slots').value), bannerUrl: document.getElementById('c-banner-b64').value, filledSlots: 0, status: 'Registration Open', createdAt: new Date().toISOString() });
                             UI.showToast("Event Initialized Successfully."); document.querySelector('.sidebar-item[data-tab="host-manage"]').click();
                         } catch(err) { UI.showToast(err.message, "error"); } finally { UI.setLoading('btn-c-sub', false); }
                     };
@@ -702,7 +678,7 @@
             try {
                 const snap = await getDocs(query(collection(db, "tournaments"), where("hostId", "==", appState.user.uid)));
                 let totalRegs = 0; let revenue = 0; let count = 0;
-                snap.forEach(d => { const t = d.data(); totalRegs += t.filledSlots; revenue += (t.filledSlots * (t.entryFee || 0)); count++; });
+                snap.forEach(d => { const t = d.data(); totalRegs += t.filledSlots; revenue += (t.filledSlots * t.entryFee); count++; });
                 
                 // Add staggered animation index for UI
                 container.innerHTML = `
@@ -739,16 +715,12 @@
                     else { actions = `<div class="badge" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,255,255,0.1); color:var(--text-muted); font-size:0.9rem;">${t.status.toUpperCase()}</div>`; }
 
                     let broadcastBtn = (t.status !== 'Completed' && t.status !== 'Cancelled') ? `<button class="btn btn-outline mb-4" style="flex:1; border-color:var(--accent); color:var(--accent); margin-bottom:24px; font-size:0.9rem; padding:12px 10px;" onclick="broadcastUI('${t.id}')"><i class="ph-bold ph-megaphone"></i> Broadcast</button>` : '';
-                    let typeBadge = t.eventCategory === 'free' ? `<span class="badge" style="background:rgba(217, 70, 239, 0.15); color:var(--accent); border:1px solid rgba(217, 70, 239, 0.3); margin-left:8px;">FREE EVENT</span>` : '';
 
                     html += `
                         <div class="glass card" style="padding:28px; animation-delay: ${index * 0.1}s;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                                <div style="display:flex; align-items:center;">
-                                    <span class="badge badge-game" style="font-size:0.8rem; padding:8px 16px;">${t.game}</span>
-                                    ${typeBadge}
-                                </div>
-                                <span class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:white; font-size:0.8rem; padding:8px 16px; margin-left:auto;">${t.status}</span>
+                                <span class="badge badge-game" style="font-size:0.8rem; padding:8px 16px;">${t.game}</span>
+                                <span class="badge" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); color:white; font-size:0.8rem; padding:8px 16px;">${t.status}</span>
                             </div>
                             <h3 style="font-family:var(--font-display); font-size:2.2rem; line-height:1.1; margin-bottom:16px;">${UI.escapeHTML(t.title)}</h3>
                             <div style="color:var(--text-muted); font-size:1.05rem; font-weight:600; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border);">
