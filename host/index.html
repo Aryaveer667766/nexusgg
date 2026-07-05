@@ -47,6 +47,7 @@
             line-height: 1.6; 
             overflow-x: hidden; 
             -webkit-font-smoothing: antialiased; 
+            padding-top: 90px;
             background-image: 
                 radial-gradient(circle at 85% 0%, rgba(217, 70, 239, 0.12) 0%, transparent 40%),
                 radial-gradient(circle at 15% 100%, rgba(0, 229, 255, 0.08) 0%, transparent 40%);
@@ -107,7 +108,7 @@
         .btn-gold:hover { background: var(--royal-gold); color: #000; box-shadow: 0 0 15px var(--gold-glow);}
 
         input, select, textarea { 
-            width: 100%; padding: 14px 18px; 
+            width: 100%; padding: 16px 18px; 
             background: rgba(0,0,0,0.5); 
             border: 1px solid var(--border); 
             border-radius: 8px; color: white; 
@@ -130,7 +131,7 @@
         .badge-game { background: rgba(0, 229, 255, 0.15); color: var(--primary); border: 1px solid rgba(0, 229, 255, 0.3); }
 
         nav { 
-            position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 5%; 
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 16px 5%; 
             display: flex; justify-content: space-between; align-items: center; 
             border-bottom: 1px solid var(--border); 
             background: rgba(3, 3, 5, 0.85); 
@@ -139,7 +140,6 @@
         .logo-container { display: flex; align-items: center; gap: 12px; }
         .logo-text { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: white; letter-spacing: 2px; text-transform: uppercase;}
         
-        /* Mobile Hamburger & Drawer Styles */
         .mobile-menu-btn { 
             display: none; background: transparent; border: none; color: white; 
             font-size: 2.2rem; cursor: pointer; transition: var(--transition);
@@ -165,7 +165,7 @@
         .drawer-close { font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
         .drawer-close:hover { color: var(--danger); transform: rotate(90deg); }
 
-        #app-content { margin-top: 90px; padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 60px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        #app-content { padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 60px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; } 
         .view-section.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
@@ -188,6 +188,7 @@
         @keyframes fadeUpStagger { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px var(--accent-glow); } 50% { box-shadow: 0 0 25px var(--accent-glow); } 100% { box-shadow: 0 0 10px var(--accent-glow); } }
         
         .skeleton { background: var(--surface-hover); background-image: linear-gradient(to right, var(--surface-hover) 0%, rgba(255,255,255,0.05) 20%, var(--surface-hover) 40%, var(--surface-hover) 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear; border-radius: 8px; }
         .empty-state { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--text-muted); }
@@ -209,7 +210,7 @@
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content { width: 95%; max-width: 600px; padding: 48px; position: relative; max-height: 90vh; overflow-y: auto; background: linear-gradient(180deg, rgba(20,20,25,1) 0%, rgba(10,10,15,1) 100%); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); } 
         .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
-        .close-modal { position: absolute; top: 24px; right: 24px; cursor: pointer; color: var(--text-muted); font-size: 1.8rem; transition: var(--transition); background: rgba(255,255,255,0.05); border-radius: 50%; padding: 8px; display: flex;} 
+        .close-modal { position: absolute; top: 24px; right: 24px; cursor: pointer; color: var(--text-muted); font-size: 1.8rem; transition: var(--transition); background: rgba(255,255,255,0.05); border-radius: 50%; padding: 8px; display: flex; z-index: 10;} 
         .close-modal:hover { color: var(--danger); background: rgba(255,42,95,0.1); transform: rotate(90deg); }
 
         .stat-box { text-align: center; padding: 32px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border); transition: var(--transition); position: relative; overflow: hidden;} 
@@ -236,7 +237,7 @@
         <div class="logo-container">
             <img id="nav-logo-img" src="" style="display:none; height:36px;">
             <i id="nav-logo-icon" class="ph-fill ph-crosshair" style="font-size: 36px; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow);"></i>
-            <span class="logo-text brand-name">NEXUS <span style="font-size:1.1rem; color:var(--royal-gold); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--gold-glow);">HOST</span></span>
+            <span class="logo-text brand-name">CHAMPZONE <span style="font-size:1.1rem; color:var(--royal-gold); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--gold-glow);">HOST</span></span>
         </div>
         <div class="nav-actions" id="nav-auth-container">
             <button class="btn btn-outline hide-mobile" style="border-color:var(--danger); color:var(--danger); padding: 10px 16px; font-size: 0.95rem;" onclick="logoutUser()"><i class="ph-bold ph-power"></i> Terminate</button>
@@ -248,7 +249,7 @@
     <div class="drawer-overlay" id="drawerOverlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-drawer" id="mobileDrawer">
         <div class="drawer-header">
-            <span class="logo-text brand-name" style="font-size:1.5rem;">NEXUS <span style="color:var(--royal-gold);">HOST</span></span>
+            <span class="logo-text brand-name" style="font-size:1.5rem;">CHAMPZONE <span style="color:var(--royal-gold);">HOST</span></span>
             <i class="ph-bold ph-x drawer-close" onclick="toggleMobileMenu()"></i>
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px; flex: 1;">
@@ -268,7 +269,20 @@
     <div id="toast-container"></div>
     <div id="modal-container" class="modal-overlay"><div class="modal-content" id="modal-body"></div></div>
 
+    <!-- Admin Broadcast Container -->
+    <div id="global-broadcast-container" style="display: none; padding: 0 5%; max-width: 1400px; margin: 0 auto 24px auto; z-index: 500; position: relative;"></div>
+
     <main id="app-content">
+
+        <!-- Strict Maintenance Lock Screen -->
+        <section id="view-maintenance" class="view-section">
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; text-align:center;">
+                <i class="ph-duotone ph-warning-octagon" style="font-size:6rem; color:var(--warning); margin-bottom:20px;"></i>
+                <h1 style="font-family:var(--font-display); font-size:4rem; margin-bottom:10px; text-transform:uppercase; letter-spacing:2px; color:var(--warning);">System Offline</h1>
+                <p style="color:var(--text-muted); font-size:1.2rem; max-width:500px;">The arena is currently undergoing scheduled maintenance and upgrades. Please stand by for deployment.</p>
+            </div>
+        </section>
+
         <section id="view-host-dash" class="view-section active">
             <div class="dashboard-layout">
                 <!-- Desktop Sidebar -->
@@ -295,14 +309,14 @@
         import { getFirestore, collection, doc, getDoc, getDocs, query, where, addDoc, updateDoc, deleteDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
-  apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
-  authDomain: "champzonegaming.firebaseapp.com",
-  projectId: "champzonegaming",
-  storageBucket: "champzonegaming.firebasestorage.app",
-  messagingSenderId: "96825707375",
-  appId: "1:96825707375:web:88fbce144131f0670ef69a",
-  measurementId: "G-7Q9RS046FV"
-};
+            apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
+            authDomain: "champzonegaming.firebaseapp.com",
+            projectId: "champzonegaming",
+            storageBucket: "champzonegaming.firebasestorage.app",
+            messagingSenderId: "96825707375",
+            appId: "1:96825707375:web:88fbce144131f0670ef69a",
+            measurementId: "G-7Q9RS046FV"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -311,7 +325,7 @@
         let appState = {
             user: null, userData: null,
             games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"],
-            brandName: "NEXUS", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, upiId: "gpay-11245353662@okbizaxis"
+            brandName: "CHAMPZONE", brandLogo: "", platformFeePercent: 10, withdrawalFeePercent: 5, hostCreationFee: 50, upiId: "gpay-11245353662@okbizaxis", maintenanceMode: false
         };
 
         const UI = {
@@ -362,14 +376,77 @@
             }
         };
 
+        // Listen for Admin Global Broadcasts
+        onSnapshot(doc(db, "platform", "broadcast"), (docSnap) => {
+            const container = document.getElementById('global-broadcast-container');
+            if(!container) return;
+            if (docSnap.exists()) {
+                const b = docSnap.data();
+                if (b.active && b.message) {
+                    let bg, border, icon, title, glow;
+                    if (b.intensity === 'alert') { 
+                        bg = 'linear-gradient(135deg, rgba(255, 42, 95, 0.15) 0%, rgba(255, 42, 95, 0.05) 100%)'; 
+                        border = 'var(--danger)'; 
+                        icon = 'ph-warning-octagon ph-fill'; 
+                        title = 'SYSTEM ALERT'; 
+                        glow = 'rgba(255, 42, 95, 0.3)';
+                    }
+                    else if (b.intensity === 'important') { 
+                        bg = 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%)'; 
+                        border = 'var(--warning)'; 
+                        icon = 'ph-warning ph-fill'; 
+                        title = 'IMPORTANT NOTICE'; 
+                        glow = 'rgba(245, 158, 11, 0.3)';
+                    }
+                    else { 
+                        bg = 'linear-gradient(135deg, rgba(0, 229, 255, 0.15) 0%, rgba(0, 229, 255, 0.05) 100%)'; 
+                        border = 'var(--primary)'; 
+                        icon = 'ph-info ph-fill'; 
+                        title = 'PLATFORM TRANSMISSION'; 
+                        glow = 'rgba(0, 229, 255, 0.3)';
+                    }
+
+                    container.innerHTML = `
+                        <div style="background: ${bg}; border: 1px solid ${border}; border-left: 6px solid ${border}; padding: 20px 24px; border-radius: 12px; display: flex; align-items: flex-start; gap: 18px; box-shadow: 0 10px 30px ${glow}; backdrop-filter: blur(12px); animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);">
+                            <div style="animation: pulseGlow 2s infinite; border-radius: 50%; display: flex; flex-shrink: 0;">
+                                <i class="${icon}" style="font-size: 2.4rem; color: ${border}; filter: drop-shadow(0 0 10px ${border});"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 2px; color: ${border}; margin-bottom: 6px;">${title}</div>
+                                <div style="font-size: 1.05rem; line-height: 1.6; color: white; font-weight: 500;">${UI.escapeHTML(b.message)}</div>
+                            </div>
+                        </div>
+                    `;
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            }
+        });
+
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
                 if(data.brandName) { appState.brandName = data.brandName; document.querySelectorAll('.brand-name').forEach(el => el.innerHTML = `${appState.brandName.toUpperCase()} <span style="font-size:1.1rem; color:var(--royal-gold); font-weight:700; vertical-align:super; letter-spacing:1px; text-shadow: 0 0 10px var(--gold-glow);">HOST</span>`); }
                 if(data.platformFeePercent !== undefined) appState.platformFeePercent = parseInt(data.platformFeePercent);
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseInt(data.withdrawalFeePercent);
-                if(data.hostCreationFee !== undefined) appState.hostCreationFee = parseInt(data.hostCreationFee);
+                if(data.hostCreationFee !== undefined) {
+                    appState.hostCreationFee = parseInt(data.hostCreationFee);
+                    const cfEl = document.getElementById('creation-fee-display');
+                    if(cfEl) cfEl.innerText = `₹${appState.hostCreationFee}`;
+                }
                 if(data.brandLogo) { document.getElementById('nav-logo-icon').style.display = 'none'; const img = document.getElementById('nav-logo-img'); img.src = data.brandLogo; img.style.display = 'block'; }
+                
+                if(data.maintenanceMode !== undefined) {
+                    appState.maintenanceMode = data.maintenanceMode;
+                    if(appState.maintenanceMode && (!appState.userData || appState.userData.role !== 'admin')) {
+                        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+                        document.getElementById('view-maintenance').classList.add('active');
+                    } else if (!appState.maintenanceMode && document.getElementById('view-maintenance').classList.contains('active')) {
+                        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+                        document.getElementById('view-host-dash').classList.add('active');
+                    }
+                }
             }
         });
 
@@ -461,36 +538,71 @@
                             <div class="flex-between mb-4" style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap:16px; margin-bottom:40px; border-bottom:1px solid var(--border); padding-bottom:24px;">
                                 <h2 style="font-family:var(--font-display); font-size:3rem; margin:0; letter-spacing:1px; text-transform:uppercase;">Deploy Event</h2>
                                 <div class="badge" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); font-size:0.9rem; padding:10px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-                                    Creation Protocol Fee: <strong style="${hostFee > 0 ? 'color:var(--danger)' : 'color:var(--success)'}; margin-left:8px; font-size:1.1rem;">₹${hostFee}</strong>
+                                    Creation Protocol Fee: <strong style="${hostFee > 0 ? 'color:var(--danger)' : 'color:var(--success)'}; margin-left:8px; font-size:1.1rem;" id="creation-fee-display">₹${hostFee}</strong>
                                 </div>
                             </div>
                             
                             <form id="form-create-t">
-                                <div class="grid-cards" style="grid-template-columns: 1fr 1fr; gap:24px; margin-top:0;">
-                                    <div class="form-group" style="grid-column: 1 / -1;"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Operation Title</label><input type="text" id="c-title" required style="padding:16px;"></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Combat Sector (Game)</label><select id="c-game" required style="padding:16px;">${gameOpts}</select></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Format (Team Size)</label><select id="c-team-size" required style="padding:16px;"><option value="1">Solo</option><option value="2">Duo</option><option value="4">Squad</option></select></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">T-Zero (Start Time)</label><input type="datetime-local" id="c-time" required style="padding:16px;"></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Entry Fee per Team (₹)</label><input type="number" id="c-fee" value="50" required style="padding:16px;"></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Prize Pool (₹)</label><input type="number" id="c-prize" value="1000" required style="padding:16px;"></div>
-                                    <div class="form-group"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Max Slots (Teams)</label><input type="number" id="c-slots" value="25" required style="padding:16px;"></div>
-                                    
-                                    <div class="form-group" style="margin-top:10px;">
-                                        <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Upload Event Banner</label>
-                                        <div style="background:rgba(0,0,0,0.4); border:1px dashed var(--accent); border-radius:12px; padding:24px; text-align:center; position:relative;">
-                                            <input type="file" id="c-banner-file" accept="image/*" required style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
-                                            <div id="c-banner-placeholder">
-                                                <i class="ph-duotone ph-image" style="font-size:3rem; color:var(--accent); margin-bottom:12px;"></i>
-                                                <div style="font-weight:600; color:white; font-size:1.1rem;">Tap to Upload Banner</div>
-                                            </div>
-                                            <div id="c-banner-preview" style="display:none; position:relative; z-index:5;"></div>
-                                            <input type="hidden" id="c-banner-b64">
-                                        </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                                    <div style="grid-column: 1 / -1; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-text-aa" style="color:var(--accent); font-size:1.2rem;"></i> Operation Title</label>
+                                        <input type="text" id="c-title" placeholder="e.g. BGMI Midnight Showdown" required style="padding:16px; border:none; border-bottom:2px solid var(--border); border-radius:0; background:transparent;">
                                     </div>
 
-                                    <div class="form-group" style="grid-column: 1 / -1; margin-top:10px;"><label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Operation Brief (Rules, Details)</label><textarea id="c-desc" rows="5" placeholder="Enter special rules, map selection, or payout breakdown..." required style="padding:16px;"></textarea></div>
+                                    <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-game-controller" style="color:var(--accent); font-size:1.2rem;"></i> Combat Sector</label>
+                                        <select id="c-game" required style="padding:16px; border:none; border-bottom:2px solid var(--border); border-radius:0; background:transparent;">${gameOpts}</select>
+                                    </div>
+
+                                    <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-users" style="color:var(--accent); font-size:1.2rem;"></i> Format</label>
+                                        <select id="c-team-size" required style="padding:16px; border:none; border-bottom:2px solid var(--border); border-radius:0; background:transparent;">
+                                            <option value="1">Solo Operator</option>
+                                            <option value="2">Duo Squad</option>
+                                            <option value="4">Full Squad (4)</option>
+                                        </select>
+                                    </div>
+
+                                    <div style="grid-column: 1 / -1; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-clock" style="color:var(--accent); font-size:1.2rem;"></i> T-Zero (Start Time)</label>
+                                        <input type="datetime-local" id="c-time" required style="padding:16px; border:none; border-bottom:2px solid var(--border); border-radius:0; background:transparent; color:white;">
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-4 w-100" id="btn-c-sub" style="width:100%; margin-top:40px; padding:18px; font-size:1.2rem; box-shadow: 0 15px 30px rgba(217,70,239,0.3);"><i class="ph-bold ph-rocket-launch"></i> Authorize & Initialize Event</button>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; background: linear-gradient(135deg, rgba(0,229,255,0.05), transparent); padding: 24px; border-radius: 16px; border: 1px solid rgba(0,229,255,0.2);">
+                                    <div>
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--primary); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-ticket" style="font-size:1.2rem;"></i> Entry Fee / Team (₹)</label>
+                                        <input type="number" id="c-fee" value="50" required style="padding:16px; font-family:var(--font-display); font-size:1.5rem; font-weight:700; background:rgba(0,0,0,0.5);">
+                                    </div>
+                                    <div>
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--success); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-trophy" style="font-size:1.2rem;"></i> Prize Pool (₹)</label>
+                                        <input type="number" id="c-prize" value="1000" required style="padding:16px; font-family:var(--font-display); font-size:1.5rem; font-weight:700; background:rgba(0,0,0,0.5); border-color:var(--success);">
+                                    </div>
+                                    <div style="grid-column: 1 / -1;">
+                                        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-hash" style="font-size:1.2rem;"></i> Max Slots (Teams)</label>
+                                        <input type="number" id="c-slots" value="25" required style="padding:16px; background:rgba(0,0,0,0.5);">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:24px;">
+                                    <label style="display:block; margin-bottom:10px; color:var(--text-muted); font-weight:600; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;">Upload Event Banner</label>
+                                    <div style="background:rgba(0,0,0,0.4); border:1px dashed var(--accent); border-radius:12px; padding:32px; text-align:center; position:relative; overflow:hidden;">
+                                        <input type="file" id="c-banner-file" accept="image/*" required style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
+                                        <div id="c-banner-placeholder">
+                                            <i class="ph-duotone ph-image" style="font-size:3rem; color:var(--accent); margin-bottom:12px;"></i>
+                                            <div style="font-weight:600; color:white; font-size:1.1rem;">Tap to Upload Banner Image</div>
+                                        </div>
+                                        <div id="c-banner-preview" style="display:none; position:relative; z-index:5;"></div>
+                                        <input type="hidden" id="c-banner-b64">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:40px;">
+                                    <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--text-muted); font-weight:700; letter-spacing:1px; font-size:0.85rem; text-transform:uppercase;"><i class="ph-fill ph-scroll" style="color:var(--accent); font-size:1.2rem;"></i> Operation Brief & Rules</label>
+                                    <textarea id="c-desc" rows="5" placeholder="Enter special rules, map selection, or payout breakdown here..." required style="padding:16px; background:rgba(0,0,0,0.4); border-radius:12px;"></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary mt-4 w-100" id="btn-c-sub" style="width:100%; padding:18px; font-size:1.2rem; box-shadow: 0 15px 30px rgba(217,70,239,0.3);"><i class="ph-bold ph-rocket-launch"></i> Authorize & Initialize Event</button>
                             </form>
                         </div>
                     `;
@@ -519,7 +631,7 @@
                                 document.getElementById('c-banner-placeholder').style.display = 'none';
                                 const preview = document.getElementById('c-banner-preview');
                                 preview.style.display = 'block';
-                                preview.innerHTML = `<img src="${dataUrl}" style="width:100%; max-height:200px; object-fit:cover; border-radius:8px; border:1px solid var(--border);">`;
+                                preview.innerHTML = `<img src="${dataUrl}" style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; border:1px solid var(--border);">`;
                             }
                             img.src = event.target.result;
                         }
@@ -675,8 +787,9 @@
         };
 
         window.kickParticipant = async (rId, tId) => {
-            if(!confirm("COMMAND CONFIRMATION:\nAre you sure you want to remove this operator from the operation? Entry fees are not auto-refunded.")) return;
-            try { await deleteDoc(doc(db, "registrations", rId)); await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(-1) }); UI.showToast("Operator removed."); UI.closeModal(); loadHostTournaments(); } catch(e) { UI.showToast("Failed to remove.", "error"); }
+            UI.confirm("Are you sure you want to remove this operator from the operation? Entry fees are not auto-refunded.", async () => {
+                try { await deleteDoc(doc(db, "registrations", rId)); await updateDoc(doc(db, "tournaments", tId), { filledSlots: increment(-1) }); UI.showToast("Operator removed."); UI.closeModal(); loadHostTournaments(); } catch(e) { UI.showToast("Failed to remove.", "error"); }
+            });
         };
 
         window.openDM = (tId, targetUid, targetName) => {
@@ -773,7 +886,8 @@
                 
                 <div style="background:linear-gradient(135deg, rgba(251,191,36,0.1) 0%, rgba(251,191,36,0.02) 100%); border:1px solid rgba(251,191,36,0.3); padding:24px; border-radius:12px; margin-bottom:32px;">
                     <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:8px; font-weight:500;">Available Escrow: <strong style="color:white; font-size:1.4rem; font-family:var(--font-display);">₹${appState.userData.wallet.coins || 0}</strong></p>
-                    <p style="color:var(--royal-gold); font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;"><i class="ph-bold ph-info"></i> Standard ${appState.withdrawalFeePercent}% Platform Fee applies</p>
+                    <p style="color:var(--danger); font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;"><i class="ph-bold ph-info"></i> Standard ${appState.withdrawalFeePercent}% Platform Fee applies</p>
+                    <p style="color:var(--warning); font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;"><i class="ph-bold ph-warning-circle"></i> Minimum Payout: ₹50</p>
                 </div>
                 
                 <div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Amount (₹)</label><input type="number" id="w-amt" min="50" max="${appState.userData.wallet.coins || 0}" required style="padding:16px; font-size:1.1rem; font-weight:700;"></div>
@@ -787,7 +901,7 @@
             `);
             window.tW = () => { const isB = document.getElementById('w-met').value === 'bank'; document.getElementById('w-u-f').style.display = isB ? 'none' : 'block'; document.getElementById('w-b-f').style.display = isB ? 'block' : 'none'; };
         };
-        window.subW = async () => { const amt = parseInt(document.getElementById('w-amt').value); if(!amt || amt > (appState.userData.wallet.coins||0) || amt < 50) return UI.showToast("Invalid amount", "error"); const met = document.getElementById('w-met').value; const det = met === 'upi' ? `UPI: ${document.getElementById('w-upi').value}` : `Acc: ${document.getElementById('w-acc').value}, IFSC: ${document.getElementById('w-ifsc').value}`; let feeMultiplier = 1 - (appState.withdrawalFeePercent / 100); let finalAmt = Math.floor(amt * feeMultiplier); try { await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-amt) }); await addDoc(collection(db, "withdrawals"), { userId: appState.user.uid, username: appState.userData.username, requestedAmount: amt, finalAmount: finalAmt, method: met, details: det, status: 'pending', createdAt: new Date().toISOString() }); UI.showToast("Payout Authorized."); UI.closeModal(); if(document.querySelector('[data-tab="host-wallet"]')?.classList.contains('active')) loadWalletHistory(); } catch(e) {} };
+        window.subW = async () => { const amt = parseInt(document.getElementById('w-amt').value); if(!amt || amt > (appState.userData.wallet.coins||0) || amt < 50) return UI.showToast("Invalid Amount (Min ₹50)", "error"); const met = document.getElementById('w-met').value; const det = met === 'upi' ? `UPI: ${document.getElementById('w-upi').value}` : `Acc: ${document.getElementById('w-acc').value}, IFSC: ${document.getElementById('w-ifsc').value}`; let feeMultiplier = 1 - (appState.withdrawalFeePercent / 100); let finalAmt = Math.floor(amt * feeMultiplier); try { await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-amt) }); await addDoc(collection(db, "withdrawals"), { userId: appState.user.uid, username: appState.userData.username, requestedAmount: amt, finalAmount: finalAmt, method: met, details: det, status: 'pending', createdAt: new Date().toISOString() }); UI.showToast("Payout Authorized."); UI.closeModal(); if(document.querySelector('[data-tab="host-wallet"]')?.classList.contains('active')) loadWalletHistory(); } catch(e) {} };
 
         const loadWalletHistory = async () => {
             const container = document.getElementById('wallet-history');
