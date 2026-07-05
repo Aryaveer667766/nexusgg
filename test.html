@@ -46,7 +46,7 @@
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            padding-top: 100px; /* FIXED: Global clearance for fixed nav */
+            padding-top: 90px; /* Global clearance for fixed nav */
         }
 
         .d-none { display: none !important; }
@@ -71,8 +71,7 @@
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px var(--primary-glow); } 50% { box-shadow: 0 0 30px var(--primary-glow); } 100% { box-shadow: 0 0 10px var(--primary-glow); } }
-        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px var(--primary-glow); } 50% { box-shadow: 0 0 25px var(--primary-glow); } 100% { box-shadow: 0 0 10px var(--primary-glow); } }
 
         .typewriter-cursor { animation: blink 1s step-end infinite; color: var(--primary); font-weight: 800; }
         
@@ -159,7 +158,7 @@
         .drawer-close { font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
         .drawer-close:hover { color: var(--danger); transform: rotate(90deg); }
 
-        #app-content { padding: 0 5%; min-height: calc(100vh - 90px); padding-bottom: 0px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        #app-content { padding: 20px 5%; min-height: calc(100vh - 90px); padding-bottom: 0px; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
@@ -306,7 +305,7 @@
     </div>
 
     <!-- Admin Broadcast Container -->
-    <div id="global-broadcast-container" style="display: none; padding: 0 5%; max-width: 1400px; margin: 20px auto 24px auto; z-index: 500; position: relative;"></div>
+    <div id="global-broadcast-container" style="display: none; padding: 0 5%; max-width: 1400px; margin: 0 auto 24px auto; z-index: 500; position: relative;"></div>
 
     <main id="app-content">
         
@@ -438,6 +437,12 @@
             upiId: "champzonegaming@oksbi", games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"],
             brandName: "CHAMPZONE", brandLogo: "", clanCost: 50, withdrawalFeePercent: 5, maintenanceMode: false
         };
+
+        let tourneysUnsubscribe = null;
+        let walletUnsubscribe = null;
+        let ticketsUnsubscribe = null;
+        let activeChatUnsubscribe = null;
+        let clanUnsubscribe = null;
 
         const Sound = {
             playSuccess: () => {
@@ -732,8 +737,8 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
-                        if (role === 'admin') { window.location.href = 'admin.html'; return; } 
-                        else if (role === 'host') { window.location.href = 'host.html'; return; }
+                        if (role === 'admin') { window.location.href = 'admin'; return; } 
+                        else if (role === 'host') { window.location.href = 'host'; return; }
                         updateNav();
                         
                         // Force navigation to dash on load if logged in (respects maintenance mode)
@@ -811,7 +816,7 @@
                 const newData = { uid: userCred.user.uid, email: email, username: username, phone: phone, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
-                if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
+                if (role === 'host') window.location.href = 'host'; else navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
@@ -903,7 +908,7 @@
                         <div class="grid-cards" style="margin-top:32px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
                             <div class="stat-box glass" style="animation-delay:0.1s;">
                                 <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; font-weight:700; letter-spacing:1.5px;">Balance</div>
-                                <div class="stat-value" style="color:var(--success); text-shadow:0 0 20px rgba(0,255,157,0.3);">₹${appState.userData.wallet.coins || 0}</div>
+                                <div class="stat-value" style="color:var(--success); text-shadow:0 0 20px rgba(0,255,157,0.3);">₹${appState.userData.wallet?.coins || 0}</div>
                             </div>
                             <div class="stat-box glass" style="animation-delay:0.2s;">
                                 <div style="color:var(--text-muted); font-size:0.95rem; text-transform:uppercase; font-weight:700; letter-spacing:1.5px;">Total Deployments</div>
@@ -937,7 +942,7 @@
                             <h2 style="font-family:var(--font-display); font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 1px; text-transform:uppercase; margin:0;">My Deployments</h2>
                         </div>
                         <div id="player-my-list" class="grid-cards"><div class="skeleton" style="height:250px;"></div></div>`;
-                    window.loadMyTournaments();
+                    loadMyTournaments();
                 } else if(tab === 'player-clans') {
                     container.innerHTML = `
                         <div style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
@@ -953,7 +958,7 @@
                         <div class="glass text-center" style="padding:80px 20px; position:relative; overflow:hidden;">
                             <div style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:300px; height:150px; background:var(--success); opacity:0.1; filter:blur(70px);"></div>
                             <p style="color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; font-size:0.95rem; font-weight:700; margin-bottom:16px;">Available Funds</p>
-                            <h1 style="font-size: clamp(3rem, 12vw, 6rem); margin:0 0 32px 0; color:white; font-family:var(--font-display); line-height:1; text-shadow:0 10px 30px rgba(0,255,157,0.3);">₹${appState.userData.wallet.coins || 0}</h1>
+                            <h1 style="font-size: clamp(3rem, 12vw, 6rem); margin:0 0 32px 0; color:white; font-family:var(--font-display); line-height:1; text-shadow:0 10px 30px rgba(0,255,157,0.3);">₹${appState.userData.wallet?.coins || 0}</h1>
                             <div class="wallet-actions" style="display:flex; gap:20px; justify-content:center; position:relative; z-index:2;">
                                 <button class="btn btn-primary" style="background:var(--success); box-shadow:0 10px 30px rgba(0,255,157,0.3); color:#000; padding:14px 32px;" onclick="rechargeWalletUI()"><i class="ph-bold ph-plus"></i> Deposit</button>
                                 <button class="btn btn-outline" style="border-color:var(--success); color:var(--success); padding:14px 32px;" onclick="withdrawWalletUI()"><i class="ph-bold ph-arrow-up-right"></i> Withdraw</button>
@@ -962,7 +967,7 @@
                         <h3 class="mb-4" style="margin-top:48px; font-family:var(--font-display); font-size: clamp(1.8rem, 5vw, 2.2rem); text-transform:uppercase; letter-spacing:1px;">Transaction Ledger</h3>
                         <div id="wallet-history"><div class="skeleton" style="height:200px;"></div></div>
                     `;
-                    window.loadWalletHistory();
+                    loadWalletHistory();
                 } else if(tab === 'player-support') {
                     container.innerHTML = `
                         <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; border-bottom:1px solid var(--border); padding-bottom:16px; flex-wrap:wrap; gap:12px;">
@@ -970,7 +975,7 @@
                             <button class="btn btn-primary" style="padding:12px 24px; font-size:1rem; box-shadow:0 10px 25px var(--primary-glow);" onclick="createTicketUI()"><i class="ph-bold ph-chat-teardrop-text"></i> Open Line</button>
                         </div>
                         <div id="support-list"><div class="skeleton" style="height:250px;"></div></div>`;
-                    window.loadSupportTickets();
+                    loadSupportTickets();
                 }
             });
         };
@@ -979,9 +984,12 @@
             const container = document.getElementById(containerId);
             if (!container) return;
             
-            if(window.unsubTournaments) window.unsubTournaments();
-            window.unsubTournaments = onSnapshot(collection(db, "tournaments"), (snap) => {
+            if (tourneysUnsubscribe) tourneysUnsubscribe();
+            
+            const q = collection(db, "tournaments");
+            tourneysUnsubscribe = onSnapshot(q, (snap) => {
                 let docs = []; snap.forEach(d => docs.push({id: d.id, ...d.data()})); 
+                
                 docs = docs.filter(t => t.status === 'Upcoming' || t.status === 'Registration Open');
                 
                 const sortDropdown = document.getElementById('sort-tourneys');
@@ -1046,7 +1054,9 @@
                     `;
                 });
                 container.innerHTML = html || UI.emptyState('ph-radar', 'No Active Events', 'The arena is currently silent. Check back later.');
-            }, (error) => { container.innerHTML = `<div style="padding:40px; text-align:center;"><p style="color:var(--danger)">Data Blocked or Network Error</p></div>`; });
+            }, (err) => {
+                container.innerHTML = `<div style="padding:40px; text-align:center;"><p style="color:var(--danger)">Data Blocked by Rules or Network Error</p></div>`;
+            });
         };
 
         window.viewTDetails = async (id) => {
@@ -1218,297 +1228,693 @@
             }
         };
 
-        window.loadMyTournaments = () => {
+        const loadMyTournaments = async () => {
             const container = document.getElementById('player-my-list');
-            if (!container) return;
+            try {
+                const q1 = await getDocs(query(collection(db, "registrations"), where("userId", "==", appState.user.uid)));
+                const q2 = await getDocs(query(collection(db, "registrations"), where("memberUids", "array-contains", appState.user.uid)));
+                
+                let uniqueRegs = new Map();
+                q1.forEach(d => uniqueRegs.set(d.id, {rId: d.id, ...d.data()}));
+                q2.forEach(d => uniqueRegs.set(d.id, {rId: d.id, ...d.data()}));
+                
+                let regs = Array.from(uniqueRegs.values());
+                
+                if(regs.length === 0) { container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); return; }
+                regs.sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt));
+                let html = '';
+                
+                for(let rData of regs) {
+                    const tDoc = await getDoc(doc(db, "tournaments", rData.tournamentId));
+                    if(tDoc.exists()) {
+                        const t = tDoc.data();
+                        let roomHtml = t.roomDetails && (t.status === 'Live' || t.status === 'Room Released') ? `
+                            <div style="padding:24px; background:rgba(0, 255, 157, 0.05); border:1px solid rgba(0, 255, 157, 0.2); border-radius:12px; margin-bottom:24px;">
+                                <div style="color:var(--success); font-weight:800; font-size:0.9rem; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:16px;"><i class="ph-bold ph-lock-key-open"></i> Secure Room Intel</div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                                    <span style="font-family:var(--font-mono); font-size:1.25rem; color:white; font-weight:700;">ID: ${t.roomDetails.id}</span>
+                                    <span style="font-family:var(--font-mono); font-size:1.25rem; color:var(--primary); font-weight:700;">PASS: ${t.roomDetails.pass}</span>
+                                </div>
+                            </div>` : '';
+                        
+                        let announcementHtml = t.latestAnnouncement ? `
+                            <div style="padding:20px; background:rgba(217, 70, 239, 0.1); border-left:4px solid var(--accent); border-radius:8px; margin-bottom:24px;">
+                                <div style="color:var(--accent); font-weight:800; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;"><i class="ph-bold ph-megaphone"></i> HOST BROADCAST</div>
+                                <div style="color:white; font-size:1.05rem; line-height:1.5;">${UI.escapeHTML(t.latestAnnouncement)}</div>
+                            </div>` : '';
 
-            if (window.unsubMyRegs) window.unsubMyRegs();
-            window.unsubMyRegs = onSnapshot(query(collection(db, "registrations"), where("memberUids", "array-contains", appState.user.uid)), async (rSnap) => {
-                let tIds = []; let regMap = new Map();
-                rSnap.forEach(d => { 
-                    tIds.push(d.data().tournamentId); 
-                    regMap.set(d.data().tournamentId, { rId: d.id, ...d.data() }); 
-                });
-                tIds = [...new Set(tIds)];
-
-                if (tIds.length === 0) { 
-                    container.innerHTML = UI.emptyState('ph-ghost', 'No Deployments', 'You are not active in any operations.'); 
-                    return; 
-                }
-
-                if (window.unsubMyTourneys) window.unsubMyTourneys();
-                window.unsubMyTourneys = onSnapshot(collection(db, "tournaments"), (tSnap) => {
-                    let html = ''; let count = 0;
-                    tSnap.forEach(d => {
-                        if (tIds.includes(d.id)) {
-                            count++;
-                            const t = d.data();
-                            const rData = regMap.get(d.id);
-                            let roomHtml = t.roomDetails && (t.status === 'Live' || t.status === 'Room Released') ? `
-                                <div style="padding:24px; background:rgba(0, 255, 157, 0.05); border:1px solid rgba(0, 255, 157, 0.2); border-radius:12px; margin-bottom:24px; animation: pulseGlow 2s infinite;">
-                                    <div style="color:var(--success); font-weight:800; font-size:0.9rem; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:16px;"><i class="ph-bold ph-lock-key-open"></i> Secure Room Intel</div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-                                        <span style="font-family:var(--font-mono); font-size:1.25rem; color:white; font-weight:700;">ID: ${t.roomDetails.id}</span>
-                                        <span style="font-family:var(--font-mono); font-size:1.25rem; color:var(--primary); font-weight:700;">PASS: ${t.roomDetails.pass}</span>
-                                    </div>
-                                </div>` : '';
-                            
-                            let announcementHtml = t.latestAnnouncement ? `
-                                <div style="padding:20px; background:rgba(217, 70, 239, 0.1); border-left:4px solid var(--accent); border-radius:8px; margin-bottom:24px;">
-                                    <div style="color:var(--accent); font-weight:800; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;"><i class="ph-bold ph-megaphone"></i> HOST BROADCAST</div>
-                                    <div style="color:white; font-size:1.05rem; line-height:1.5;">${UI.escapeHTML(t.latestAnnouncement)}</div>
-                                </div>` : '';
-
-                            let btnAction = '';
-                            if(t.status === 'Completed' || t.status === 'Pending Settlement') {
-                                btnAction = `<button class="btn btn-primary" style="padding:14px; font-size:1rem; border-color:var(--success); background:var(--success); color:#000;" onclick="viewResults('${d.id}')"><i class="ph-bold ph-trophy"></i> View Results</button>`;
-                            } else {
-                                btnAction = `<button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--primary); color:var(--primary);" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}', '${d.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-chat-circle"></i> Secure Channel (Host)</button>`;
-                            }
-
-                            let proofAction = '';
-                            if(t.status === 'Live' || t.status === 'Pending Settlement' || t.status === 'Room Released') {
-                                proofAction = `<button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--accent); color:var(--accent); margin-top:12px;" onclick="uploadProofUI('${rData.rId}')"><i class="ph-bold ph-upload-simple"></i> Upload Placement Proof</button>`;
-                            }
-
-                            html += `
-                                <div class="glass card" style="padding:32px;">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                                        <span class="badge badge-game" style="font-size:0.85rem; padding:8px 16px;">${t.game}</span>
-                                        <span class="badge" style="background:rgba(255,255,255,0.05); color:white; border:1px solid var(--border); box-shadow:none;">${t.status}</span>
-                                    </div>
-                                    <h3 style="font-family:var(--font-display); font-size:2rem; margin-bottom:24px; line-height:1.2;">${UI.escapeHTML(t.title)}</h3>
-                                    ${announcementHtml}
-                                    ${roomHtml}
-                                    <div style="display:grid; grid-template-columns: 1fr; gap:12px; margin-top:auto;">
-                                        ${btnAction}
-                                        ${proofAction}
-                                    </div>
-                                </div>`;
+                        let btnAction = '';
+                        if(t.status === 'Completed' || t.status === 'Pending Settlement') {
+                            btnAction = `<button class="btn btn-primary" style="padding:14px; font-size:1rem; border-color:var(--success); background:var(--success); color:#000;" onclick="viewResults('${tDoc.id}')"><i class="ph-bold ph-trophy"></i> View Results</button>`;
+                        } else {
+                            btnAction = `<button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--primary); color:var(--primary);" onclick="openDM('${t.hostId}', '${UI.escapeHTML(t.hostName || 'Host')}', '${tDoc.id}', '${UI.escapeHTML(t.title)}')"><i class="ph-bold ph-chat-circle"></i> Secure Channel (Host)</button>`;
                         }
-                    });
-                    container.innerHTML = html;
-                });
+
+                        let proofAction = '';
+                        if(t.status === 'Live' || t.status === 'Pending Settlement' || t.status === 'Room Released') {
+                            proofAction = `<button class="btn btn-outline" style="padding:14px; font-size:1rem; border-color:var(--accent); color:var(--accent); margin-top:12px;" onclick="uploadProofUI('${rData.rId}')"><i class="ph-bold ph-upload-simple"></i> Upload Placement Proof</button>`;
+                        }
+
+                        html += `
+                            <div class="glass card" style="padding:32px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                                    <span class="badge badge-game" style="font-size:0.85rem; padding:8px 16px;">${t.game}</span>
+                                    <span class="badge" style="background:rgba(255,255,255,0.05); color:white; border:1px solid var(--border); box-shadow:none;">${t.status}</span>
+                                </div>
+                                <h3 style="font-family:var(--font-display); font-size:2rem; margin-bottom:24px; line-height:1.2;">${UI.escapeHTML(t.title)}</h3>
+                                ${announcementHtml}
+                                ${roomHtml}
+                                <div style="display:grid; grid-template-columns: 1fr; gap:12px; margin-top:auto;">
+                                    ${btnAction}
+                                    ${proofAction}
+                                </div>
+                            </div>`;
+                    }
+                }
+                container.innerHTML = html;
+            } catch(e) { container.innerHTML = `<p>Error loading.</p>`; }
+        };
+
+        window.uploadProofUI = (rId) => {
+            UI.showModal(`
+                <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom:16px; text-transform:uppercase; letter-spacing:1px; color:var(--accent);">Placement Proof</h3>
+                <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:32px;">Upload a screenshot of your final match placement to guarantee your payout in Escrow. Optional, but highly recommended.</p>
+                <div class="form-group" style="margin-bottom:24px; padding:24px; border:1px dashed var(--accent); border-radius:12px; background:rgba(217, 70, 239, 0.05); text-align:center;">
+                    <input type="file" id="proof-file" accept="image/*" style="padding:10px; border:none; background:transparent;">
+                    <div id="proof-preview" class="mt-2 text-center" style="margin-top:16px;"></div>
+                </div>
+                <button class="btn btn-primary w-100" style="width:100%; padding:16px; font-size:1.15rem; background:var(--accent); box-shadow:0 15px 30px rgba(217,70,239,0.3);" id="btn-proof-submit" onclick="submitProof('${rId}')"><i class="ph-bold ph-upload-simple"></i> Encrypt & Upload Proof</button>
+            `);
+            
+            document.getElementById('proof-file').addEventListener('change', function(e) {
+                const file = e.target.files[0]; if(!file) return;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 1280; const MAX_HEIGHT = 720;
+                        let width = img.width; let height = img.height;
+                        if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
+                        else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                        canvas.width = width; canvas.height = height;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                        
+                        window._tempProofB64 = canvas.toDataURL('image/jpeg', 0.5);
+                        document.getElementById('proof-preview').innerHTML = `<img src="${window._tempProofB64}" style="max-height:150px; border-radius:8px; border:1px solid var(--border);">`;
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
             });
         };
 
-        window.openDM = (targetUid, targetName, tourneyId, tourneyTitle) => {
-            const chatId = tourneyId + '_' + [appState.user.uid, targetUid].sort().join('_');
-            UI.showModal(`
-                <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); flex-shrink: 0;">
-                    <h3 style="margin:0; font-family:var(--font-display); font-size: clamp(1.5rem, 5vw, 2rem); display:flex; align-items:center; gap:12px; color:white;">
-                        <i class="ph-fill ph-lock-key" style="color:var(--primary); filter:drop-shadow(0 0 10px var(--primary-glow));"></i> 
-                        ${UI.escapeHTML(tourneyTitle)}
-                    </h3>
-                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:8px; text-transform:uppercase; letter-spacing:1px;">Host Comms: <span style="color:white; font-weight:bold;">${UI.escapeHTML(targetName)}</span></p>
-                </div>
-                <div id="dm-box" style="display:flex; flex-direction:column; gap:16px; height:450px; max-height: 50vh; overflow-y:auto; padding-right:12px; margin-bottom:24px; -webkit-overflow-scrolling: touch;"></div>
-                <form id="dm-form" style="display:flex; gap:16px; flex-shrink: 0;">
-                    <input type="text" id="dm-in" placeholder="Transmit secure message..." required autocomplete="off" style="border-radius:12px; background:rgba(255,255,255,0.05); padding:18px; font-size:16px !important; flex: 1;">
-                    <button type="submit" class="btn btn-primary" style="padding:18px 24px; border-radius:12px; box-shadow:0 10px 25px var(--primary-glow); width: auto;"><i class="ph-bold ph-paper-plane-right" style="font-size:1.5rem;"></i></button>
-                </form>
-            `);
-            const msgBox = document.getElementById('dm-box');
-            if(window.chatUnsub) window.chatUnsub(); 
-            window.chatUnsub = onSnapshot(query(collection(db, "direct_messages"), where("chatId", "==", chatId)), (snap) => {
-                let msgs = []; snap.forEach(d => msgs.push(d.data())); msgs.sort((a,b) => a.timestamp - b.timestamp);
-                if(msgs.length === 0) { msgBox.innerHTML = `<div class="empty-state" style="padding:60px 20px;"><i class="ph-duotone ph-chat-teardrop" style="font-size:4rem;"></i><h3 style="font-family:var(--font-display); font-size:2rem; margin-top:10px;">Link Established</h3><p style="font-size:1.1rem;">Awaiting transmission for this specific operation.</p></div>`; } 
-                else { 
-                    let html = ''; 
-                    msgs.forEach(m => { 
-                        const isMine = m.senderId === appState.user.uid; 
-                        html += `<div style="max-width:85%; padding:16px 20px; border-radius:16px; font-size:1.05rem; align-self:${isMine?'flex-end':'flex-start'}; background:${isMine?'linear-gradient(135deg, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0.05) 100%)':'rgba(255,255,255,0.03)'}; border:1px solid ${isMine?'rgba(0, 229, 255, 0.4)':'var(--border)'}; color:${isMine?'white':'var(--text-main)'}; box-shadow:${isMine?'0 10px 20px rgba(0,0,0,0.3)': 'none'}; margin-bottom: 4px;">
-                            ${UI.escapeHTML(m.text)}
-                            <span style="display:block; font-size:0.8rem; opacity:0.6; margin-top:8px; text-align:right; font-weight:600; letter-spacing:1px;">${new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                        </div>`; 
-                    }); 
-                    msgBox.innerHTML = html; 
-                    setTimeout(() => { msgBox.scrollTop = msgBox.scrollHeight; }, 30);
+        window.submitProof = async (rId) => {
+            if(!window._tempProofB64) return UI.showToast("Please select an image first.", "error");
+            UI.setLoading('btn-proof-submit', true, 'Encrypting...');
+            try {
+                await updateDoc(doc(db, "registrations", rId), { proofImage: window._tempProofB64, proofUploadedAt: new Date().toISOString() });
+                UI.showToast("Proof uploaded successfully! Awaiting Escrow.");
+                UI.closeModal(); window._tempProofB64 = null;
+            } catch(e) { UI.showToast("Failed to upload proof. File might be too large.", "error"); }
+            finally { UI.setLoading('btn-proof-submit', false); }
+        };
+
+        window.viewResults = async (tId) => {
+            try {
+                const t = (await getDoc(doc(db, "tournaments", tId))).data();
+                let winnerHtml = `<div class="empty-state" style="padding:20px;"><i class="ph-duotone ph-clock"></i><p>Results are being verified and will be posted shortly.</p></div>`;
+                
+                if((t.status === 'Completed' || t.status === 'Pending Settlement') && t.winnerName) {
+                    
+                    let payoutText = `₹${t.prizePool || 0}`;
+                    if(t.teamSize > 1) payoutText += ` <span style="font-size:0.8rem; color:white; font-weight:normal; font-family:var(--font-body); display:block; margin-top:4px;">(₹${(t.prizePool / t.teamSize).toFixed(2)} per player)</span>`;
+
+                    winnerHtml = `
+                        <div class="glass" style="padding:24px 20px; margin-bottom:12px; border-left: 4px solid var(--success); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div>
+                                <strong style="font-size:1.2rem; color:white;">${UI.escapeHTML(t.winnerName)}</strong>
+                                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Operation Victor</div>
+                            </div>
+                            <div style="font-family:var(--font-display); font-weight:800; color:var(--success); font-size:1.8rem; text-align:right;">
+                                ${payoutText}
+                            </div>
+                        </div>
+                    `;
+                    setTimeout(Sound.playSuccess, 100);
+                    setTimeout(triggerConfetti, 300);
                 }
-            });
-            document.getElementById('dm-form').onsubmit = async (e) => { e.preventDefault(); const t = document.getElementById('dm-in').value.trim(); if(!t) return; try { await addDoc(collection(db, "direct_messages"), { chatId: chatId, senderId: appState.user.uid, senderName: appState.userData.username, receiverId: targetUid, text: t, timestamp: Date.now() }); document.getElementById('dm-in').value = ''; } catch(err) {} };
+
+                UI.showModal(`
+                    <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; text-transform:uppercase; color:var(--success);"><i class="ph-fill ph-trophy"></i> Operation Results</h3>
+                    <div style="max-height: 400px; overflow-y:auto; margin-bottom: 24px; padding-right:8px;">
+                        ${winnerHtml}
+                    </div>
+                    <div style="padding-top:24px; border-top:1px solid var(--border);">
+                        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:16px;">Notice a discrepancy in the results or stats? You can raise a support ticket directly with our administration team for manual verification.</p>
+                        <button class="btn btn-outline w-100" onclick="UI.closeModal(); document.querySelector('.sidebar-item[data-tab=\'player-support\']').click();"><i class="ph-bold ph-lifebuoy"></i> Open Support Desk</button>
+                    </div>
+                `);
+            } catch(e) { console.error(e); }
         };
 
         window.rechargeWalletUI = () => {
             UI.showModal(`
-                <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:16px; letter-spacing:1px; text-transform:uppercase; color:var(--success); text-shadow:0 0 15px rgba(0,255,157,0.3);">Deposit Funds</h3>
-                <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:24px;">Add funds securely via any UPI app (GPay, PhonePe, Paytm). Minimum deposit is ₹10.</p>
+                <h3 style="font-family:var(--font-display); font-size: 2.2rem; margin-bottom:8px; text-transform:uppercase; color:var(--success);"><i class="ph-bold ph-plus-circle"></i> Funds Injection</h3>
+                <p style="color:var(--text-muted); margin-bottom:24px; font-size:1.02rem;">Add coins instantly to your wallet core via UPI protocol.</p>
                 
-                <div style="background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:24px;">
-                    <label style="display:block; margin-bottom:12px; font-weight:700; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">1. Select Amount (₹)</label>
-                    <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
-                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:1rem;" onclick="document.getElementById('r-amt').value=100; uQR();">₹100</button>
-                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:1rem;" onclick="document.getElementById('r-amt').value=500; uQR();">₹500</button>
-                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:1rem;" onclick="document.getElementById('r-amt').value=1000; uQR();">₹1000</button>
+                <div style="margin-bottom: 24px;">
+                    <label style="color:var(--text-muted); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:8px;">Select or Enter Amount</label>
+                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-bottom:16px;">
+                        <button class="btn btn-outline" style="padding:10px; font-size:1rem;" onclick="document.getElementById('dep-amount').value = 50">₹50</button>
+                        <button class="btn btn-outline" style="padding:10px; font-size:1rem;" onclick="document.getElementById('dep-amount').value = 100">₹100</button>
+                        <button class="btn btn-outline" style="padding:10px; font-size:1rem;" onclick="document.getElementById('dep-amount').value = 200">₹200</button>
+                        <button class="btn btn-outline" style="padding:10px; font-size:1rem;" onclick="document.getElementById('dep-amount').value = 500">₹500</button>
                     </div>
-                    <input type="number" id="r-amt" min="10" value="100" oninput="uQR()" placeholder="Enter custom amount..." style="padding:16px; font-size:1.2rem; font-weight:800; color:var(--success); background:rgba(0,255,157,0.05); border-color:rgba(0,255,157,0.2);">
+                    <input type="number" id="dep-amount" placeholder="Enter Custom Amount (₹)" min="10" value="100" style="padding:16px; margin-bottom:16px;">
                 </div>
 
-                <div class="glass text-center" style="padding:32px 16px; background:linear-gradient(180deg, rgba(0,255,157,0.05) 0%, transparent 100%); border-color:rgba(0,255,157,0.2); margin-bottom:24px; border-radius:16px;">
-                    <label style="display:block; margin-bottom:16px; font-weight:700; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">2. Scan or Pay via UPI</label>
-                    
-                    <div style="background:white; padding:16px; display:inline-block; border-radius:16px; margin-bottom:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5); border: 4px solid var(--success);">
-                        <img id="r-qr" src="" style="width:160px; height:160px; display:block; max-width: 100%;">
+                <div class="glass" style="padding:20px; background:rgba(0,0,0,0.4); border-radius:12px; margin-bottom:24px; border-left:4px solid var(--primary);">
+                    <div style="font-weight:700; color:white; font-size:0.95rem; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">Gateway Vector Account</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.6); padding:12px 16px; border-radius:8px; border:1px solid var(--border);">
+                        <code style="color:var(--primary); font-size:1.1rem; font-weight:600; font-family:monospace;" id="gateway-upi-id">${appState.upiId}</code>
+                        <button class="btn btn-outline" style="padding:6px 12px; font-size:0.85rem;" onclick="navigator.clipboard.writeText('${appState.upiId}'); UI.showToast('UPI Address Copied!')"><i class="ph-bold ph-copy"></i> Copy</button>
                     </div>
-                    
-                    <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:16px;">
-                        <div style="color:var(--primary); font-family:var(--font-mono); font-size:1.2rem; font-weight:700; background:rgba(0, 229, 255, 0.1); padding:10px 20px; border-radius:8px; border:1px solid rgba(0,229,255,0.3); letter-spacing:1px;">${appState.upiId}</div>
-                        <button class="btn btn-primary" style="padding:12px; border-radius:8px; box-shadow:none;" onclick="navigator.clipboard.writeText('${appState.upiId}'); UI.showToast('UPI ID Copied!');"><i class="ph-bold ph-copy"></i></button>
-                    </div>
-
-                    <a id="r-pay-btn" href="#" class="btn btn-outline" style="width:100%; border-color:var(--success); color:var(--success); font-size:1rem;"><i class="ph-bold ph-device-mobile"></i> Open UPI App</a>
-                </div>
-                
-                <div style="background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:32px;">
-                    <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px; font-weight:700; font-size:0.85rem; color:var(--warning); text-transform:uppercase; letter-spacing:1px;"><i class="ph-fill ph-warning-circle" style="font-size:1.2rem;"></i> 3. Submit 12-Digit UTR</label>
-                    <input type="text" id="r-utr" placeholder="e.g. 312345678901" required style="padding:16px; font-family:var(--font-mono); font-size:1.1rem; letter-spacing:2px;">
-                    <p style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">Find the 12-digit UTR/Ref No. in your payment app's history after paying.</p>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-top:12px; line-height:1.4;">Transfer funds via any UPI terminal (GPay, PhonePe, Paytm) to the gateway vector address above.</p>
                 </div>
 
-                <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; background:var(--success); color:#000; box-shadow:0 15px 30px rgba(0,255,157,0.4);" id="btn-dep-submit" onclick="subR()"><i class="ph-bold ph-paper-plane-right"></i> Verify Payment</button>
+                <div style="margin-bottom: 24px;">
+                    <label style="color:var(--text-muted); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:8px;">Transaction Reference (UTR Number)</label>
+                    <input type="text" id="dep-utr" placeholder="12-Digit Reference / UTR ID" maxlength="12" required style="padding:16px; font-family:monospace; font-size:1.1rem; letter-spacing:2px; text-align:center;">
+                </div>
+
+                <button class="btn btn-primary w-100" style="width:100%; padding:16px; font-size:1.15rem; background:linear-gradient(135deg, var(--success), #00a3cc); color:#000; box-shadow:0 15px 30px rgba(0,255,157,0.25);" id="btn-deposit-submit" onclick="submitDeposit()"><i class="ph-bold ph-shield-check"></i> Submit Deposit Declaration</button>
             `);
-            window.uQR = () => { 
-                const amt = document.getElementById('r-amt').value || 0;
-                const upiStr = `upi://pay?pa=${appState.upiId}&pn=${encodeURIComponent(appState.brandName)}&am=${amt}&cu=INR`;
-                document.getElementById('r-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiStr)}&color=000000&bgcolor=ffffff`; 
-                document.getElementById('r-pay-btn').href = upiStr;
-            }; 
-            window.uQR();
         };
 
-        window.subR = async () => { 
-            const amt = parseInt(document.getElementById('r-amt').value); 
-            const utr = document.getElementById('r-utr').value.trim(); 
-            if(!amt || amt < 10) return UI.showToast("Minimum deposit is ₹10", "error");
-            if(!utr || utr.length < 8) return UI.showToast("Enter a valid UTR number", "error"); 
-            UI.setLoading('btn-dep-submit', true);
-            try { 
-                await addDoc(collection(db, "recharges"), { userId: appState.user.uid, username: appState.userData.username, amount: amt, utr: utr, status: 'pending', createdAt: new Date().toISOString() }); 
-                UI.showToast("UTR Transmitted. Awaiting verification."); 
-                UI.closeModal(); 
-            } catch(e){
-                UI.showToast("Failed to process.", "error");
+        window.submitDeposit = async () => {
+            const amount = parseFloat(document.getElementById('dep-amount').value);
+            const utr = document.getElementById('dep-utr').value.trim();
+            
+            if(isNaN(amount) || amount <= 0) return UI.showToast("Please enter a valid deposit amount.", "error");
+            if(utr.length !== 12 || isNaN(utr)) return UI.showToast("UTR number must be exactly 12 digits.", "error");
+            
+            UI.setLoading('btn-deposit-submit', true);
+            try {
+                await addDoc(collection(db, "deposits"), {
+                    userId: appState.user.uid,
+                    username: appState.userData.username,
+                    amount: amount,
+                    utr: utr,
+                    status: "Pending",
+                    createdAt: new Date().toISOString()
+                });
+                
+                await addDoc(collection(db, "transactions"), {
+                    userId: appState.user.uid,
+                    amount: amount,
+                    type: "Deposit Request",
+                    status: "Pending",
+                    utr: utr,
+                    createdAt: new Date().toISOString()
+                });
+
+                UI.showToast("Deposit request filed! Payout verification completes within minutes.");
+                UI.closeModal();
+            } catch(e) {
+                UI.showToast("Error processing deployment.", "error");
             } finally {
-                UI.setLoading('btn-dep-submit', false);
+                UI.setLoading('btn-deposit-submit', false);
             }
         };
 
         window.withdrawWalletUI = () => {
             UI.showModal(`
-                <h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:16px; text-transform:uppercase; letter-spacing:1px; color:var(--success); text-shadow:0 0 20px rgba(0,255,157,0.3);">Withdrawal Interface</h3>
-                <div style="background:linear-gradient(135deg, rgba(0,255,157,0.1) 0%, rgba(0,255,157,0.02) 100%); border:1px solid rgba(0,255,157,0.3); padding:24px; border-radius:12px; margin-bottom:32px;">
-                    <p style="color:var(--text-muted); font-size:1.05rem; margin-bottom:8px; font-weight:500;">Available Balance: <strong style="color:white; font-size:1.4rem; font-family:var(--font-display);">₹${appState.userData.wallet.coins || 0}</strong></p>
-                    <p style="color:var(--danger); font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;"><i class="ph-bold ph-info"></i> Standard ${appState.withdrawalFeePercent}% Platform Fee applies</p>
-                    <p style="color:var(--warning); font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;"><i class="ph-bold ph-warning-circle"></i> Minimum Withdrawal: ₹50</p>
+                <h3 style="font-family:var(--font-display); font-size: 2.2rem; margin-bottom:8px; text-transform:uppercase; color:var(--danger);"><i class="ph-bold ph-arrow-up-right"></i> Core Extraction</h3>
+                <p style="color:var(--text-muted); margin-bottom:24px; font-size:1.02rem;">Transfer coins directly into your bank or UPI account terminal.</p>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="color:var(--text-muted); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:8px;">Withdrawal Sum (₹)</label>
+                    <input type="number" id="wit-amount" placeholder="Enter Sum to Extract" min="10" style="padding:16px;">
+                    <div style="color:var(--text-muted); font-size:0.85rem; margin-top:6px;">Platform Fee: <span style="color:white; font-weight:600;">${appState.withdrawalFeePercent}%</span></div>
                 </div>
-                <div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Amount (₹)</label><input type="number" id="w-amt" min="50" max="${appState.userData.wallet.coins || 0}" required style="padding:16px; font-size:1.1rem; font-weight:700;"></div>
-                <div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Transfer Method</label><select id="w-met" onchange="tW()" style="padding:16px;"><option value="upi">UPI ID</option><option value="bank">Bank Transfer</option></select></div>
-                <div id="w-u-f" class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Target UPI ID</label><input type="text" id="w-upi" style="padding:16px;"></div>
-                <div id="w-b-f" style="display:none; margin-bottom:40px;"><div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Account Number</label><input type="text" id="w-acc" style="padding:16px;"></div><div class="form-group"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">IFSC Code</label><input type="text" id="w-ifsc" style="padding:16px;"></div></div>
-                <button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(0,255,157,0.3); background:var(--success); color:#000;" onclick="subW()"><i class="ph-bold ph-vault"></i> Authorize Payout</button>
-                <p class="mt-4 text-center" style="font-size:0.9rem; color:var(--text-muted); margin-top:24px; font-weight:600; letter-spacing:1px; text-transform:uppercase;"><i class="ph-bold ph-clock"></i> Escrow processing: 24-48 hours</p>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="color:var(--text-muted); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:8px;">Target UPI ID / Terminal Address</label>
+                    <input type="text" id="wit-upi" placeholder="e.g. username@bank" style="padding:16px; font-family:monospace; font-size:1.05rem;">
+                </div>
+
+                <button class="btn btn-primary w-100" style="width:100%; padding:16px; font-size:1.15rem; background:linear-gradient(135deg, var(--danger), #cc0033); color:white; box-shadow:0 15px 30px rgba(255,42,95,0.25);" id="btn-withdraw-submit" onclick="submitWithdrawal()"><i class="ph-bold ph-paper-plane-right"></i> Authorize Extraction</button>
             `);
-            window.tW = () => { const isB = document.getElementById('w-met').value === 'bank'; document.getElementById('w-u-f').style.display = isB ? 'none' : 'block'; document.getElementById('w-b-f').style.display = isB ? 'block' : 'none'; };
-        };
-        window.subW = async () => { 
-            const amt = parseInt(document.getElementById('w-amt').value); 
-            if(!amt || amt > (appState.userData.wallet.coins||0) || amt < 50) return UI.showToast("Invalid amount. Minimum withdrawal is ₹50.", "error"); 
-            const met = document.getElementById('w-met').value; 
-            const det = met === 'upi' ? `UPI: ${document.getElementById('w-upi').value}` : `Acc: ${document.getElementById('w-acc').value}, IFSC: ${document.getElementById('w-ifsc').value}`; 
-            let feeMultiplier = 1 - (appState.withdrawalFeePercent / 100); 
-            let finalAmt = Math.floor(amt * feeMultiplier); 
-            try { 
-                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-amt) }); 
-                await addDoc(collection(db, "withdrawals"), { userId: appState.user.uid, username: appState.userData.username, requestedAmount: amt, finalAmount: finalAmt, method: met, details: det, status: 'pending', createdAt: new Date().toISOString() }); 
-                UI.showToast("Payout Authorized."); UI.closeModal(); 
-            } catch(e) {} 
         };
 
-        // Real-Time Ledger System
-        let rData = []; let wData = [];
-        window.renderWalletHistory = () => {
+        window.submitWithdrawal = async () => {
+            const amount = parseFloat(document.getElementById('wit-amount').value);
+            const upi = document.getElementById('wit-upi').value.trim();
+            const balance = appState.userData.wallet?.coins || 0;
+
+            if (isNaN(amount) || amount <= 0) return UI.showToast("Please specify a valid extraction sum.", "error");
+            if (amount > balance) return UI.showToast("Extraction target exceeds available core balance.", "error");
+            if (!upi.includes('@')) return UI.showToast("Please input a valid terminal UPI identifier.", "error");
+
+            UI.setLoading('btn-withdraw-submit', true);
+            try {
+                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-amount) });
+                
+                await addDoc(collection(db, "withdrawals"), {
+                    userId: appState.user.uid,
+                    username: appState.userData.username,
+                    amount: amount,
+                    upiId: upi,
+                    feePercent: appState.withdrawalFeePercent,
+                    status: "Pending",
+                    createdAt: new Date().toISOString()
+                });
+
+                await addDoc(collection(db, "transactions"), {
+                    userId: appState.user.uid,
+                    amount: amount,
+                    type: "Withdrawal",
+                    status: "Pending",
+                    upiId: upi,
+                    createdAt: new Date().toISOString()
+                });
+
+                UI.showToast("Extraction request authorized successfully!");
+                UI.closeModal();
+            } catch(e) {
+                UI.showToast("Processing breakdown encountered.", "error");
+            } finally {
+                UI.setLoading('btn-withdraw-submit', false);
+            }
+        };
+
+        const loadWalletHistory = () => {
             const container = document.getElementById('wallet-history');
             if(!container) return;
-            let docs = [...rData, ...wData];
-            docs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            if(docs.length === 0) { container.innerHTML = UI.emptyState('ph-receipt', 'Ledger Empty', 'No financial transactions logged.'); return; }
-            let html = '<div class="table-responsive"><table><tr><th>Date</th><th>Classification</th><th>Amount</th><th>Network Status</th></tr>';
-            docs.forEach(r => { 
-                let col = r.status === 'approved' || r.status === 'paid' ? 'var(--success)' : (r.status === 'rejected' ? 'var(--danger)' : 'var(--primary)'); 
-                html += `<tr>
-                    <td style="color:var(--text-muted); font-size:0.95rem; font-weight:500;">${new Date(r.createdAt).toLocaleDateString()}</td>
-                    <td style="font-weight:700; text-transform:uppercase; letter-spacing:1px; font-size:0.85rem;">${r.type}</td>
-                    <td style="color:${r.type==='Deposit'?'var(--success)':'white'}; font-family:var(--font-display); font-weight:800; font-size:1.4rem; letter-spacing:1px;">${r.type==='Deposit'?'+':'-'}₹${r.amount || r.requestedAmount}</td>
-                    <td><span class="badge" style="border:1px solid ${col}; color:${col}; background:rgba(0,0,0,0.5); padding:8px 16px;">${r.status}</span></td>
-                </tr>`; 
-            });
-            container.innerHTML = html + '</table></div>';
-        }
 
-        window.loadWalletHistory = () => {
-            if(window.unsubRecharges) window.unsubRecharges();
-            if(window.unsubWithdraws) window.unsubWithdraws();
-            
-            window.unsubRecharges = onSnapshot(query(collection(db, "recharges"), where("userId", "==", appState.user.uid)), (snap) => {
-                rData = []; snap.forEach(d => rData.push({...d.data(), type: 'Deposit'})); window.renderWalletHistory();
-            });
-            window.unsubWithdraws = onSnapshot(query(collection(db, "withdrawals"), where("userId", "==", appState.user.uid)), (snap) => {
-                wData = []; snap.forEach(d => wData.push({...d.data(), type: 'Withdrawal'})); window.renderWalletHistory();
+            if(walletUnsubscribe) walletUnsubscribe();
+
+            const q = query(collection(db, "transactions"), where("userId", "==", appState.user.uid));
+            walletUnsubscribe = onSnapshot(q, (snap) => {
+                let txs = [];
+                snap.forEach(d => txs.push(d.data()));
+                txs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                if(txs.length === 0) {
+                    container.innerHTML = UI.emptyState('ph-coins', 'Ledger is Clear', 'No monetary data logs registered to your record.');
+                    return;
+                }
+
+                let html = `<div class="table-responsive"><table>
+                    <thead><tr><th>Operation/Type</th><th>Sum</th><th>Status</th><th>Timestamp</th></tr></thead><tbody>`;
+                
+                txs.forEach(t => {
+                    let sign = t.type.toLowerCase().includes('deposit') ? '+' : '-';
+                    let col = t.type.toLowerCase().includes('deposit') ? 'var(--success)' : 'var(--danger)';
+                    if (t.type.toLowerCase().includes('refund')) { sign = '+'; col = 'var(--primary)'; }
+                    
+                    let statusCol = 'white';
+                    if(t.status === 'Pending') statusCol = 'var(--warning)';
+                    else if(t.status === 'Completed' || t.status === 'Success') statusCol = 'var(--success)';
+                    else if(t.status === 'Failed' || t.status === 'Rejected') statusCol = 'var(--danger)';
+
+                    const dateStr = new Date(t.createdAt).toLocaleString(undefined, {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+
+                    html += `<tr>
+                        <td style="font-weight:600; color:white;">${UI.escapeHTML(t.type)}</td>
+                        <td style="font-weight:700; color:${col};">${sign}₹${t.amount}</td>
+                        <td style="font-weight:600; color:${statusCol};">${t.status || 'Success'}</td>
+                        <td style="color:var(--text-muted); font-size:0.9rem;">${dateStr}</td>
+                    </tr>`;
+                });
+                html += `</tbody></table></div>`;
+                container.innerHTML = html;
             });
         };
 
-        window.createTicketUI = () => { UI.showModal(`<h3 style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.8rem); margin-bottom:24px; letter-spacing:1px; text-transform:uppercase;">Establish Support Line</h3><div class="form-group" style="margin-bottom:20px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Subject</label><input type="text" id="t-sub" required style="padding:16px;"></div><div class="form-group" style="margin-bottom:40px;"><label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Message</label><textarea id="t-msg" rows="5" required style="background:rgba(0,0,0,0.5); padding:16px;"></textarea></div><button class="btn btn-primary w-100" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px var(--primary-glow);" onclick="subT()"><i class="ph-bold ph-paper-plane-right"></i> Transmit to Support</button>`); };
-        window.subT = async () => { const sub = document.getElementById('t-sub').value; const msg = document.getElementById('t-msg').value; if(!sub || !msg) return; try { await addDoc(collection(db, "tickets"), { userId: appState.user.uid, username: appState.userData.username, role: appState.userData.role, subject: sub, message: msg, status: 'Open', replies: [], createdAt: new Date().toISOString() }); UI.showToast("Line Established."); UI.closeModal(); } catch(e) {} };
-        
-        window.loadSupportTickets = () => {
+        const loadSupportTickets = () => {
             const container = document.getElementById('support-list');
-            if(window.unsubTickets) window.unsubTickets();
-            window.unsubTickets = onSnapshot(query(collection(db, "tickets"), where("userId", "==", appState.user.uid)), (snap) => {
-                let data = []; snap.forEach(d => data.push({id: d.id, ...d.data()})); data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-                if(data.length === 0) { container.innerHTML = UI.emptyState('ph-headset', 'Systems Nominal', 'No open support lines.'); return; }
-                let html = '<div class="table-responsive"><table><tr><th>Subject Line</th><th>Network Status</th><th>Command</th></tr>';
-                data.forEach(t => { html += `<tr><td style="font-weight:700; font-size:1.1rem; letter-spacing:0.5px;">${UI.escapeHTML(t.subject)}</td><td><span class="badge" style="border:1px solid ${t.status==='Open'?'var(--primary)':'var(--text-muted)'}; color:${t.status==='Open'?'var(--primary)':'var(--text-muted)'}; background:rgba(0,0,0,0.5); padding:8px 16px;">${t.status}</span></td><td><button class="btn btn-outline" style="padding:10px 20px; font-size:0.9rem;" onclick="vT('${t.id}')">Access Comms</button></td></tr>`; });
-                container.innerHTML = html + '</table></div>';
+            if(!container) return;
+
+            if(ticketsUnsubscribe) ticketsUnsubscribe();
+
+            const q = query(collection(db, "tickets"), where("userId", "==", appState.user.uid));
+            ticketsUnsubscribe = onSnapshot(q, (snap) => {
+                let tickets = [];
+                snap.forEach(d => tickets.push({id: d.id, ...d.data()}));
+                tickets.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                if(tickets.length === 0) {
+                    container.innerHTML = UI.emptyState('ph-lifebuoy', 'Lines are Clear', 'No current active support configurations found.');
+                    return;
+                }
+
+                let html = '';
+                tickets.forEach(t => {
+                    let statusCol = t.status === 'Closed' ? 'var(--text-muted)' : 'var(--success)';
+                    html += `
+                        <div class="glass" style="padding:24px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div>
+                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+                                    <h4 style="font-family:var(--font-display); font-size:1.35rem; text-transform:uppercase; color:white; margin:0;">${UI.escapeHTML(t.subject)}</h4>
+                                    <span class="badge" style="background:rgba(255,255,255,0.05); color:${statusCol}; border:1px solid var(--border); box-shadow:none; padding:4px 10px; font-size:0.7rem;">${t.status}</span>
+                                </div>
+                                <p style="color:var(--text-muted); font-size:0.95rem; max-width:500px;">${UI.escapeHTML(t.description)}</p>
+                            </div>
+                            <button class="btn btn-primary" style="padding:10px 20px; font-size:0.9rem;" onclick="openTicketChat('${t.id}', '${UI.escapeHTML(t.subject)}')"><i class="ph-bold ph-chats"></i> Enter Comms</button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
             });
         };
 
-        window.vT = (tId) => {
+        window.createTicketUI = () => {
             UI.showModal(`
-                <h3 id="tkt-title" style="font-family:var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom:20px; letter-spacing:1px; text-transform:uppercase;">Loading...</h3>
-                <div id="tkt-desc" class="mt-4 mb-4" style="max-width:95%; padding:20px 24px; border-radius:16px; font-size:1.1rem; align-self:flex-end; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-muted); font-style:italic; line-height:1.6;"></div>
-                <div id="tkt-replies" style="display:flex; flex-direction:column; gap:16px; height:350px; overflow-y:auto; padding:20px; background:rgba(0,0,0,0.3); border-radius:16px; border:1px solid var(--border); margin-bottom:24px; box-shadow:inset 0 0 20px rgba(0,0,0,0.5);"></div>
-                <form id="tkt-form" style="margin:0;"></form>
+                <h3 style="font-family:var(--font-display); font-size: 2rem; margin-bottom:8px; text-transform:uppercase; color:var(--primary);"><i class="ph-bold ph-plus-circle"></i> Open Support Channel</h3>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Initialize an encrypted link directly to support staff vectors.</p>
+                
+                <div style="margin-bottom:16px;">
+                    <input type="text" id="t-subject" placeholder="Subject / Incident Title" required style="padding:16px;">
+                </div>
+                <div style="margin-bottom:24px;">
+                    <textarea id="t-desc" placeholder="Provide full details regarding your issue or inquiry..." rows="4" style="padding:16px; resize:none;"></textarea>
+                </div>
+                <button class="btn btn-primary w-100" style="width:100%; padding:16px; font-size:1.15rem;" id="btn-ticket-submit" onclick="submitTicket()"><i class="ph-bold ph-paper-plane-right"></i> Open Link Channel</button>
+            `);
+        };
+
+        window.submitTicket = async () => {
+            const subject = document.getElementById('t-subject').value.trim();
+            const desc = document.getElementById('t-desc').value.trim();
+
+            if(!subject || !desc) return UI.showToast("Please fill out all operational fields.", "error");
+
+            UI.setLoading('btn-ticket-submit', true);
+            try {
+                await addDoc(collection(db, "tickets"), {
+                    userId: appState.user.uid,
+                    username: appState.userData.username,
+                    subject: subject,
+                    description: desc,
+                    status: "Open",
+                    createdAt: new Date().toISOString()
+                });
+                UI.showToast("Support vector established successfully.");
+                UI.closeModal();
+            } catch(e) {
+                UI.showToast("Operational network failure.", "error");
+            } finally {
+                UI.setLoading('btn-ticket-submit', false);
+            }
+        };
+
+        window.renderRealtimeChat = (chatId, title, collectionName = "messages") => {
+            UI.showModal(`
+                <div style="display:flex; flex-direction:column; height:75vh; max-height:600px;">
+                    <div style="border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:var(--primary); font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; display:block; margin-bottom:2px;"><i class="ph-fill ph-circle-dashed ph-spin"></i> Secure Comms Sync</span>
+                            <h3 style="font-family:var(--font-display); font-size:1.6rem; text-transform:uppercase; margin:0; color:white; word-break:break-all;">${title}</h3>
+                        </div>
+                    </div>
+                    
+                    <div id="chat-messages-box" style="flex:1; overflow-y:auto; padding-right:8px; display:flex; flex-direction:column; gap:12px; margin-bottom:24px; padding-bottom:10px;">
+                        <div style="text-align:center; padding:40px; color:var(--text-muted);"><i class="ph-bold ph-spinner ph-spin" style="font-size:2rem; color:var(--primary);"></i></div>
+                    </div>
+
+                    <form id="chat-input-form" onsubmit="event.preventDefault(); window.sendChatMessage('${chatId}', '${collectionName}');" style="display:flex; gap:12px; border-top:1px solid var(--border); padding-top:16px; margin-top:auto;">
+                        <input type="text" id="chat-msg-input" placeholder="Type transmission to channel..." autocomplete="off" style="flex:1; padding:14px 18px;">
+                        <button type="submit" class="btn btn-primary" style="padding:14px 24px; font-size:1.1rem;"><i class="ph-bold ph-paper-plane-right"></i></button>
+                    </form>
+                </div>
             `);
 
-            if(window.tktUnsub) window.tktUnsub();
-            window.tktUnsub = onSnapshot(doc(db, "tickets", tId), (d) => {
-                if(!d.exists()) return;
-                const t = d.data();
-                document.getElementById('tkt-title').innerText = t.subject;
-                document.getElementById('tkt-desc').innerText = `"${t.message}"`;
-                
-                let rHtml = t.replies.length > 0 ? t.replies.map(r => `<div style="max-width:85%; padding:16px 20px; border-radius:16px; font-size:1.05rem; align-self:${r.role==='admin'?'flex-start':'flex-end'}; background:${r.role==='admin'?'rgba(255,255,255,0.03)':'linear-gradient(135deg, rgba(0,229,255,0.2) 0%, rgba(0,229,255,0.05) 100%)'}; border:1px solid ${r.role==='admin'?'var(--border)':'rgba(0, 229, 255, 0.4)'}; box-shadow:${r.role==='admin'?'none':'0 10px 20px rgba(0,0,0,0.3)'};">${r.role==='admin'?`<strong style="font-size:0.8rem; color:var(--primary); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:2px;">NEXUS ADMIN</strong>`:''}${UI.escapeHTML(r.text)}<span style="display:block; font-size:0.75rem; opacity:0.6; margin-top:10px; text-align:right; font-weight:600; letter-spacing:1px;">${new Date(r.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>`).join('') : '<div class="empty-state" style="padding:40px 20px;"><i class="ph-duotone ph-chat-teardrop" style="font-size:3rem;"></i><p style="font-size:1.05rem;">Awaiting Admin response.</p></div>';
-                const repBox = document.getElementById('tkt-replies');
-                repBox.innerHTML = rHtml;
-                setTimeout(() => { repBox.scrollTop = repBox.scrollHeight; }, 30);
+            const msgBox = document.getElementById('chat-messages-box');
+            
+            if(activeChatUnsubscribe) activeChatUnsubscribe();
 
-                const formBox = document.getElementById('tkt-form');
-                if(t.status === 'Open') {
-                    formBox.innerHTML = `<div class="form-group mt-2" style="display:flex; gap:16px;"><input type="text" id="tr-txt" placeholder="Transmit reply..." required autocomplete="off" style="border-radius:12px; background:rgba(255,255,255,0.05); padding:16px; flex:1; font-size:1.05rem;"><button type="submit" class="btn btn-primary" style="padding:16px 24px; border-radius:12px; box-shadow:0 10px 25px var(--primary-glow);"><i class="ph-bold ph-paper-plane-right" style="font-size:1.4rem;"></i></button></div>`;
-                    formBox.onsubmit = async (e) => {
-                        e.preventDefault();
-                        const txt = document.getElementById('tr-txt').value; if(!txt) return;
-                        try {
-                            const r = doc(db, "tickets", tId); const d = await getDoc(r); const reps = d.data().replies || [];
-                            reps.push({ uid: appState.user.uid, name: appState.userData.username, role: 'player', text: txt, timestamp: Date.now() });
-                            await updateDoc(r, { replies: reps });
-                            document.getElementById('tr-txt').value = '';
-                        } catch(e){}
-                    };
-                } else {
-                    formBox.innerHTML = '<div class="badge mt-2" style="width:100%; justify-content:center; padding:16px; border:1px solid rgba(255,42,95,0.3); background:rgba(255,42,95,0.05); color:var(--danger); font-size:0.95rem;">SUPPORT LINE TERMINATED</div>';
-                    formBox.onsubmit = (e) => e.preventDefault();
+            const q = query(collection(db, collectionName), where("chatId", "==", chatId));
+            activeChatUnsubscribe = onSnapshot(q, (snap) => {
+                let msgs = [];
+                snap.forEach(d => msgs.push(d.data()));
+                msgs.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+                if(msgs.length === 0) {
+                    msgBox.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--text-muted); font-size:0.95rem;"><i class="ph-duotone ph-chat-circle-dots" style="font-size:3rem; margin-bottom:12px; color:rgba(255,255,255,0.05);"></i><p>Channel empty. Initialize conversation transmission.</p></div>`;
+                    return;
                 }
+
+                let html = '';
+                msgs.forEach(m => {
+                    const isMe = m.senderId === appState.user.uid;
+                    const align = isMe ? 'align-self: flex-end; background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(0,163,204,0.15)); border-color: rgba(0,229,255,0.25);' : 'align-self: flex-start; background: rgba(255,255,255,0.03);';
+                    const labelCol = isMe ? 'var(--primary)' : 'var(--accent)';
+                    const timeStr = new Date(m.createdAt).toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'});
+
+                    html += `
+                        <div style="max-width:80%; padding:12px 18px; border-radius:12px; border:1px solid var(--border); ${align} display:flex; flex-direction:column; gap:4px; box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:20px;">
+                                <span style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:${labelCol};">${UI.escapeHTML(m.senderName)}</span>
+                                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">${timeStr}</span>
+                            </div>
+                            <p style="color:white; font-size:1rem; line-height:1.5; white-space:pre-wrap; overflow-wrap:break-word; margin:0;">${UI.escapeHTML(m.message)}</p>
+                        </div>
+                    `;
+                });
+                msgBox.innerHTML = html;
+                msgBox.scrollTop = msgBox.scrollHeight;
+            });
+            
+            const modalEl = document.getElementById('modal-container');
+            const observer = new MutationObserver(() => {
+                if(!modalEl.classList.contains('active')) {
+                    if(activeChatUnsubscribe) { activeChatUnsubscribe(); activeChatUnsubscribe = null; }
+                    observer.disconnect();
+                }
+            });
+            observer.observe(modalEl, { attributes: true, attributeFilter: ['class'] });
+        };
+
+        window.sendChatMessage = async (chatId, collectionName) => {
+            const input = document.getElementById('chat-msg-input');
+            if(!input) return;
+            const text = input.value.trim();
+            if(!text) return;
+
+            input.value = '';
+            try {
+                await addDoc(collection(db, collectionName), {
+                    chatId: chatId,
+                    senderId: appState.user.uid,
+                    senderName: appState.userData.username,
+                    message: text,
+                    createdAt: new Date().toISOString()
+                });
+            } catch(e) {
+                UI.showToast("Transmission broken.", "error");
+            }
+        };
+
+        window.openTicketChat = (ticketId, subject) => {
+            window.renderRealtimeChat(ticketId, `Ticket: ${subject}`, "ticket_messages");
+        };
+
+        window.openDM = (hostId, hostName, tournamentId, tournamentTitle) => {
+            const chatId = `${tournamentId}_${appState.user.uid}`;
+            window.renderRealtimeChat(chatId, `DM w/ ${hostName} (${tournamentTitle})`, "dms");
+        };
+
+        const loadClanSystem = async () => {
+            const container = document.getElementById('clan-content');
+            if(!container) return;
+
+            if(clanUnsubscribe) clanUnsubscribe();
+
+            if(!appState.userData.clanId) {
+                container.innerHTML = `
+                    <div class="glass text-center" style="padding:60px 20px;">
+                        <i class="ph-duotone ph-shield-warning" style="font-size:5rem; color:var(--accent); margin-bottom:16px;"></i>
+                        <h3 style="font-family:var(--font-display); font-size:2.2rem; text-transform:uppercase; margin-bottom:8px;">No Squad Affiliation</h3>
+                        <p style="color:var(--text-muted); max-width:450px; margin:0 auto 32px; font-size:1.05rem;">Establish your own elite squad or join an active crew deployment to lock multi-player positions.</p>
+                        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+                            <button class="btn btn-primary" id="btn-establish-clan" onclick="createClanUI()"><i class="ph-bold ph-plus"></i> Establish Crew (₹${appState.clanCost})</button>
+                            <button class="btn btn-outline" onclick="joinClanUI()"><i class="ph-bold ph-sign-in"></i> Sync Crew ID</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const cRef = doc(db, "clans", appState.userData.clanId);
+            clanUnsubscribe = onSnapshot(cRef, (snap) => {
+                if(!snap.exists()) {
+                    updateDoc(doc(db, "users", appState.user.uid), { clanId: "", clanTag: "" });
+                    loadClanSystem();
+                    return;
+                }
+
+                const clan = snap.data();
+                const isLeader = clan.leaderId === appState.user.uid;
+                
+                let membersListHtml = '';
+                clan.memberNames.forEach((name, idx) => {
+                    let kickBtn = (isLeader && clan.members[idx] !== appState.user.uid) ? 
+                        `<button class="btn btn-danger" style="padding:6px 12px; font-size:0.8rem;" onclick="kickClanMember('${clan.members[idx]}')">Exile</button>` : '';
+                    let tag = clan.members[idx] === clan.leaderId ? `<span class="badge badge-upcoming" style="font-size:0.65rem; padding:2px 6px;">Commander</span>` : `<span class="badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid var(--border); font-size:0.65rem; padding:2px 6px; box-shadow:none;">Operator</span>`;
+                    
+                    membersListHtml += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:16px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:12px;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <strong style="color:white; font-size:1.05rem;">${UI.escapeHTML(name)}</strong>
+                                ${tag}
+                            </div>
+                            ${kickBtn}
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = `
+                    <div class="glass" style="padding:32px; border-left:4px solid var(--accent); margin-bottom:32px;">
+                        <span style="color:var(--accent); font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:2px; display:block; margin-bottom:4px;">Squad Active Protocol</span>
+                        <h1 style="font-family:var(--font-display); font-size: clamp(2rem, 6vw, 3.5rem); text-transform:uppercase; color:white; line-height:1; margin:0 0 12px 0;">${UI.escapeHTML(clan.name)} <span style="color:var(--accent)">[${UI.escapeHTML(clan.tag)}]</span></h1>
+                        
+                        <div style="margin-top:20px; display:flex; gap:12px; align-items:center; background:rgba(0,0,0,0.5); padding:12px 16px; border-radius:8px; border:1px solid var(--border); width:fit-content; max-width:100%;">
+                            <span style="color:var(--text-muted); font-size:0.9rem; font-weight:600;">System Share ID:</span>
+                            <code style="font-family:monospace; color:var(--primary); font-size:1.1rem; font-weight:700; word-break:break-all;">${snap.id}</code>
+                            <button class="btn btn-outline" style="padding:4px 10px; font-size:0.8rem;" onclick="navigator.clipboard.writeText('${snap.id}'); UI.showToast('Squad ID Copied!')"><i class="ph-bold ph-copy"></i> Copy</button>
+                        </div>
+                    </div>
+
+                    <h3 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; color:white;">Roster Breakdown (${clan.members.length})</h3>
+                    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:32px;">
+                        ${membersListHtml}
+                    </div>
+
+                    <div style="display:flex; gap:16px;">
+                        ${isLeader ? `<button class="btn btn-danger" onclick="disbandClan('${snap.id}')"><i class="ph-bold ph-trash"></i> Disband Crew</button>` : `<button class="btn btn-danger" onclick="leaveClan()"><i class="ph-bold ph-sign-out"></i> Leave Crew</button>`}
+                    </div>
+                `;
+            });
+        };
+
+        window.createClanUI = () => {
+            if((appState.userData.wallet?.coins || 0) < appState.clanCost) return UI.showToast(`Insufficient resources. Establishment requires ₹${appState.clanCost}.`, "error");
+            UI.showModal(`
+                <h3 style="font-family:var(--font-display); font-size:2rem; text-transform:uppercase; color:var(--accent); margin-bottom:8px;"><i class="ph-bold ph-shield-plus"></i> Form Squad Core</h3>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Initialize a dedicated roster node. Cost: ₹${appState.clanCost}</p>
+                <div style="margin-bottom:16px;"><input type="text" id="c-name" placeholder="Squad Name" required style="padding:16px;"></div>
+                <div style="margin-bottom:24px;"><input type="text" id="c-tag" placeholder="Squad Tag (3-4 Caps)" maxlength="4" required style="padding:16px; text-transform:uppercase; font-family:var(--font-display); font-size:1.2rem; letter-spacing:2px; text-align:center;"></div>
+                <button class="btn btn-primary w-100" id="btn-clan-create-sub" onclick="submitCreateClan()" style="width:100%; padding:16px; font-size:1.15rem; background:var(--accent); color:white; box-shadow:0 15px 30px rgba(139,92,246,0.3); border:none;"><i class="ph-bold ph-shield-check"></i> Initialize Registry</button>
+            `);
+        };
+
+        window.submitCreateClan = async () => {
+            const name = document.getElementById('c-name').value.trim();
+            const tag = document.getElementById('c-tag').value.trim().toUpperCase();
+
+            if(!name || tag.length < 3) return UI.showToast("Roster fields do not match criteria.", "error");
+            if((appState.userData.wallet?.coins || 0) < appState.clanCost) return UI.showToast("Insufficient Balance.", "error");
+
+            UI.setLoading('btn-clan-create-sub', true);
+            try {
+                await updateDoc(doc(db, "users", appState.user.uid), { "wallet.coins": increment(-appState.clanCost) });
+                const clanRef = doc(collection(db, "clans"));
+                await setDoc(clanRef, {
+                    name: name, tag: tag, leaderId: appState.user.uid,
+                    members: [appState.user.uid], memberNames: [appState.userData.username],
+                    createdAt: new Date().toISOString()
+                });
+                await updateDoc(doc(db, "users", appState.user.uid), { clanId: clanRef.id, clanTag: tag });
+                UI.showToast("Crew Core established online!");
+                UI.closeModal(); loadClanSystem();
+            } catch(e) { UI.showToast("Registry failure encountered.", "error"); }
+            finally { UI.setLoading('btn-clan-create-sub', false); }
+        };
+
+        window.joinClanUI = () => {
+            UI.showModal(`
+                <h3 style="font-family:var(--font-display); font-size:2rem; text-transform:uppercase; color:var(--primary); margin-bottom:8px;"><i class="ph-bold ph-keyhole"></i> Sync Squad Node</h3>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Link directly into an established roster database network.</p>
+                <div style="margin-bottom:24px;"><input type="text" id="c-join-id" placeholder="Paste System Share ID" required style="padding:16px; font-family:monospace; text-align:center;"></div>
+                <button class="btn btn-primary w-100" id="btn-clan-join-sub" onclick="submitJoinClan()" style="width:100%; padding:16px; font-size:1.15rem;"><i class="ph-bold ph-link-simple"></i> Request Sync Link</button>
+            `);
+        };
+
+        window.submitJoinClan = async () => {
+            const id = document.getElementById('c-join-id').value.trim();
+            if(!id) return UI.showToast("Please supply a core node identification sequence.", "error");
+
+            UI.setLoading('btn-clan-join-sub', true);
+            try {
+                const cDoc = await getDoc(doc(db, "clans", id));
+                if(!cDoc.exists()) { UI.showToast("Target crew registry node offline.", "error"); UI.setLoading('btn-clan-join-sub', false); return; }
+                const clan = cDoc.data();
+                if(clan.members.includes(appState.user.uid)) { UI.showToast("Node overlap: already linked.", "error"); UI.setLoading('btn-clan-join-sub', false); return; }
+
+                let updatedMembers = [...clan.members, appState.user.uid];
+                let updatedNames = [...clan.memberNames, appState.userData.username];
+
+                await updateDoc(doc(db, "clans", id), { members: updatedMembers, memberNames: updatedNames });
+                await updateDoc(doc(db, "users", appState.user.uid), { clanId: id, clanTag: clan.tag });
+
+                UI.showToast(`Node link active with [${clan.tag}]`);
+                UI.closeModal(); loadClanSystem();
+            } catch(e) { UI.showToast("Sync handshaking failure.", "error"); }
+            finally { UI.setLoading('btn-clan-join-sub', false); }
+        };
+
+        window.kickClanMember = (mUid) => {
+            UI.confirm("Exile this operator profile node from the crew configuration?", async () => {
+                try {
+                    const id = appState.userData.clanId;
+                    const cDoc = await getDoc(doc(db, "clans", id));
+                    const clan = cDoc.data();
+                    let idx = clan.members.indexOf(mUid);
+                    if(idx === -1) return;
+
+                    let updatedMembers = [...clan.members]; updatedMembers.splice(idx, 1);
+                    let updatedNames = [...clan.memberNames]; updatedNames.splice(idx, 1);
+
+                    await updateDoc(doc(db, "clans", id), { members: updatedMembers, memberNames: updatedNames });
+                    await updateDoc(doc(db, "users", mUid), { clanId: "", clanTag: "" });
+                    UI.showToast("Operator network profile exiled.");
+                } catch(e) { UI.showToast("Action command execution failed.", "error"); }
+            });
+        };
+
+        window.leaveClan = () => {
+            UI.confirm("Sever database synchronization links with this crew framework node?", async () => {
+                try {
+                    const id = appState.userData.clanId;
+                    const cDoc = await getDoc(doc(db, "clans", id));
+                    const clan = cDoc.data();
+                    let idx = clan.members.indexOf(appState.user.uid);
+                    
+                    let updatedMembers = [...clan.members]; updatedMembers.splice(idx, 1);
+                    let updatedNames = [...clan.memberNames]; updatedNames.splice(idx, 1);
+
+                    await updateDoc(doc(db, "clans", id), { members: updatedMembers, memberNames: updatedNames });
+                    await updateDoc(doc(db, "users", appState.user.uid), { clanId: "", clanTag: "" });
+                    UI.showToast("Database synchronization decoupled.");
+                    loadClanSystem();
+                } catch(e) { UI.showToast("Action execution failure.", "error"); }
+            });
+        };
+
+        window.disbandClan = (clanId) => {
+            UI.confirm("Permanently wipe this entire squad configuration registry? This is completely irreversible.", async () => {
+                try {
+                    const cDoc = await getDoc(doc(db, "clans", clanId));
+                    const clan = cDoc.data();
+                    for(let mUid of clan.members) {
+                        await updateDoc(doc(db, "users", mUid), { clanId: "", clanTag: "" });
+                    }
+                    await setDoc(doc(db, "clans", clanId), {});
+                    UI.showToast("Squad system configuration completely wiped.");
+                    loadClanSystem();
+                } catch(e) { UI.showToast("Wipe command terminal exception.", "error"); }
             });
         };
     </script>
