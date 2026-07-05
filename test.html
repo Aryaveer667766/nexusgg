@@ -303,8 +303,20 @@
         <div class="modal-content" id="modal-body"></div>
     </div>
 
-    <main id="app-content">
+    <!-- Admin Broadcast Container -->
+    <div id="global-broadcast-container" style="display: none; padding: 20px 5% 0 5%; max-width: 1400px; margin: 90px auto 0 auto; z-index: 500; position: relative;"></div>
+
+    <main id="app-content" style="margin-top: 20px;">
         
+        <!-- Strict Maintenance Lock Screen -->
+        <section id="view-maintenance" class="view-section">
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; text-align:center;">
+                <i class="ph-duotone ph-warning-octagon" style="font-size:6rem; color:var(--warning); margin-bottom:20px;"></i>
+                <h1 style="font-family:var(--font-display); font-size:4rem; margin-bottom:10px; text-transform:uppercase; letter-spacing:2px; color:var(--warning);">System Offline</h1>
+                <p style="color:var(--text-muted); font-size:1.2rem; max-width:500px;">The arena is currently undergoing scheduled maintenance and upgrades. Please stand by for deployment.</p>
+            </div>
+        </section>
+
         <section id="view-landing" class="view-section active">
             <div class="hero">
                 <div class="hero-text">
@@ -312,7 +324,7 @@
                     <p>Enter premium lobbies across BGMI, Free Fire, and Valorant. Play securely with 100% Escrow Guaranteed payouts and professional anti-cheat protocols.</p>
                     <div style="display:flex; gap:16px; flex-wrap: wrap; width: 100%;">
                         <button class="btn btn-primary" onclick="navigateToRegister('player')" style="animation: pulseGlow 2.5s infinite; font-size:1.2rem; padding:16px 32px;"><i class="ph-bold ph-game-controller"></i> Play Tournaments</button>
-                        
+                        <a href="champzone.apk" download class="btn btn-outline" style="font-size:1.2rem; padding:16px 32px; border-color:var(--success); color:var(--success); text-decoration:none;"><i class="ph-bold ph-android-logo"></i> Download App</a>
                     </div>
                     <div style="margin-top:16px;">
                         <a href="#" onclick="navigateToRegister('host')" style="color:var(--text-muted); font-size:1rem; text-decoration:underline;">Want to organize matches? Click here.</a>
@@ -405,14 +417,14 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, addDoc, updateDoc, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-       const firebaseConfig = {
-  apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
-  authDomain: "champzonegaming.firebaseapp.com",
-  projectId: "champzonegaming",
-  storageBucket: "champzonegaming.firebasestorage.app",
-  messagingSenderId: "96825707375",
-  appId: "1:96825707375:web:88fbce144131f0670ef69a",
-  measurementId: "G-7Q9RS046FV"
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO_UCTqwEQruQ8ybIXLGwBBQ34pCXjl6c",
+            authDomain: "champzonegaming.firebaseapp.com",
+            projectId: "champzonegaming",
+            storageBucket: "champzonegaming.firebasestorage.app",
+            messagingSenderId: "96825707375",
+            appId: "1:96825707375:web:88fbce144131f0670ef69a",
+            measurementId: "G-7Q9RS046FV"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -422,7 +434,7 @@
         let appState = {
             user: null, userData: null, currentView: 'landing',
             upiId: "gpay-11245353662@okbizaxis", games: ["BGMI", "Free Fire", "Call of Duty Mobile", "Valorant"],
-            brandName: "CHAMPZONE", brandLogo: "", clanCost: 50, withdrawalFeePercent: 5
+            brandName: "CHAMPZONE", brandLogo: "", clanCost: 50, withdrawalFeePercent: 5, maintenanceMode: false
         };
 
         const Sound = {
@@ -518,6 +530,31 @@
         window.UI = UI;
         window.closeModal = UI.closeModal; 
 
+        // Listen for Admin Global Broadcasts
+        onSnapshot(doc(db, "platform", "broadcast"), (docSnap) => {
+            const container = document.getElementById('global-broadcast-container');
+            if(!container) return;
+            if (docSnap.exists()) {
+                const b = docSnap.data();
+                if (b.active && b.message) {
+                    let bg = 'rgba(0, 229, 255, 0.1)'; let border = 'var(--primary)'; let icon = 'ph-info'; let color = 'var(--primary)';
+                    if (b.intensity === 'alert') { bg = 'rgba(255, 42, 95, 0.1)'; border = 'var(--danger)'; icon = 'ph-warning-octagon'; color = 'var(--danger)'; }
+                    else if (b.intensity === 'important') { bg = 'rgba(245, 158, 11, 0.1)'; border = 'var(--warning)'; icon = 'ph-warning'; color = 'var(--warning)'; }
+
+                    container.innerHTML = `
+                        <div style="background:${bg}; border:1px solid ${border}; color:${color}; padding:16px; border-radius:12px; display:flex; align-items:center; gap:12px; font-weight:600; font-size:1.05rem; box-shadow: 0 0 15px ${bg};">
+                            <i class="ph-fill ${icon}" style="font-size:1.8rem;"></i>
+                            <span style="flex:1;">${UI.escapeHTML(b.message)}</span>
+                        </div>
+                    `;
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            }
+        });
+
+        // Listen for Settings and Maintenance Mode
         onSnapshot(doc(db, "platform", "settings"), (docSnap) => {
             if(docSnap.exists()) {
                 const data = docSnap.data();
@@ -536,7 +573,20 @@
                     document.getElementById('nav-logo-img').style.display = 'none';
                 }
                 if(data.withdrawalFeePercent !== undefined) appState.withdrawalFeePercent = parseFloat(data.withdrawalFeePercent);
-                if(data.clanCost !== undefined) appState.clanCost = parseInt(data.clanCost);
+                if(data.clanCost !== undefined) {
+                    appState.clanCost = parseInt(data.clanCost);
+                    // Update DOM instantly if the establish button is visible
+                    const estBtn = document.getElementById('btn-establish-clan');
+                    if(estBtn) estBtn.innerHTML = `<i class="ph-bold ph-plus"></i> Establish (₹${appState.clanCost})`;
+                }
+                if(data.maintenanceMode !== undefined) {
+                    appState.maintenanceMode = data.maintenanceMode;
+                    if(appState.maintenanceMode && (!appState.userData || appState.userData.role !== 'admin')) {
+                        navigate('maintenance');
+                    } else if (!appState.maintenanceMode && appState.currentView === 'maintenance') {
+                        navigate(appState.user ? 'player-dash' : 'landing');
+                    }
+                }
             }
         });
 
@@ -563,8 +613,13 @@
         window.navigate = (viewName) => {
             closeMenu(); 
             
+            // Hard Maintenance Lock
+            if (appState.maintenanceMode && (!appState.userData || appState.userData.role !== 'admin')) {
+                viewName = 'maintenance';
+            }
+
             // Hard Dashboard Lock for Authenticated Users
-            if (appState.user && appState.userData) {
+            if (appState.user && appState.userData && viewName !== 'maintenance') {
                 if (['landing', 'login', 'register'].includes(viewName)) {
                     viewName = 'player-dash'; // Snap back to dashboard safely
                 }
@@ -652,11 +707,11 @@
                     if (docSnap.exists()) {
                         appState.userData = docSnap.data(); 
                         let role = appState.userData.role || 'player';
-                        if (role === 'admin') { window.location.href = 'admin'; return; } 
-                        else if (role === 'host') { window.location.href = 'host'; return; }
+                        if (role === 'admin') { window.location.href = 'admin.html'; return; } 
+                        else if (role === 'host') { window.location.href = 'host.html'; return; }
                         updateNav();
                         
-                        // Force navigation to dash on load if logged in
+                        // Force navigation to dash on load if logged in (respects maintenance mode)
                         navigate('player-dash'); 
                     } else { signOut(auth); }
                 } catch (e) { UI.showToast("Database Auth Blocked.", "error"); }
@@ -696,6 +751,7 @@
                     
                     <form id="reg-form">
                         <div class="form-group" style="margin-bottom: 16px;"><input type="text" id="r-username" placeholder="Global Username" required style="padding:16px;"></div>
+                        <div class="form-group" style="margin-bottom: 16px;"><input type="tel" id="r-phone" placeholder="Mobile Number (+91...)" required style="padding:16px;"></div>
                         <div class="form-group" style="margin-bottom: 16px;"><input type="email" id="r-email" placeholder="Email Address" required style="padding:16px;"></div>
                         <div class="form-group" style="margin-bottom: 32px;"><input type="password" id="r-pass" placeholder="Password (min 6 chars)" required minlength="6" style="padding:16px;"></div>
                         <button type="submit" class="btn btn-primary" style="width:100%; padding:18px; font-size:1.2rem; box-shadow:0 15px 30px rgba(0,229,255,0.3);" id="btn-reg-submit"><i class="ph-bold ph-user-plus"></i> Initialize Account</button>
@@ -723,13 +779,14 @@
             e.preventDefault(); UI.setLoading('btn-reg-submit', true);
             const email = document.getElementById('r-email').value; const pass = document.getElementById('r-pass').value;
             const username = document.getElementById('r-username').value; const role = document.getElementById('r-role-val').value;
+            const phone = document.getElementById('r-phone').value.trim();
 
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-                const newData = { uid: userCred.user.uid, email: email, username: username, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
+                const newData = { uid: userCred.user.uid, email: email, username: username, phone: phone, role: role, createdAt: new Date().toISOString(), wallet: { coins: 0 }, isBanned: false };
                 await setDoc(doc(db, "users", userCred.user.uid), newData);
                 appState.userData = newData; 
-                if (role === 'host') window.location.href = 'host'; else navigate('player-dash');
+                if (role === 'host') window.location.href = 'host.html'; else navigate('player-dash');
             } catch (err) { UI.showToast(err.message, "error"); }
             finally { UI.setLoading('btn-reg-submit', false); }
         };
@@ -831,8 +888,11 @@
 
                         <div class="glass" style="margin-top:32px; padding:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; border-left: 4px solid var(--success);">
                             <div>
+                                <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:4px; text-transform:uppercase;"><i class="ph-bold ph-android-logo" style="color:var(--success);"></i> Download the Official App</h3>
+                                <p style="color:var(--text-muted); font-size:0.95rem;">Get the best experience, faster notifications, and seamless gameplay.</p>
                             </div>
-                            
+                            <a href="champzone.apk" download class="btn btn-primary" style="background:var(--success); color:#000; box-shadow:0 10px 20px rgba(0,255,157,0.2); text-decoration:none;"><i class="ph-bold ph-download-simple"></i> Download APK</a>
+                        </div>
                     `;
                 } else if(tab === 'player-browse') {
                     container.innerHTML = `
@@ -1414,7 +1474,7 @@
                         <p style="color:var(--text-muted); max-width:500px; margin:0 auto 40px; font-size:1.15rem; line-height:1.6;">Required for Duo and Squad deployments. Play together, dominate together.</p>
                         <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
                             <button class="btn btn-outline" style="border-color:var(--primary); color:var(--primary); padding:16px 36px; font-size:1.1rem; width:100%; max-width:250px;" onclick="joinClanUI()"><i class="ph-bold ph-link"></i> Join via Tag</button>
-                            <button class="btn btn-primary" style="padding:16px 36px; font-size:1.1rem; box-shadow:0 10px 30px var(--primary-glow); width:100%; max-width:250px;" onclick="createClanUI()"><i class="ph-bold ph-plus"></i> Establish (₹${appState.clanCost})</button>
+                            <button class="btn btn-primary" id="btn-establish-clan" style="padding:16px 36px; font-size:1.1rem; box-shadow:0 10px 30px var(--primary-glow); width:100%; max-width:250px;" onclick="createClanUI()"><i class="ph-bold ph-plus"></i> Establish (₹${appState.clanCost})</button>
                         </div>
                     </div>
                 `;
